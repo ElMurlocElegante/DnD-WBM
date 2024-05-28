@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
+    <header>
+        <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo">
+        <h1>DnD-WBM</h1>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('characters') }}">Characters</a></li>
+            <li><a href="{{ url_for('battle_manager') }}">Battle Manager</a></li>
+        </ul>
+    </header>
+</head>
+<body>
+
+    {% block body %} {% endblock %}
+    <footer>    
+        <h5>Contactanos en:</h5>
+        <ul>
+            <li><a href="{{ url_for('github')}}">Github</a></li>
+            <li>Mail: lcelano@fi.uba.ar</li>
+        </ul>
+    </footer>
+</body>
+</html>

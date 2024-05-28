@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="character-list">
+        <h1>Character List</h1>
+        {% for character in data %}
+        <div class="pc">
+            <ul>
+                {% for key, value in character.items() %}
+                <li><span class="key">{{ key }}:</span> <span class="value">{{ value }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="form-container">
+        <!-- Aquí puedes agregar el formulario para crear o eliminar personajes -->
+        <h2>Manage Characters</h2>
+        <!-- Formulario para agregar nuevos personajes -->
+        <form method="POST" action="{{ url_for('add_character') }}">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="ac">AC:</label><br>
+            <input type="number" id="ac" name="ac"><br>
+            <label for="str">STR:</label><br>
+            <input type="number" id="str" name="str"><br>
+            <label for="dex">DEX:</label><br>
+            <input type="number" id="dex" name="dex"><br>
+            <label for="con">CON:</label><br>
+            <input type="number" id="con" name="con"><br>
+            <label for="int">INT:</label><br>
+            <input type="number" id="int" name="int"><br>
+            <label for="wis">WIS:</label><br>
+            <input type="number" id="wis" name="wis"><br>
+            <label for="char">CHAR:</label><br>
+            <input type="number" id="char" name="char"><br>
+            <input type="submit" value="Add Character">
+        </form>
+        <!-- Formulario para eliminar personajes (puedes ajustarlo según sea necesario) -->
+        <form method="DELETE" action="{{ url_for('delete_character') }}">
+            <label for="character_name">Select Character to Delete:</label><br>
+            <select name="character_name" id="character_name">
+                {% for character in data %}
+                     <option value="{{ character.name}}">{{ character.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Delete Character">
+        </form>
+    </div>
+</div>
+{% endblock %}
