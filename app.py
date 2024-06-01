@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
-
+import os
+import json
 
 app = Flask(__name__)
 engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM") 
@@ -18,7 +19,36 @@ def home():
 
 @app.route("/characters", methods=['GET'])
 def characters():
-    return render_template("characters.html")
+    index_route = os.path.join(app.root_path, 'data', 'class', 'index.json')
+    races_route = os.path.join(app.root_path, 'data', 'races.json')
+    backgrounds_route = os.path.join(app.root_path, 'data', 'backgrounds.json')
+    skills_route = os.path.join(app.root_path, 'data', 'skills.json')
+
+    if not os.path.exists(index_route):
+        return jsonify({"error": "File Not Found, class index"}), 404
+
+    if not os.path.exists(races_route):
+        return jsonify({"error": "File Not Found, races"}), 404
+    
+    if not os.path.exists(backgrounds_route):
+        return jsonify({"error": "File Not Found, backgrounds"})
+    
+    if not os.path.exists(skills_route):
+        return jsonify({"error": "File Not Found, skills"})
+    
+    with open(index_route, 'r') as json_file:
+        classes = json.load(json_file)
+
+    with open(races_route, 'r') as json_file:
+        race_details = [{"name": race['name'], "source": race['source']} for race in json.load(json_file)['race']]
+    
+    with open(backgrounds_route, 'r') as json_file:
+        background_details = [{"name": background['name']} for background in json.load(json_file)['background']]
+
+    with open(skills_route, 'r') as json_file:
+        skills_details = [{"name": skill['name']} for skill in json.load(json_file)['skill']]
+
+    return render_template("characters.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
 @app.route("/characters/delete_character", methods=['DELETE'])
 def delete_character(character_name):

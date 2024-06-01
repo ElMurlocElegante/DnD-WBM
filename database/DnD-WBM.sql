@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -21,17 +20,12 @@ SET time_zone = "+00:00";
 -- Database: `DnD-WBM`
 --
 
--- --------------------------------------------------------
-
---
 -- Table structure for table `characters`
---
-
 CREATE TABLE `characters` (
   `username` varchar(40) NOT NULL,
   `character_name` varchar(40) NOT NULL,
   `class` varchar(9) NOT NULL,
-  `subclass` varchar(16) NOT NULL,
+  `subclass` varchar(16) DEFAULT NULL,
   `background` varchar(20) NOT NULL,
   `race` varchar(16) NOT NULL,
   `alignment` varchar(16) NOT NULL,
@@ -39,7 +33,7 @@ CREATE TABLE `characters` (
   `hp` smallint(3) NOT NULL,
   `strength` tinyint(2) NOT NULL,
   `dexterity` tinyint(2) NOT NULL,
-  `constituiton` tinyint(2) NOT NULL,
+  `constitution` tinyint(2) NOT NULL,
   `intelligence` tinyint(2) NOT NULL,
   `wisdom` tinyint(2) NOT NULL,
   `charisma` tinyint(2) NOT NULL,
@@ -47,46 +41,18 @@ CREATE TABLE `characters` (
   `proficiency_n_languange` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `equipment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `lore` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
-  `id` int(11) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
---
-
 CREATE TABLE `users` (
   `username` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `password` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `characters`
---
-ALTER TABLE `characters`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`username`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `characters`
---
-ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
