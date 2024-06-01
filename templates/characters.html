@@ -18,7 +18,7 @@
     <div class="form-container">
         <h2>Manage Characters</h2>
         <!-- Formulario para agregar nuevos personajes -->
-        <form method="POST" action="{{ url_for('add_character') }}">
+        <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
             <label for="character_name">Character Name:</label><br>
             <input type="text" id="character_name" name="character_name"><br>
             <label for="class">Class</label>
@@ -73,8 +73,8 @@
             <fieldset>
                 <legend>Choose your Proficiencies</legend>
                 {% for skill in skills %}
-                    <input type="checkbox" name="{{ skill.name }}" id="{{ skill.name }}" value="{{ skill.name }}">
-                    <label for="{{ skill.name }}">{{ skill.name }}</label>
+                    <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
+                    <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
                 {% endfor %}
             </fieldset> <br>
             <fieldset>
@@ -107,4 +107,6 @@
         </form>
     </div>
 </div>
+
+<script src="{{ url_for('static', filename='scripts/loadSkills.js')}}"></script>
 {% endblock %}

@@ -65,5 +65,13 @@ def battle_manager():
 @app.route("/github")
 def github():
     return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
+
+@app.route("/data/backgrounds.json")
+def get_backgrounds():
+    try:
+        with open('data/backgrounds.json','r') as json_file:
+            return jsonify(json.load(json_file))
+    except FileNotFoundError:
+        return jsonify({"error": "Backgrounds file not found"})
 if __name__ == "__main__":
     app.run("127.0.0.1", port=5000, debug=True)
