@@ -24,7 +24,7 @@
             <label for="class">Class</label>
             <select name="class" id="class">
                 {% for class_name in classes %}
-                    <option value="{{ class_name }}">{{ class_name }}</option>
+                    <option value="{{ class_name }}">{{ class_name|upper }}</option>
                 {% endfor %}
             </select> <br>
             <label for="xp">XP</label> <br>
@@ -72,6 +72,7 @@
             
             <fieldset>
                 <legend>Choose your Proficiencies</legend>
+                <p id="remainingSkills"></p>
                 {% for skill in skills %}
                     <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                     <label for="{{ skill.name|lower }}">{{ skill.name }}</label>

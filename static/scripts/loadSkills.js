@@ -34,14 +34,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Habilitar y marcar las habilidades correspondientes al nuevo fondo seleccionado
         if (backgroundData.skillProficiencies) {
-            Object.keys(backgroundData.skillProficiencies[0]).forEach(function(skill) {
-                console.log('Habilitando y marcando:', skill);
-                var skillElement = document.getElementById(skill);
-                if (skillElement) {
-                    skillElement.disabled = false;
-                    skillElement.checked = true;
-                }
-            });
+            if (Object.keys(backgroundData.skillProficiencies[0])[0] !== 'choose'){
+                Object.keys(backgroundData.skillProficiencies[0]).forEach(function(skill) {
+                    console.log('Habilitando y marcando:', skill);
+                    var skillElement = document.getElementById(skill);
+                    if (skillElement) {
+                        skillElement.disabled = true;
+                        skillElement.checked = true;
+                    }
+                });
+                // En caso de que haya que elegir skills:
+            } else {
+                var maxBackgroundSkills = backgroundData.skillProficiencies[0].choose.count
+                console.log('Skills a Elegir:', maxBackgroundSkills)
+                console.log('Habilitando:', backgroundData.skillProficiencies[0].choose.from)
+                backgroundData.skillProficiencies[0].choose.from.forEach(function(skill) {
+                    var skillElement = document.getElementById(skill);
+                    if (skillElement) {
+                        skillElement.disabled = false;
+                    }
+                })
+                skills.forEach(function(skill) {
+                    skill.addEventListener('change', function() {
+                        var checkedBackgroundSkills = document.getElementById('characterForm').querySelectorAll('input[type="checkbox"]:checked');
+                        if (checkedBackgroundSkills.length > maxBackgroundSkills) {
+                            this.checked = false;
+                            checkedBackgroundSkills = document.getElementById('characterForm').querySelectorAll('input[type="checkbox"]:checked');
+                        }
+                        document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${maxBackgroundSkills - checkedBackgroundSkills.length } skills`
+
+                    })
+                })
+            }
         }
     }
 

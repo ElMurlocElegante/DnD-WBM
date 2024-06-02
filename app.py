@@ -73,5 +73,20 @@ def get_backgrounds():
             return jsonify(json.load(json_file))
     except FileNotFoundError:
         return jsonify({"error": "Backgrounds file not found"})
+    
+
+@app.route("/data/class/<json_file>")
+def get_class_data(json_file):
+    file_path = f"data/class/{json_file}"
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, 'r') as file:
+                return jsonify(json.load(file))
+        except FileNotFoundError:
+            return jsonify({"error": f"{json_file} file not found"})
+    else:
+        return jsonify({"error": f"{json_file} not found"})
+
+
 if __name__ == "__main__":
     app.run("127.0.0.1", port=5000, debug=True)
