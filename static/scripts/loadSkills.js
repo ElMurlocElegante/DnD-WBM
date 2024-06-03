@@ -1,13 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtener el elemento select del background
+    // Obtener el elementos seleccionados
     var backgroundSelect = document.getElementById('background');
     var classSelect = document.getElementById('class');
     var raceSelect = document.getElementById('race');
 
-    // Ejecutar la función para aplicar las proficiencias cuando cambie la selección
-    backgroundSelect.addEventListener('change', function() {
-        var selectedBackground = backgroundSelect.value;
+    // Fetching y aplicacion de proficiencias
+    function fetchBackgroundData (event) {
         
+        if (event.target === undefined){
+            var selectedBackground = event.value;
+        } else  {
+            var selectedBackground = event.target.value
+        }
         fetch('../../data/backgrounds.json')
             .then(response => response.json())
             .then(data => {
@@ -22,10 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error fetching backgrounds:', error));
-    });
+    }
 
-    classSelect.addEventListener('change', function() {
-        var selectedClass = classSelect.value;
+    function fetchClassData (event) {
+        if (event.target === undefined){
+            var selectedClass = event.value;
+        } else  {
+            var selectedClass = event.target.value
+        }
         
         fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
@@ -38,10 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error fetching class data:', error));
-    });
+    }
 
-    raceSelect.addEventListener('change', function() {
-        var selectedRace = raceSelect.value;
+    function fetchRaceData (event) {
+        if (event.target === undefined){
+            var selectedRace = event.value;
+        } else {
+            var selectedRace = event.target.value;
+        }
         var [raceName, raceSource] = selectedRace.split('-');
 
         fetch('../../data/races.json')
@@ -58,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error fetching backgrounds:', error));
-    });
+    }
 
     // Función para aplicar las proficiencias del background seleccionado
     function applyBackgroundProficiencies(classSkills, raceSkills, backgroundData) {
@@ -164,20 +176,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Ejecutar la función una vez al inicio para aplicar las proficiencias del background inicial
-    var initialBackground = backgroundSelect.value;
-    fetch('../../data/backgrounds.json')
-        .then(response => response.json())
-        .then(data => {
-            var initialBackgroundData = data.background.find(function(bg) {
-                return bg.name === initialBackground;
-            });
+    // Ejecutar la función para aplicar las proficiencias cuando cambie la selección
+    backgroundSelect.addEventListener('change', fetchBackgroundData);
+    classSelect.addEventListener('change', fetchClassData);
+    raceSelect.addEventListener('change', fetchRaceData);
 
-            if (initialBackgroundData) {
-                applyBackgroundProficiencies([],[],initialBackgroundData);
-            } else {
-                console.log('Background inicial no encontrado:', initialBackground);
-            }
-        })
-        .catch(error => console.error('Error fetching backgrounds:', error));
+    // Ejecutar la función para aplicar las proficiencias cuando se carga la pagina
+    fetchBackgroundData(backgroundSelect);
+    fetchClassData(classSelect);
+    fetchRaceData(raceSelect);
+
+
 });
