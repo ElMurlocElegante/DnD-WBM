@@ -86,6 +86,10 @@ def get_class_data(json_file):
             return jsonify({"error": f"{json_file} file not found"})
     else:
         return jsonify({"error": f"{json_file} not found"})
+    
+@app.route("/gameRooms")
+def gameRooms():
+    return render_template("rooms.html")
 
 
 if __name__ == "__main__":
