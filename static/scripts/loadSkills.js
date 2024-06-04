@@ -71,7 +71,104 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Error fetching backgrounds:', error));
     }
+    function checkMandatorySkills(skill, skillElement, mandatorySkills) {
+        console.log('Habilitando y marcando:', skill);
+        skillElement.disabled = true;
+        skillElement.checked = true;
+        mandatorySkills.push(skillElement);
+        return mandatorySkills
+    }
 
+    function chooseSetSkills(skills, checkedSkills, mandatorySkills, nonMandatoryCheckedSkills, remainingSkills, data) {
+        var maxSkills = data.choose.count || 1;
+        var selectableSkills = data.choose.from;
+    
+        console.log('Skills a Elegir:', maxSkills);
+        console.log('Habilitando:', selectableSkills);
+    
+        selectableSkills.forEach(function(skillName) {
+            var skillElement = document.getElementById(skillName);
+            if (skillElement) {
+                skillElement.disabled = false;
+            }
+        });
+        remainingSkills = maxSkills;
+    
+        document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+    
+        // Manejar la selección de habilidades con el límite
+        skills.forEach(function(skill) {
+            // Clonar el nodo para eliminar los event listeners anteriores
+            var newSkill = skill.cloneNode(true);
+            skill.replaceWith(newSkill);
+    
+            newSkill.addEventListener('change', function() {
+                checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
+                nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
+                    return !mandatorySkills.includes(skill);
+                });
+                console.log('Antes', nonMandatoryCheckedSkills.length, maxSkills);
+                if (nonMandatoryCheckedSkills.length > maxSkills) {
+                    console.log("Maximo Alcanzado");
+                    this.checked = false;
+                    checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
+                    nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
+                        return !mandatorySkills.includes(skill);
+                    });
+                }
+                remainingSkills = maxSkills - nonMandatoryCheckedSkills.length;
+                console.log('Despues', nonMandatoryCheckedSkills.length, maxSkills);
+                document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+            });
+        });
+    
+        return remainingSkills;
+    }
+    
+    function chooseAnySkills(skills, checkedSkills, mandatorySkills, nonMandatoryCheckedSkills, remainingSkills, data) {
+        var maxSkills = data.any
+    
+        console.log('Skills a Elegir:', maxSkills);
+        console.log('Habilitando: Todas las Skills');
+    
+        skills.forEach(function(skill) {
+            if (skill) {
+                skill.disabled = false;
+                console.log('B')
+            }
+        });
+        remainingSkills = maxSkills;
+    
+        document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+    
+        // Manejar la selección de habilidades con el límite
+        skills.forEach(function(skill) {
+            // Clonar el nodo para eliminar los event listeners anteriores
+            var newSkill = skill.cloneNode(true);
+            skill.replaceWith(newSkill);
+    
+            newSkill.addEventListener('change', function() {
+                checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
+                nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
+                    return !mandatorySkills.includes(skill);
+                });
+                console.log('Antes', nonMandatoryCheckedSkills.length, maxSkills);
+                if (nonMandatoryCheckedSkills.length > maxSkills) {
+                    console.log("Maximo Alcanzado");
+                    this.checked = false;
+                    checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
+                    nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
+                        return !mandatorySkills.includes(skill);
+                    });
+                }
+                remainingSkills = maxSkills - nonMandatoryCheckedSkills.length;
+                console.log('Despues', nonMandatoryCheckedSkills.length, maxSkills);
+                document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+            });
+        });
+    
+        return remainingSkills;
+    }
     // Función para aplicar las proficiencias del background seleccionado
     function applyBackgroundProficiencies(classSkills, raceSkills, backgroundData) {
 
@@ -96,51 +193,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Habilitar y marcar las habilidades obligatorias
                 if (skillElement && skill !== 'choose' && skill !== 'any') {
-                    console.log('Habilitando y marcando:', skill);
-                    skillElement.disabled = true;
-                    skillElement.checked = true;
-                    mandatorySkills.push(skillElement);
+                    mandatorySkills = checkMandatorySkills(skill, skillElement, mandatorySkills)
                 }
 
                 // Habilitar las habilidades que se pueden elegir
                 else if (skill === 'choose') {
-                    var maxBackgroundSkills = backgroundData.skillProficiencies[0].choose.count || 1;
-                    var selectableSkills = backgroundData.skillProficiencies[0].choose.from;
-
-                    console.log('Skills a Elegir:', maxBackgroundSkills);
-                    console.log('Habilitando:', selectableSkills);
-
-                    selectableSkills.forEach(function(skillName) {
-                        var skillElement = document.getElementById(skillName);
-                        if (skillElement) {
-                            skillElement.disabled = false;
-                        }
-                    });
-                    remainingSkills = maxBackgroundSkills
-
-                    document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
-
-                    // Manejar la selección de habilidades con el límite
-                    skills.forEach(function(skill) {
-                        skill.addEventListener('change', function() {
-                            checkedBackgroundSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                            nonMandatoryCheckedSkills = Array.from(checkedBackgroundSkills).filter(function(skill) {
-                                return !mandatorySkills.includes(skill);
-                            });
-                            if (nonMandatoryCheckedSkills.length > maxBackgroundSkills) {
-                                console.log("Maximo Alcanzado")
-                                this.checked = false;
-                                checkedBackgroundSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                                nonMandatoryCheckedSkills = Array.from(checkedBackgroundSkills).filter(function(skill) {
-                                    return !mandatorySkills.includes(skill);
-                                });
-                            }
-                            remainingSkills = maxBackgroundSkills - nonMandatoryCheckedSkills.length;
-                            document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
-                        });
-                    });
+                    remainingSkills = chooseSetSkills(skills, checkedBackgroundSkills, mandatorySkills, 
+                                    nonMandatoryCheckedSkills, remainingSkills, backgroundData.skillProficiencies[0]);
                 } else if (skill === 'any') {
                     // Todavia hay que hacer la logica si es que permite elegir cualquier skill
+                    remainingSkills = chooseAnySkills(skills, checkedBackgroundSkills, mandatorySkills,
+                                    nonMandatoryCheckedSkills, remainingSkills, backgroundData.skillProficiencies[0]);
                 }
             });
         }
