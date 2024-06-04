@@ -3,7 +3,13 @@
 {% block body %}
 <main>
     <section class="rooms">
-        
+
+    </section>
+    <section class="roomCreation">
+        <div class="content">
+            <h3>Didn't Find your Room? Create it!</h3>
+            <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
+        </div>
     </section>
 </main>
 {% endblock %}

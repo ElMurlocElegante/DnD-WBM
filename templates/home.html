@@ -7,14 +7,14 @@
             <div class="content">
                 <h3>Begin your adventure!</h3>
                 <p>Interested in playing? Create a D&D character to begin!</p>
-                <a href="#" class="button">Create Character</a>
+                <a href="{{ url_for('characters') }}" class="button">Create Character</a>
             </div>
         </section>
         <section class="findRoom">
             <div class="content">
                 <h3>Already have a Character?</h3>
                 <p>Find your party and begin playing!</p>
-                <a href="#" class="button">Find room</a>
+                <a href="{{ url_for('gameRooms' ) }}" class="button">Find room</a>
             </div>
         </section>
     </div>
@@ -22,7 +22,7 @@
         <div class="content">
             <h3>Want to be a GM?</h3>
             <p>Create the adventure that your friends will play!</p>
-            <a href="#" class="button">Create Room</a>
+            <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
         </div>
     </section>
 </main>

@@ -91,6 +91,10 @@ def get_class_data(json_file):
 def gameRooms():
     return render_template("rooms.html")
 
+@app.route("/roomCreation")
+def roomCreation():
+    return render_template("createRoom.html")
+
 
 if __name__ == "__main__":
     app.run("127.0.0.1", port=5000, debug=True)
