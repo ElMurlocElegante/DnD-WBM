@@ -8,13 +8,15 @@
     <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
     <header>
         <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo">
-        <h1>DnD - Web Battle Manager</h1>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('home' ) }}">Game Rooms</a></li>
-            <li><a href="{{ url_for('characters') }}">Characters</a></li>
-            <li><a href="{{ url_for('battle_manager') }}">Battle Manager</a></li>
-        </ul>
+        <nav class="navbar">
+            <h1>DnD - Web Battle Manager</h1>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('gameRooms' ) }}">Game Rooms</a></li>
+                <li><a href="{{ url_for('characters') }}">Characters</a></li>
+                <li><a href="{{ url_for('battle_manager') }}">Battle Manager</a></li>
+            </ul>
+        </nav>
     </header>
 </head>
 <body>

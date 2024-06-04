@@ -8,25 +8,37 @@ a:visited{
 
 /* Header Styling */
 header {
+    display: flex;
+    flex-direction: row;
     text-align: left;
     background-color: #8f8f8f;
     color: #fff;
-    padding: 20px;
+    padding: 10px 0 0 20px;
+    border-bottom: #9e0b0f solid;
 }
 
 header img {
-    float: left;
     width: 200px;
 }
 
-header h1 {
-    position: relative;
+.navbar {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.navbar h1 {
     font-style: oblique;
+    text-align: center;
     top: 18px;
     left: 10px;
 }
 
-header ul {
+.navbar ul {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     list-style-type: none;
     background-color: hsl(0, 0%, 25%);
     padding: 0px;
@@ -34,7 +46,11 @@ header ul {
     overflow: hidden;
 }
 
-header a {
+.navbar li {
+    width: 25%;
+}
+
+.navbar a {
     text-decoration: none;
     padding: 15px;
     display: block;
@@ -43,10 +59,7 @@ header a {
 
 header a:hover {
     background-color: hsl(0, 0%, 10%);
-}
-
-header li {
-    float: left;
+    color: #9e0b0f;
 }
 
 /* Main Container Styling */
@@ -71,6 +84,7 @@ main{
     justify-content: center;
     align-items: center;
     height: 100vh;
+    gap: 10px;
 }
 
 .base {
@@ -80,8 +94,8 @@ main{
     align-items: center;
     box-sizing: border-box;
     width: 100%;
-    height: 50%;
-
+    height: 45%;
+    gap: 10px;
 }
 
 .createCharacter, .findRoom {
@@ -89,8 +103,8 @@ main{
     box-sizing: border-box;
     width: 40%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: end;
 }
 
 .createCharacter {
@@ -106,27 +120,81 @@ main{
 }
 
 .createCharacter, .findRoom, .createRoom {
-    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.findRoom, .createRoom {
+    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
+    background-size: 120%;
+}
+
+.createCharacter {
+    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
+    background-size: 150%;
+}
+
+.createCharacter .content {
+    margin-bottom: 40px;
+    margin-left: 10px;
+}
+
+.findRoom .content {
+    margin-bottom: 300px;
+    margin-left: 10px;
+}
+
 
 .content {
     text-align: center;
 }
 
+.createCharacter:hover {
+    background-size: 160%;
+    background-position: center;
+}
+
+.findRoom:hover, .createRoom:hover {
+    background-size: 130%;
+    background-position: center;
+}
+
 .createRoom {
     box-sizing: border-box;
     width: 40%;
-    height: 50%;
+    height: 45%;
     background-color: black;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
+}
+
+.createRoom .content {
+    margin-bottom: 20px;
 }
 
 .createCharacter button, .findRoom button, .createRoom button {
     margin: auto;
+}
+
+.button {
+    height: 15px;
+    width: 150px;
+    display: inline-block;
+    padding: 15px 30px;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+button:hover {
+    background-color: #b71c1c;
 }
 
 /* Character List Styling */
@@ -224,6 +292,12 @@ main{
     max-width: 100%; 
     font-style: oblique;
     font-weight: bold;
+}
+
+/* rooms Styling */
+
+.rooms {
+    height: 100vh;
 }
 
 /* Footer Styling */
