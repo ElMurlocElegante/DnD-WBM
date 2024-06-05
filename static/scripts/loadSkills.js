@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     var classSelect = document.getElementById('class');
     var raceSelect = document.getElementById('race');
 
+    function fetchSkillNames() {
+        return fetch('../../data/skills.json')
+        .then(response => response.json())
+        .then(data => {
+            var skillNames = data.skill.map(skill => skill.name.toLowerCase());
+            return skillNames
+        })
+        .catch(error => console.error('Error fetching skills:', error));
+    }
     // Fetching y aplicacion de proficiencias
     function fetchBackgroundData (event) {
         
@@ -17,10 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 var backgroundData = data.background.find(function(bg) {
                     return bg.name === selectedBackground;
-                });
+                }).skillProficiencies[0];
 
                 if (backgroundData) {
-                    applyBackgroundProficiencies(['classSkills'], ['raceSkills'], backgroundData);   // Hay que hacer la logica para enviar la lista de skills seleccionadas para cada caso
+                    addProficiencies(backgroundData,'background');
                 } else {
                     console.log('Background no encontrado:', selectedBackground);
                 }
@@ -38,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
             .then(data => {
-                var classData = data;
+                var classData = data.class[0].startingProficiencies.skills[0];
                 if (classData) {
-                    applyClassProficiencies(['backgroundSkills'], ['raceSkills'], classData); // Hay que hacer la logica para enviar la lista de skills seleccionadas para cada caso
+                    addProficiencies(classData,'class');
                 } else {
                     console.log('Clase no encontrada o no tiene habilidades definidas:', selectedClass);
                 }
@@ -62,183 +71,151 @@ document.addEventListener('DOMContentLoaded', function() {
                 var raceData = data.race.find(function(rc) {
                     return rc.name === raceName && rc.source === raceSource;
                 });
-
+                console.log();
                 if (raceData) {
-                    applyRaceProficiencies(['backgroundSkills'], ['classSkills'], raceData); // Hay que hacer la logica para enviar la lista de skills seleccionadas para cada caso
+                    if(raceData.skillProficiencies){
+                        addProficiencies(raceData.skillProficiencies[0], 'race');
+                    } else {
+                        var skillContainer = document.getElementById('raceSkills');
+                        skillContainer.innerHTML = '';
+                        skillContainer = document.getElementById('raceRemainingSkills');
+                        skillContainer.innerHTML = ''
+                    }
+
                 } else {
                     console.log('Raza no encontrado:', selectedRace);
                 }
             })
-            .catch(error => console.error('Error fetching backgrounds:', error));
-    }
-    function checkMandatorySkills(skill, skillElement, mandatorySkills) {
-        console.log('Habilitando y marcando:', skill);
-        skillElement.disabled = true;
-        skillElement.checked = true;
-        mandatorySkills.push(skillElement);
-        return mandatorySkills
+            .catch(error => console.error('Error fetching raza:', error));
     }
 
-    function chooseSetSkills(skills, checkedSkills, mandatorySkills, nonMandatoryCheckedSkills, remainingSkills, data) {
+    function chooseSetSkills(data, skillContainer, type) {
         var maxSkills = data.choose.count || 1;
         var selectableSkills = data.choose.from;
-    
         console.log('Skills a Elegir:', maxSkills);
         console.log('Habilitando:', selectableSkills);
-    
-        selectableSkills.forEach(function(skillName) {
-            var skillElement = document.getElementById(skillName);
-            if (skillElement) {
-                skillElement.disabled = false;
-            }
-        });
+
         remainingSkills = maxSkills;
-    
-        document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+
+        document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
     
         // Manejar la selección de habilidades con el límite
-        skills.forEach(function(skill) {
-            // Clonar el nodo para eliminar los event listeners anteriores
-            var newSkill = skill.cloneNode(true);
-            skill.replaceWith(newSkill);
+        skillContainer.querySelectorAll('input[type="checkbox"]').forEach(function(skill) {
     
-            newSkill.addEventListener('change', function() {
-                checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
-                    return !mandatorySkills.includes(skill);
+            skill.addEventListener('change', function() {
+                checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
+                    return !skill.disabled;
                 });
-                console.log('Antes', nonMandatoryCheckedSkills.length, maxSkills);
-                if (nonMandatoryCheckedSkills.length > maxSkills) {
+                console.log('Antes', checkedSkills.length, maxSkills);
+                if (checkedSkills.length > maxSkills) {
                     console.log("Maximo Alcanzado");
                     this.checked = false;
-                    checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                    nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
-                        return !mandatorySkills.includes(skill);
+                    checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
+                        return !skill.disabled;
                     });
                 }
-                remainingSkills = maxSkills - nonMandatoryCheckedSkills.length;
-                console.log('Despues', nonMandatoryCheckedSkills.length, maxSkills);
-                document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+                remainingSkills = maxSkills - checkedSkills.length;
+                console.log('Despues', checkedSkills.length, maxSkills);
+                document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
             });
         });
-    
-        return remainingSkills;
     }
     
-    function chooseAnySkills(skills, checkedSkills, mandatorySkills, nonMandatoryCheckedSkills, remainingSkills, data) {
+    function chooseAnySkills(data, skillContainer, type) {
         var maxSkills = data.any
     
         console.log('Skills a Elegir:', maxSkills);
         console.log('Habilitando: Todas las Skills');
     
-        skills.forEach(function(skill) {
-            if (skill) {
-                skill.disabled = false;
-                console.log('B')
-            }
-        });
         remainingSkills = maxSkills;
-    
-        document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+
+        document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
     
         // Manejar la selección de habilidades con el límite
-        skills.forEach(function(skill) {
-            // Clonar el nodo para eliminar los event listeners anteriores
-            var newSkill = skill.cloneNode(true);
-            skill.replaceWith(newSkill);
+        skillContainer.querySelectorAll('input[type="checkbox"]').forEach(function(skill) {
     
-            newSkill.addEventListener('change', function() {
-                checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
-                    return !mandatorySkills.includes(skill);
+            skill.addEventListener('change', function() {
+                checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
+                    return !skill.disabled;
                 });
-                console.log('Antes', nonMandatoryCheckedSkills.length, maxSkills);
-                if (nonMandatoryCheckedSkills.length > maxSkills) {
+                console.log('Antes', checkedSkills.length, maxSkills);
+                if (checkedSkills.length > maxSkills) {
                     console.log("Maximo Alcanzado");
                     this.checked = false;
-                    checkedSkills = document.querySelectorAll('input[type="checkbox"]:checked');
-                    nonMandatoryCheckedSkills = Array.from(checkedSkills).filter(function(skill) {
-                        return !mandatorySkills.includes(skill);
+                    checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
+                        return !skill.disabled;
                     });
                 }
-                remainingSkills = maxSkills - nonMandatoryCheckedSkills.length;
-                console.log('Despues', nonMandatoryCheckedSkills.length, maxSkills);
-                document.getElementById('remainingSkills').textContent = `Puedes seleccionar ${remainingSkills} skills`;
+                remainingSkills = maxSkills - checkedSkills.length;
+                console.log('Despues', checkedSkills.length, maxSkills);
+                document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
             });
         });
-    
-        return remainingSkills;
     }
-    // Función para aplicar las proficiencias del background seleccionado
-    function applyBackgroundProficiencies(classSkills, raceSkills, backgroundData) {
 
-        var mandatorySkills = [];
-        var checkedBackgroundSkills = [];
-        var nonMandatoryCheckedSkills = [];
-        var remainingSkills = 0;
+    function createSkillCheckbox(skill, type) {
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = `${skill.toLowerCase()}-${type}`;
+        checkbox.id = `${skill.toLowerCase()}-${type}`;
+        checkbox.value = `${skill.toLowerCase()}-${type}`;
+    
+        var label = document.createElement('label');
+        label.htmlFor = `${skill.toLowerCase()}-${type}`;
+        label.textContent = `${skill}`;
+    
+        var container = document.createElement('div');
+        container.appendChild(checkbox);
+        container.appendChild(label);
+    
+        return container;
+    }
+    
+    function addProficiencies(dataSkills, type) {
+        switch (type) {
+            case 'background':
+                var id = 'backgroundSkills'
+                var textRemaining = 'backgroundRemainingSkills'
+                break;
+            case 'class':
+                var id = 'classSkills'
+                var textRemaining = 'classRemainingSkills'
+                break;
+            case 'race':
+                var id = 'raceSkills'
+                var textRemaining = 'raceRemainingSkills'
+                break;
 
-        console.log('Aplicando proficiencias del background:', backgroundData);
-
-        // Deshabilitar todas las habilidades y desmarcarlas
-        var skills = document.querySelectorAll('input[type="checkbox"]');
-        skills.forEach(function(skill) {
-            skill.disabled = true;
-            skill.checked = false;
-        });
-
-        // Habilitar y marcar las habilidades correspondientes al nuevo fondo seleccionado
-        if (backgroundData.skillProficiencies) {
-            Object.keys(backgroundData.skillProficiencies[0]).forEach(function(skill) {
-                var skillElement = document.getElementById(skill);
-
-                // Habilitar y marcar las habilidades obligatorias
-                if (skillElement && skill !== 'choose' && skill !== 'any') {
-                    mandatorySkills = checkMandatorySkills(skill, skillElement, mandatorySkills)
-                }
-
-                // Habilitar las habilidades que se pueden elegir
-                else if (skill === 'choose') {
-                    remainingSkills = chooseSetSkills(skills, checkedBackgroundSkills, mandatorySkills, 
-                                    nonMandatoryCheckedSkills, remainingSkills, backgroundData.skillProficiencies[0]);
-                } else if (skill === 'any') {
-                    // Todavia hay que hacer la logica si es que permite elegir cualquier skill
-                    remainingSkills = chooseAnySkills(skills, checkedBackgroundSkills, mandatorySkills,
-                                    nonMandatoryCheckedSkills, remainingSkills, backgroundData.skillProficiencies[0]);
-                }
-            });
         }
+        var skillContainer = document.getElementById(id);
+        skillContainer.innerHTML = '';
+        
+        Object.keys(dataSkills).forEach(function(element) {
+            if (element === 'choose') {
+                dataSkills.choose.from.forEach(function(skill) {
+                    var skillElement = createSkillCheckbox(skill,type);
+                    skillContainer.appendChild(skillElement);
+                    skillElement.disabled = false; // Enable for selection
+                });
+                chooseSetSkills(dataSkills, skillContainer, textRemaining);
+            } else if (element === 'any') {
+                fetchSkillNames().then(skillNames => {
+                    skillNames.forEach(function(skill) {
+                        var skillElement = createSkillCheckbox(skill,type);
+                        skillContainer.appendChild(skillElement);
+                        skillElement.disabled = false; // Enable for selection
+                    });
+                    chooseAnySkills(dataSkills, skillContainer, textRemaining)
 
-    }
-
-    
-    function applyClassProficiencies(backgroundSkills, racesSkills, classData) {
-        var classSkills = [];
-        var checkedClassSkills = [];
-        var remainingSkills = 0;
-    
-        console.log('Aplicando proficiencias de la clase:', classData);
-    
-        var skills = document.querySelectorAll('input[type="checkbox"]');
-        skills = Array.from(skills).filter(function(skill) {
-            return !backgroundSkills.includes(skill) && !racesSkills.includes(skill);
-        });
-    
-
-    }
-    
-    function applyRaceProficiencies(backgroundSkills, classSkills, raceData) {
-        var raceSkills = [];
-        var checkedRaceSkills = [];
-        var remainingSkills = 0;
-
-        console.log('Aplicando proficiencias de la raza:', raceData);
-    
-        var skills = document.querySelectorAll('input[type="checkbox"]');
-        skills = Array.from(skills).filter(function(skill) {
-            return !backgroundSkills.includes(skill) && !classSkills.includes(skill);
+                });
+            } else {
+                var skillElement = createSkillCheckbox(element,type);
+                skillContainer.appendChild(skillElement);
+                skillElement.querySelector('input').disabled = true; // Disable specific skills
+                skillElement.querySelector('input').checked = true; // Check specific skills
+            }
         });
     }
-
     // Ejecutar la función para aplicar las proficiencias cuando cambie la selección
     backgroundSelect.addEventListener('change', fetchBackgroundData);
     classSelect.addEventListener('change', fetchClassData);
@@ -248,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchBackgroundData(backgroundSelect);
     fetchClassData(classSelect);
     fetchRaceData(raceSelect);
+
 
 
 });

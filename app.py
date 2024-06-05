@@ -48,7 +48,7 @@ def characters():
     with open(skills_route, 'r') as json_file:
         skills_details = [{"name": skill['name']} for skill in json.load(json_file)['skill']]
 
-    return render_template("characters.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
+    return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
 @app.route("/characters/delete_character", methods=['DELETE'])
 def delete_character(character_name):
