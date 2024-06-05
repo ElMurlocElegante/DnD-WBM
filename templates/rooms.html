@@ -3,7 +3,14 @@
 {% block body %}
 <main>
     <section class="rooms">
-
+        {%for room in rooms %}
+        <article>
+            <h4 class="creator">{{room[0]}}</h4>
+            <h4 class="roomName">{{room[1]}}</h4>
+            <h4 class="playerIngame">{{room[2]}}/{{room[3]}}</h4>
+            <button class="btn-join">join</button>
+        </article>
+        {% endfor %}
     </section>
     <section class="roomCreation">
         <div class="content">
@@ -11,5 +18,18 @@
             <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
         </div>
     </section>
+    <dialog class="modal" id="modal">
+        <button class="closeBtn">&times;</button>
+        <div class="modalBody">
+            <form action="/joinRoom" method="POST" class="roomCreation">
+                <label for="name">Your name</label>
+                <input type="text" id="name" name="name" placeholder="your name" required>
+                <label for="code">Number of players</label>
+                <input type="text" id="code" name="code" placeholder="room code" required>
+                <button type="submit">join</button>
+            </form>
+        </div>
+    </dialog>
 </main>
+<script src="{{ url_for('static', filename='scripts/joinRoom.js') }}"></script>
 {% endblock %}
