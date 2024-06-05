@@ -1,60 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lanzador de Dados D&D</title>
-    <style>
-        /* Estilos para el cuadrado (puedes adaptarlos según tus necesidades) */
-        .contenedor {
-            height: 90vh; /* Establece la altura al 100% de la altura de la ventana */
-        }
-        .dice {
-            width: 100px;
-            height: 100px;
-            background-color: #b64848;
-            border: 2px solid #333;
-            border-radius: 10px;
-            position: relative;
-            transform-origin: center;
-            left: 50%;
-            top: 55%;
-            transform: translate(-50%, -50%) translateY(-50%);
-            animation: fadeIn 1s ease forwards; /* Animación de aparición */
-        }
-
-        /* Animación de rotación */
-        @keyframes roll {
-            0% {
-                transform: rotateX(0) rotateY(0);
-            }
-            100% {
-                transform: rotateX(360deg) rotateY(360deg);
-            }
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D Dice</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="contenedor">
-    <div class="dice" id="dice"></div>
+  <div class="container">
+    <div class="dice d6" id="dice">
+      <div class="face one"></div>
+      <div class="face two"></div>
+      <div class="face three"></div>
+      <div class="face four"></div>
+      <div class="face five"></div>
+      <div class="face six"></div>
     </div>
+    <button onclick="rollDice()">Roll Dice</button>
+  </div>
 
-    <script>
-        // Llama a la función para simular una tirada de d20
-        const resultado = tirarDado('d20');
-
-        // Actualiza el número en el dado
-        const dado = document.getElementById('dice');
-        dado.innerText = resultado;
-    </script>
+  <script>
+    function rollDice() {
+      const dice = document.getElementById('dice');
+      dice.classList.remove('roll');
+      void dice.offsetWidth;
+      dice.classList.add('roll');
+    }
+  </script>
 </body>
 </html>
