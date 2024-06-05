@@ -74,9 +74,8 @@
                 <div id="raceSkills"></div>
             </fieldset>
         </fieldset>        
-        <fieldset>
+        <fieldset id="allSkills">
             <legend>Proficiencies</legend>
-            <p id="remainingSkills"></p>
             {% for skill in skills %}
                 <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                 <label for="{{ skill.name|lower }}">{{ skill.name }}</label>

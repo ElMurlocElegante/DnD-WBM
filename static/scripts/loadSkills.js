@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var backgroundSelect = document.getElementById('background');
     var classSelect = document.getElementById('class');
     var raceSelect = document.getElementById('race');
+    document.getElementById('allSkills').querySelectorAll('input[type="checkbox"]').forEach(function(element) {
+        element.checked = false;
+        element.disabled = true;
+    })
+    
 
     function fetchSkillNames() {
         return fetch('../../data/skills.json')
@@ -71,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 var raceData = data.race.find(function(rc) {
                     return rc.name === raceName && rc.source === raceSource;
                 });
-                console.log();
                 if (raceData) {
                     if(raceData.skillProficiencies){
                         addProficiencies(raceData.skillProficiencies[0], 'race');
@@ -92,8 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function chooseSetSkills(data, skillContainer, type) {
         var maxSkills = data.choose.count || 1;
         var selectableSkills = data.choose.from;
-        console.log('Skills a Elegir:', maxSkills);
-        console.log('Habilitando:', selectableSkills);
 
         remainingSkills = maxSkills;
 
@@ -106,16 +108,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
                     return !skill.disabled;
                 });
-                console.log('Antes', checkedSkills.length, maxSkills);
                 if (checkedSkills.length > maxSkills) {
-                    console.log("Maximo Alcanzado");
                     this.checked = false;
                     checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
                         return !skill.disabled;
                     });
+                    checkSkills(this);
                 }
                 remainingSkills = maxSkills - checkedSkills.length;
-                console.log('Despues', checkedSkills.length, maxSkills);
                 document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
             });
         });
@@ -124,9 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function chooseAnySkills(data, skillContainer, type) {
         var maxSkills = data.any
     
-        console.log('Skills a Elegir:', maxSkills);
-        console.log('Habilitando: Todas las Skills');
-    
         remainingSkills = maxSkills;
 
         document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
@@ -138,19 +135,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
                     return !skill.disabled;
                 });
-                console.log('Antes', checkedSkills.length, maxSkills);
                 if (checkedSkills.length > maxSkills) {
-                    console.log("Maximo Alcanzado");
                     this.checked = false;
                     checkedSkills = Array.from(skillContainer.querySelectorAll('input[type="checkbox"]:checked')).filter(function(skill) {
                         return !skill.disabled;
                     });
                 }
                 remainingSkills = maxSkills - checkedSkills.length;
-                console.log('Despues', checkedSkills.length, maxSkills);
                 document.getElementById(`${type}`).textContent = `Puedes seleccionar ${remainingSkills} skills`;
             });
         });
+    }
+    function checkSkills(event) {
+        if (event.target === undefined){
+            var trigger = event.value;
+        } else {
+            var trigger = event.target.value
+        }
+        var allSkills = document.getElementById('allSkills').querySelectorAll('input[type="checkbox"]')
+        var backgroundSkills = Array.from(document.getElementById('backgroundSkills').querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        var classSkills = Array.from(document.getElementById('classSkills').querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        var raceSkills = Array.from(document.getElementById('raceSkills').querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        var checkedSkills = Array.from(new Set([...backgroundSkills, ...classSkills, ...raceSkills]));
+
+        allSkills.forEach(function(element) {
+            if (element.value === trigger) {
+                if (element.checked === false) {
+                    element.checked = true;
+                } else if (element.checked  === true && !checkedSkills.includes(element.value) ) {
+                    element.checked = false;
+                }
+
+
+            }
+
+        });
+
+
     }
 
     function createSkillCheckbox(skill, type) {
@@ -158,8 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.type = 'checkbox';
         checkbox.name = `${skill.toLowerCase()}-${type}`;
         checkbox.id = `${skill.toLowerCase()}-${type}`;
-        checkbox.value = `${skill.toLowerCase()}-${type}`;
-    
+        checkbox.value = `${skill.toLowerCase()}`;
+        checkbox.addEventListener('change', checkSkills);
+
         var label = document.createElement('label');
         label.htmlFor = `${skill.toLowerCase()}-${type}`;
         label.textContent = `${skill}`;
