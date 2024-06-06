@@ -36,11 +36,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function enableCheckbox(data, type) {
         const raceBonusCheckboxes = document.querySelectorAll('input[name="raceBonus"]');
-        var maxSkills = 0;
+        var maxSelect = 0;
     
         // Eliminar todos los event listeners existentes
         raceBonusCheckboxes.forEach(function(checkbox) {
-            checkbox.removeEventListener('change', checkboxChangeHandler);
+            checkbox.removeEventListener('change', checkboxChooseChangeHandler);
+            checkbox.removeEventListener('change', checkboxAnyChangeHandler);
         });
     
         Object.keys(data[0]).forEach(function(element) {
@@ -50,15 +51,15 @@ document.addEventListener('DOMContentLoaded', function(){
                 checkbox.checked = true;
             } else if (element === 'choose') {
                 // Obtener el recuento máximo de habilidades seleccionables
-                maxSkills = data[0].choose.count;
+                maxSelect = data[0].choose.count;
     
                 // Agregar event listener a cada checkbox
-                data[0]['choose']['from'].forEach(function(attribute) {
+                data[0].choose.from.forEach(function(attribute) {
                     var checkbox = document.querySelector(`input[id="raceBonus-${attribute}1"`);
                     checkbox.disabled = false;
                     checkbox.checked = false;
                     checkbox.addEventListener('change', function(event){
-                        checkboxChangeHandler(maxSkills,event);
+                        checkboxChooseChangeHandler(maxSelect,event);
                     });
                 });
             }
@@ -67,18 +68,51 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     
     // Actualizar el recuento máximo de habilidades
-    function checkboxChangeHandler(maxSkills, event) {
-        var checkedSkills = document.querySelectorAll('input[type="checkbox"][name="raceBonus"]:checked:not(:disabled)');
-        if (checkedSkills.length > maxSkills) {
+    function checkboxChooseChangeHandler(maxSelect, event) {
+        var checkedBoxes = document.querySelectorAll('input[type="checkbox"][name="raceBonus"]:checked:not(:disabled)');
+        if (checkedBoxes.length > maxSelect) {
             event.target.checked = false;
         }
         updateAllRowsTotalAndModifier();
     }
+    function checkboxAnyChangeHandler(maxSelect, event) {
+        var checkedBonus1 = document.querySelectorAll('input[type="checkbox"][name="raceBonus"][value="1"]:checked:not(:disabled)');
+        var checkedBonus2 = document.querySelectorAll('input[type="checkbox"][name="raceBonus"][value="2"]:checked:not(:disabled)');
+
+        // Verificar si hay más de una casilla de verificación seleccionada en la misma fila
+        if (event.target.checked) {
+            var rowDiv = event.target.parentElement.parentElement; // Obtener el div padre que contiene ambas casillas
+            var checkboxesInRow = rowDiv.querySelectorAll('input[type="checkbox"][name="raceBonus"]:checked');
+            
+            if (checkboxesInRow.length > 1) {
+                checkboxesInRow.forEach(function(cb) {
+                    if (cb !== event.target) {
+                        cb.checked = false; // Desmarcar la casilla de verificación que no fue seleccionada
+                    }
+                });
+            }
+        }
+        if (checkedBonus1.length > maxSelect) {
+            event.target.checked = false;
+        }
+        if (checkedBonus2.length > maxSelect || (event.target === checkedBonus1[0] && event.target.value === 1)) {
+            event.target.checked = false;
+        }
+        
+        updateAllRowsTotalAndModifier();
+    }
+
     function enableAllCheckbox() {
         const raceBonusCheckboxes = document.querySelectorAll('input[name="raceBonus"]');
         raceBonusCheckboxes.forEach(function(bonus) {
+            bonus.removeEventListener('change', checkboxChooseChangeHandler);
+            bonus.removeEventListener('change', checkboxAnyChangeHandler);
             bonus.disabled = false;
+            bonus.addEventListener('change', function(event){
+                checkboxAnyChangeHandler(1,event);
+            });
         })
+        
         updateAllRowsTotalAndModifier();
         
     }
