@@ -165,8 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (element.checked  === true && !checkedSkills.includes(element.value) ) {
                     element.checked = false;
                 }
-
-
             }
 
         });
@@ -235,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 skillContainer.appendChild(skillElement);
                 skillElement.querySelector('input').disabled = true; // Disable specific skills
                 skillElement.querySelector('input').checked = true; // Check specific skills
+                checkSkills(skillElement.querySelector('input'));
             }
         });
     }
