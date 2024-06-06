@@ -114,7 +114,7 @@ body {
 
 /* Form Container Styling */
 .form-container {
-    width: 35%;
+    width: 30%;
     background-color: rgb(47, 47, 47);
     padding: 20px;
     border-radius: 5px;
@@ -188,3 +188,79 @@ a {
     display: inline-block;
     border: 2px solid #ffffff;
 }
+
+/* ATRIBUTOS */
+#attributes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.header-row span {
+    width: 60px;
+    text-align: center;
+}
+
+.race-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.race-header > div {
+    display: flex;
+    align-items: center;
+}
+
+.race-header span {
+    width: 60px;
+    text-align: center;
+}
+
+.attribute-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.attribute-row label {
+    width: 60px;
+    text-align: right;
+}
+
+.attribute-row input[type="number"],
+.attribute-row input[type="text"] {
+    width: 50px;
+    text-align: center;
+}
+
+.attribute-row input[type="checkbox"] {
+    margin: 0 5px;
+}
+
+.attribute-row div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    text-align: center;
+}
+
+.mod-input {
+    background-color: #9f9f9f;
+}
+
+.total-input {
+    background-color: #9f9f9f;
+}
+

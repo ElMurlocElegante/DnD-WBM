@@ -31,10 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 var backgroundData = data.background.find(function(bg) {
                     return bg.name === selectedBackground;
-                }).skillProficiencies[0];
+                });
 
                 if (backgroundData) {
-                    addProficiencies(backgroundData,'background');
+                    // Verificar si existe una copia
+                    if (backgroundData._copy) {
+                        // Reemplazar backgroundData con los datos de la copia
+                        var copyData = data.background.find(function (bg) {
+                            return bg.name === backgroundData._copy.name && bg.source === backgroundData._copy.source;
+                        });
+                        if (copyData) {
+                            backgroundData = copyData;
+                        }
+                    }
+                    // Aquí puedes procesar backgroundData como desees
+                    addProficiencies(backgroundData.skillProficiencies[0], 'background');
                 } else {
                     console.log('Background no encontrado:', selectedBackground);
                 }
@@ -68,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             var selectedRace = event.target.value;
         }
-        var [raceName, raceSource] = selectedRace.split('-');
+        var [raceName, raceSource] = selectedRace.split('|');
 
         fetch('../../data/races.json')
             .then(response => response.json())
