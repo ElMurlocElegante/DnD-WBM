@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
 
     // Puntos iniciales disponibles
-    let availablePoints = 27;
+    var availablePoints = 27;
 
 
     function fetchRaceData (event) {
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     // Agregar evento de escucha a los inputs de los atributos
-    const attributeInputs = document.querySelectorAll('input[type="number"]');
+    const attributeInputs = document.querySelectorAll('.attribute-row input[type="number"]');
     attributeInputs.forEach(input => {
         input.value = 8;
         input.addEventListener('input', () => handleAttributeChange(input));

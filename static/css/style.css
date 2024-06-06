@@ -238,7 +238,7 @@ a {
     text-align: right;
 }
 
-.attribute-row input[type="number"],
+ input[type="number"],
 .attribute-row input[type="text"] {
     width: 50px;
     text-align: center;
