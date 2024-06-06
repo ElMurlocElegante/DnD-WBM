@@ -12,11 +12,6 @@ from string import ascii_uppercase
 app = Flask(__name__)
 engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
 app.config['SECRET_KEY'] = 'SECRET'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'gamerooms'
-mysql = MySQL(app) 
 socketio = SocketIO(app)
 '''
 ///IMPORTANTE///
@@ -26,14 +21,23 @@ puerto: 3307
 '''
 
 def codeGenerator(lenght):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT code FROM rooms ')
-    rooms = [row[0] for row in cur.fetchall()]
+
+    try:
+        conn = engine.connect()
+        query = "SELECT code FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    codes = []
+    for row in result:
+        codes.append(row.code)
+
     while True:
         code = ""
         for _ in range(lenght):
             code += random.choice(ascii_uppercase)
-        if code not in rooms:
+        if code not in codes:
             break
     return code
 
@@ -114,9 +118,23 @@ def get_class_data(json_file):
     
 @app.route("/gameRooms")
 def gameRooms():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT room_creator, room_name, ingame, maxplayers FROM rooms ')
-    rooms = cur.fetchall()
+
+    try:
+        conn = engine.connect()
+        query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    rooms = []
+    for row in result:
+        room = {}
+        room["room_creator"] = row.room_creator
+        room["room_name"] = row.room_name
+        room["ingame"] = row.ingame
+        room["maxplayers"] = row.maxplayers
+        rooms.append(room)
+
     return render_template("rooms.html", rooms = rooms)
 
 @app.route("/joinRoom", methods=['POST'])
@@ -136,9 +154,17 @@ def roomCreation():
 @app.route("/room")
 def room():
     room = session.get("room")
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT code FROM rooms ')
-    rooms = [row[0] for row in cur.fetchall()]
+    try:
+        conn = engine.connect()
+        query = "SELECT code FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for('home'))
     return render_template("room.html")
@@ -150,9 +176,23 @@ def roomCreated():
         creatorName = request.form['creatorName']
         maxPlayers = request.form['maxPlayers']
         code = codeGenerator(4)
-        cur = mysql.connection.cursor()
-        cur.execute('INSERT INTO rooms (room_creator, room_name, ingame, maxplayers, code) VALUES (%s, %s, %s, %s, %s)', (creatorName, roomName, 0, maxPlayers, code))
-        mysql.connection.commit()
+
+        try:
+            conn = engine.connect()
+            query = text("""INSERT INTO rooms (room_creator, room_name, ingame, maxplayers, code)
+                            VALUES (:creatorName, :roomName, :ingame, :maxPlayers, :code)""")
+            conn.execute(query, {
+                'creatorName': creatorName,
+                'roomName': roomName,
+                'ingame': 0,
+                'maxPlayers': maxPlayers,
+                'code': code
+            })
+            conn.commit()
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+
         session["room"] = code
         session["name"] = creatorName
         return redirect(url_for('room'))
@@ -161,9 +201,18 @@ def roomCreated():
 def connect(auth):
     room = session.get("room")
     name = session.get("name")
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT code FROM rooms ')
-    rooms = [row[0] for row in cur.fetchall()]
+
+    try:
+        conn = engine.connect()
+        query = "SELECT code FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+
     if not room or not name:
         return
     if room not in rooms:
@@ -171,29 +220,66 @@ def connect(auth):
         return
     join_room(room)
     send({"name": name, "message": "has entered the room"}, to=room)
-    cur.execute(f"UPDATE rooms SET ingame = ingame + 1 WHERE code = '{room}'")
-    mysql.connection.commit()
+
+    try:
+        conn = engine.connect()
+        query = f"UPDATE rooms SET ingame = ingame + 1 WHERE code = '{room}';"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+
     print(f"{name} joined room {room}")
 
 @socketio.on("disconnect")
 def disconnect():
     room = session.get("room")
     name = session.get("name")
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT code FROM rooms ')
-    rooms = [row[0] for row in cur.fetchall()]
+
+    try:
+        conn = engine.connect()
+        query = "SELECT code FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+
     leave_room(room)
     if room in rooms:
-        cur = mysql.connection.cursor()
-        cur.execute(f"UPDATE rooms SET ingame = ingame - 1 WHERE code = '{room}'")
-        mysql.connection.commit()
-        cur = mysql.connection.cursor()
-        cur.execute(f"SELECT ingame FROM rooms WHERE code = '{room}'")
-        ingame = [row[0] for row in cur.fetchall()]
-        if ingame[0] <= 0:
-            cur = mysql.connection.cursor()
-            cur.execute(f"DELETE FROM rooms WHERE code = '{room}'")
-            mysql.connection.commit()
+
+        try:
+            conn = engine.connect()
+            query = f"UPDATE rooms SET ingame = ingame - 1 WHERE code = '{room}';"
+            result = conn.execute(text(query))
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+
+        
+        try:
+            conn = engine.connect()
+            query = f"SELECT ingame FROM rooms WHERE code = '{room}';"
+            result = conn.execute(text(query))
+            print(result)
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+        ingame = result["ingame"]
+
+        if ingame <= 0:
+
+            try:
+                conn = engine.connect()
+                query = f"""DELETE FROM rooms WHERE code = {room};"""
+                result = conn.execute(text(query))
+                conn.commit()
+                conn.close()
+            except SQLAlchemyError as err:
+                jsonify(str(err.__cause__))
+
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} left room {room}")
