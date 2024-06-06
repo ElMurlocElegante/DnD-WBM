@@ -1,92 +1,144 @@
-from flask import Flask, jsonify, request, render_template, url_for, redirect
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
-import os
-import json
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
+from sqlalchemy import exc
 
 app = Flask(__name__)
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM") 
-'''
-///IMPORTANTE///
-nombre DB: DnD-WBM
-puerto: 3307 
-///IMPORTANTE///
-'''
-@app.route("/")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3307/DnD-WBM'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '123456'
+
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+class User(UserMixin, db.Model):
+    __tablename__ = 'users' 
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
+class ModelUser:
+    @staticmethod
+    def get_by_id(user_id):
+        return User.query.get(user_id)
+
+    @staticmethod
+    def get_by_username(username):
+        return User.query.filter_by(username=username).first()
+
+    @staticmethod
+    def login(user):
+        found_user = ModelUser.get_by_username(user.username)
+        if found_user and found_user.password == user.password:
+            return found_user
+        return None
+
+@login_manager.user_loader
+def load_user(user_id):
+    return ModelUser.get_by_id(user_id)
+
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User(username=username, password=password)
+        logged_user = ModelUser.login(user)
+        if logged_user:
+            login_user(logged_user)
+            return redirect(url_for('home'))
+        else:
+            flash('Usuario o contraseña incorrectos')
+    return render_template('auth/login.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route('/home')
+@login_required
 def home():
-    return render_template("home.html")
+    return render_template('home.html')
 
-@app.route("/characters", methods=['GET'])
-def characters():
-    index_route = os.path.join(app.root_path, 'data', 'class', 'index.json')
-    races_route = os.path.join(app.root_path, 'data', 'races.json')
-    backgrounds_route = os.path.join(app.root_path, 'data', 'backgrounds.json')
-    skills_route = os.path.join(app.root_path, 'data', 'skills.json')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
 
-    if not os.path.exists(index_route):
-        return jsonify({"error": "File Not Found, class index"}), 404
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+        if existing_user:
+            flash('El nombre de usuario o el correo electrónico ya están en uso')
+            return redirect(url_for('register'))
 
-    if not os.path.exists(races_route):
-        return jsonify({"error": "File Not Found, races"}), 404
-    
-    if not os.path.exists(backgrounds_route):
-        return jsonify({"error": "File Not Found, backgrounds"})
-    
-    if not os.path.exists(skills_route):
-        return jsonify({"error": "File Not Found, skills"})
-    
-    with open(index_route, 'r') as json_file:
-        classes = json.load(json_file)
-
-    with open(races_route, 'r') as json_file:
-        race_details = [{"name": race['name'], "source": race['source']} for race in json.load(json_file)['race']]
-    
-    with open(backgrounds_route, 'r') as json_file:
-        background_details = [{"name": background['name']} for background in json.load(json_file)['background']]
-
-    with open(skills_route, 'r') as json_file:
-        skills_details = [{"name": skill['name']} for skill in json.load(json_file)['skill']]
-
-    return render_template("characters.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
-
-@app.route("/characters/delete_character", methods=['DELETE'])
-def delete_character(character_name):
-    return redirect(url_for('characters'))
-
-@app.route("/characters/add_character", methods=['POST'])
-def add_character(character_name):
-    return redirect(url_for('characters'))
-
-@app.route("/battle_manager")
-def battle_manager():
-    return render_template("battle_manager.html")
-
-@app.route("/github")
-def github():
-    return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
-
-@app.route("/data/backgrounds.json")
-def get_backgrounds():
-    try:
-        with open('data/backgrounds.json','r') as json_file:
-            return jsonify(json.load(json_file))
-    except FileNotFoundError:
-        return jsonify({"error": "Backgrounds file not found"})
-    
-
-@app.route("/data/class/<json_file>")
-def get_class_data(json_file):
-    file_path = f"data/class/{json_file}"
-    if os.path.exists(file_path):
+        new_user = User(username=username, email=email, password=password)
         try:
-            with open(file_path, 'r') as file:
-                return jsonify(json.load(file))
-        except FileNotFoundError:
-            return jsonify({"error": f"{json_file} file not found"})
-    else:
-        return jsonify({"error": f"{json_file} not found"})
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Usuario registrado correctamente')
+            return redirect(url_for('login'))
+        except exc.SQLAlchemyError as err:
+            flash('Error al registrar usuario: ' + str(err.__cause__))
+    return render_template('auth/register.html')
 
+@app.route('/users', methods=['GET'])
+def users():
+    users = User.query.all()
+    data = [{'id': u.id, 'username': u.username, 'email': u.email} for u in users]
+    return jsonify(data), 200
 
-if __name__ == "__main__":
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    new_user = request.get_json()
+    user = User(username=new_user['username'], email=new_user['email'], password=new_user['password'])
+    try:
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({'message': 'Usuario creado correctamente'}), 201
+    except exc.SQLAlchemyError as err:
+        return jsonify({'message': 'Error al crear usuario: ' + str(err.__cause__)})
+
+@app.route('/users/<id>', methods=['PATCH'])
+def update_user(id):
+    mod_user = request.get_json()
+    user = User.query.get(id)
+    if user:
+        user.username = mod_user.get('username', user.username)
+        user.email = mod_user.get('email', user.email)
+        try:
+            db.session.commit()
+            return jsonify({'message': 'Usuario actualizado correctamente'}), 200
+        except exc.SQLAlchemyError as err:
+            return jsonify({'message': 'Error al actualizar usuario: ' + str(err.__cause__)})
+    return jsonify({'message': 'Usuario no encontrado'}), 404
+
+@app.route('/users/<id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get(id)
+    if user:
+        data = {'id': user.id, 'username': user.username, 'email': user.email}
+        return jsonify(data), 200
+    return jsonify({'message': 'Usuario no encontrado'}), 404
+
+@app.route('/users/<id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+    if user:
+        try:
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({'message': 'Usuario eliminado correctamente'}), 202
+        except exc.SQLAlchemyError as err:
+            return jsonify({'message': 'Error al eliminar usuario: ' + str(err.__cause__)})
+    return jsonify({'message': 'Usuario no encontrado'}), 404
+
+if __name__ == '__main__':
     app.run("127.0.0.1", port=5000, debug=True)

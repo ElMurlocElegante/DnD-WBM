@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
-    <header>
-        <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo">
-        <h1>DnD-WBM</h1>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('characters') }}">Characters</a></li>
-            <li><a href="{{ url_for('battle_manager') }}">Battle Manager</a></li>
-        </ul>
-    </header>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/flask.svg') }}">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    {% block customCSS %}
+    {% endblock %}
 </head>
-<body>
 
-    {% block body %} {% endblock %}
-    <footer>    
-        <h5>Contactanos en:</h5>
-        <ul>
-            <li><a href="{{ url_for('github')}}">Github</a></li>
-            <li>Mail: lcelano@fi.uba.ar</li>
-        </ul>
-    </footer>
+<body class="text-center">
+    {% block body %}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
