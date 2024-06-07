@@ -55,7 +55,30 @@ def delete_character(character_name):
     return redirect(url_for('characters'))
 
 @app.route("/characters/add_character", methods=['POST'])
-def add_character(character_name):
+def add_character():
+    conn = engine.connect()
+    new_character = request.get_json()
+    try:
+        character_name = request.form.get('character_name')
+        class_name = request.form.get('class')
+        xp = request.form.get('xp')
+        hp = request.form.get('hp')
+        alignment = request.form.get('alignment')
+        background = request.form.get('background')
+        race = request.form.get('race')
+        ac = request.form.get('ac')
+        strength = request.form.get('strength')
+        dexterity = request.form.get('dexterity')
+        constitution = request.form.get('constitution')
+        intelligence = request.form.get('intelligence')
+        wisdom = request.form.get('wisdom')
+        charisma = request.form.get('charisma')
+        personality_traits = request.form.get('personality_traits')
+        ideals = request.form.get('ideals')
+        bonds = request.form.get('bonds')
+        flaws = request.form.get('flaws')
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
     return redirect(url_for('characters'))
 
 @app.route("/battle_manager")

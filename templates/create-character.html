@@ -7,7 +7,7 @@
     <!-- Formulario para agregar nuevos personajes -->
     <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
-        <input type="text" id="character_name" name="character_name"><br>
+        <input type="text" id="character_name" name="character_name" required><br>
         <label for="class">Class</label>
         <select name="class" id="class">
             {% for class_name in classes %}
@@ -15,9 +15,9 @@
             {% endfor %}
         </select> <br>
         <label for="xp">XP</label> <br>
-        <input type="number" name="xp" id="xp"> <br>
+        <input type="number" name="xp" id="xp" required> <br>
         <label for="hp">Hit Points</label> <br>
-        <input type="number" name="hp" id="hp"> <br>
+        <input type="number" name="hp" id="hp" required> <br>
         <label for="alignment">Alignment</label>
         <select name="alignment" id="alignment">
             <option value="Lawful Good">Lawful Good</option>
