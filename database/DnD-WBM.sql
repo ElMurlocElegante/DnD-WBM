@@ -53,6 +53,18 @@ CREATE TABLE `users` (
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Estructura de tabla para la tabla `rooms`
+
+CREATE TABLE `rooms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_creator` varchar(20) NOT NULL,
+  `room_name` varchar(20) NOT NULL,
+  `ingame` int(11) NOT NULL,
+  `maxplayers` int(11) NOT NULL,
+  `code` varchar(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
