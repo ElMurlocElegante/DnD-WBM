@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block body %}
+<main>
+    <section class="messageBox">
+        <h2>Chat room: {{code}}</h2>
+        <article class="messages" id="messages"></article>
+        <div class="inputs" onkeypress="handleKeyPress(event)">
+            <input type="text" rows="3" placeholder="message" name="message" id="message">
+            <button type="button" name="send" id="sendBtn" onclick="sendMessage()">send</button>
+        </div>
+    </section>
+</main>
+<script type="text/javascript">
+    var socketio = io();
+
+    const messages = document.getElementById("messages")
+
+    const createMessage = (name, msg) => {
+        const content = `
+        <div class="text">
+            <span>
+                <strong>${name}</strong>: ${msg}
+            </span>
+        </div>
+        `
+        messages.innerHTML += content;
+    }
+
+    socketio.on("message", (data) => {
+        createMessage(data.name, data.message);
+    })
+
+    const sendMessage = () => {
+        const msg = document.getElementById("message")
+        if(msg.value == "") return;
+        socketio.emit("message", {data: msg.value})
+        msg.value = "";
+    };
+
+    function handleKeyPress(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    }
+</script>
+{% endblock %}
