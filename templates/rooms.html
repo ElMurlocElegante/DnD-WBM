@@ -5,9 +5,9 @@
     <section class="rooms">
         {%for room in rooms %}
         <article>
-            <h4 class="creator">{{room[0]}}</h4>
-            <h4 class="roomName">{{room[1]}}</h4>
-            <h4 class="playerIngame">{{room[2]}}/{{room[3]}}</h4>
+            <h4 class="creator">{{room["room_creator"]}}</h4>
+            <h4 class="roomName">{{room["room_name"]}}</h4>
+            <h4 class="playerIngame">{{room["ingame"]}}/{{room["maxplayers"]}}</h4>
             <button class="btn-join">join</button>
         </article>
         {% endfor %}
