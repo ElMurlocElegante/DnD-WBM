@@ -4,11 +4,13 @@
 <main>
     <section class="rooms">
         {%for room in rooms %}
-        <article>
-            <h4 class="creator">{{room["room_creator"]}}</h4>
-            <h4 class="roomName">{{room["room_name"]}}</h4>
-            <h4 class="playerIngame">{{room["ingame"]}}/{{room["maxplayers"]}}</h4>
-            <button class="btn-join">join</button>
+        <article class="room-container">
+            <h4 class="room-item">{{room["room_creator"]}}</h4>
+            <h4 class="room-item">{{room["room_name"]}}</h4>
+            <h4 class="room-item">{{room["ingame"]}}/{{room["maxplayers"]}}</h4>
+            <div class="button-container room-item">
+                <button class="btn-join">join</button>
+            </div>
         </article>
         {% endfor %}
     </section>
@@ -19,14 +21,18 @@
         </div>
     </section>
     <dialog class="modal" id="modal">
-        <button class="closeBtn">&times;</button>
+        <div class="modalHeader">
+            <button class="closeBtn">&times;</button>
+        </div>
         <div class="modalBody">
-            <form action="/joinRoom" method="POST" class="roomCreation">
+            <form action="/joinRoom" method="POST" class="roomJoining">
                 <label for="name">Your name</label>
                 <input type="text" id="name" name="name" placeholder="your name" required>
                 <label for="code">Number of players</label>
                 <input type="text" id="code" name="code" placeholder="room code" required>
-                <button type="submit">join</button>
+                <div class="joinBtn">
+                    <button type="submit" class="btn-join">join</button>
+                </div>
             </form>
         </div>
     </dialog>

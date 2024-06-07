@@ -167,7 +167,7 @@ def room():
 
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for('home'))
-    return render_template("room.html")
+    return render_template("room.html", code=room)
 
 @app.route("/roomCreated", methods=['POST'])
 def roomCreated():
@@ -286,7 +286,29 @@ def disconnect():
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} left room {room}")
-        
+
+@socketio.on("message")
+def message(data):
+    room = session.get("room")
+    try:
+        conn = engine.connect()
+        query = "SELECT code FROM rooms;"
+        result = conn.execute(text(query))
+        conn.close()
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+    if room not in rooms:
+        return
+    content = {
+        "name": session.get("name"),
+        "message": data["data"]
+    }
+    send(content, to=room)
+    print(f"{session.get('name')} said: {data['data']}")
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
