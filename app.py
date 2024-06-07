@@ -77,14 +77,37 @@ def characters():
     with open(skills_route, 'r') as json_file:
         skills_details = [{"name": skill['name']} for skill in json.load(json_file)['skill']]
 
-    return render_template("characters.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
+    return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
 @app.route("/characters/delete_character", methods=['DELETE'])
 def delete_character(character_name):
     return redirect(url_for('characters'))
 
 @app.route("/characters/add_character", methods=['POST'])
-def add_character(character_name):
+def add_character():
+    conn = engine.connect()
+    new_character = request.get_json()
+    try:
+        character_name = request.form.get('character_name')
+        class_name = request.form.get('class')
+        xp = request.form.get('xp')
+        hp = request.form.get('hp')
+        alignment = request.form.get('alignment')
+        background = request.form.get('background')
+        race = request.form.get('race')
+        ac = request.form.get('ac')
+        strength = request.form.get('strength')
+        dexterity = request.form.get('dexterity')
+        constitution = request.form.get('constitution')
+        intelligence = request.form.get('intelligence')
+        wisdom = request.form.get('wisdom')
+        charisma = request.form.get('charisma')
+        personality_traits = request.form.get('personality_traits')
+        ideals = request.form.get('ideals')
+        bonds = request.form.get('bonds')
+        flaws = request.form.get('flaws')
+    except SQLAlchemyError as err:
+        return jsonify(str(err.__cause__))
     return redirect(url_for('characters'))
 
 @app.route("/battle_manager")
@@ -95,14 +118,17 @@ def battle_manager():
 def github():
     return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
 
-@app.route("/data/backgrounds.json")
-def get_backgrounds():
-    try:
-        with open('data/backgrounds.json','r') as json_file:
-            return jsonify(json.load(json_file))
-    except FileNotFoundError:
-        return jsonify({"error": "Backgrounds file not found"})
-    
+@app.route("/data/<json_file>")
+def get_data(json_file):
+    file_path = f"data/{json_file}"
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, 'r') as file:
+                return jsonify(json.load(file))
+        except FileNotFoundError:
+            return jsonify({"error": f"{json_file} file not found"})
+    else:
+        return jsonify({"error": f"{json_file} not found"})
 
 @app.route("/data/class/<json_file>")
 def get_class_data(json_file):
