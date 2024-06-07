@@ -223,8 +223,9 @@ def connect(auth):
 
     try:
         conn = engine.connect()
-        query = f"UPDATE rooms SET ingame = ingame + 1 WHERE code = '{room}';"
-        result = conn.execute(text(query))
+        query = text("UPDATE rooms SET ingame = ingame + 1 WHERE code = '"+ room +"';")
+        result = conn.execute(query, {'code': room})
+        conn.commit()
         conn.close()
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
@@ -254,6 +255,7 @@ def disconnect():
             conn = engine.connect()
             query = f"UPDATE rooms SET ingame = ingame - 1 WHERE code = '{room}';"
             result = conn.execute(text(query))
+            conn.commit()
             conn.close()
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
@@ -261,19 +263,20 @@ def disconnect():
         
         try:
             conn = engine.connect()
-            query = f"SELECT ingame FROM rooms WHERE code = '{room}';"
+            query = "SELECT ingame FROM rooms WHERE code = '"+ room +"';" 
             result = conn.execute(text(query))
-            print(result)
             conn.close()
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
-        ingame = result["ingame"]
+        
+        for row in result:
+            ingame = row.ingame
 
         if ingame <= 0:
 
             try:
                 conn = engine.connect()
-                query = f"""DELETE FROM rooms WHERE code = {room};"""
+                query = f"""DELETE FROM rooms WHERE code = '{room}';"""
                 result = conn.execute(text(query))
                 conn.commit()
                 conn.close()
