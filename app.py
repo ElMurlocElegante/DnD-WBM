@@ -110,13 +110,17 @@ def add_character():
         return jsonify(str(err.__cause__))
     return redirect(url_for('characters'))
 
-@app.route("/battle_manager")
-def battle_manager():
-    return render_template("battle_manager.html")
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/github")
-def github():
+def github_redirect():
     return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
+
+@app.route("/socketio")
+def socketio_redirect():
+    return redirect("https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js")
 
 @app.route("/data/<json_file>")
 def get_data(json_file):
