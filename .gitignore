@@ -1,0 +1,2 @@
+# Ignore __pycache__, carpeta con archivos residuales
+__pycache__/
