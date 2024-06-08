@@ -40,7 +40,6 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        
         query = "SELECT * FROM users WHERE email = :email;"
         conn = engine.connect()
         try:
@@ -49,7 +48,11 @@ def register():
                 flash('El correo ya está en uso', 'danger')
                 conn.close()
                 return render_template('auth/register.html')
-            
+            result_username = conn.execute(text(query_username), {"username": username}).fetchone()
+            if result_username:
+                flash('El nombre de usuario ya está en uso', 'danger')
+                conn.close()
+                return render_template('auth/register.html')
             query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
             conn.execute(text(query), {"username": username, "email": email, "password": password})
             conn.commit()
