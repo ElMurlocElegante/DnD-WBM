@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-06-2024 a las 05:22:09
+-- Tiempo de generación: 08-06-2024 a las 23:49:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -69,12 +69,14 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 (1, 'DMatias', 'dejeanmatias@gmail.com', '314159'),
-(2, 'martinam', '', 'martina'),
 (3, 'manolo', 'mdejean@fi.uba.ar', '123456'),
-(6, 'juan', 'dejean@AA', '123456'),
 (7, 'mateo', 'matiasdejeangonzalez@gmail.com', '123456'),
 (8, 'diego', 'd2g6cnba@gmail.com', '123qwe'),
-(9, 'tobias', 'jdsahjas@gmail.com', '123456');
+(9, 'tobias', 'jdsahjas@gmail.com', '123456'),
+(10, 'pepito', 'pepito@gmail.com', 'qwerty'),
+(11, 'nicolas', 'nicogamer@gmail.com', '123456'),
+(12, 'martin', 'martin@gmail.com', 'qwerty'),
+(13, 'masdmlad', 'wddwdw@gmasda', 'adsda');
 
 --
 -- Índices para tablas volcadas
@@ -106,7 +108,7 @@ ALTER TABLE `characters`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

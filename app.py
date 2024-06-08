@@ -40,8 +40,7 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-
-        # Verificar si el correo ya existe en la base de datos
+        
         query = "SELECT * FROM users WHERE email = :email;"
         conn = engine.connect()
         try:
@@ -50,8 +49,7 @@ def register():
                 flash('El correo ya está en uso', 'danger')
                 conn.close()
                 return render_template('auth/register.html')
-
-            # Insertar el nuevo usuario en la base de datos
+            
             query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
             conn.execute(text(query), {"username": username, "email": email, "password": password})
             conn.commit()
@@ -78,7 +76,20 @@ def logout():
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
-    """logica para eliminar un usuario"""
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = engine.connect()
+    query = f"DELETE FROM users WHERE id = {user_id};"
+    try:
+        conn.execute(text(query))
+        conn.commit()
+        conn.close()
+        session.clear()
+        flash('Cuenta eliminada correctamente', 'success')
+    except SQLAlchemyError as err:
+        flash(f"Error: {str(err.__cause__)}", 'danger')
     return redirect(url_for('login'))
 
 
