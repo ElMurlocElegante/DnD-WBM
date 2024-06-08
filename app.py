@@ -1,43 +1,11 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
-from sqlalchemy import exc
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3307/DnD-WBM'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = '123456'
-
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-
-class User(UserMixin, db.Model):
-    __tablename__ = 'users' 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-
-class ModelUser:
-    @staticmethod
-    def get_by_id(user_id):
-        return User.query.get(user_id)
-
-    @staticmethod
-    def get_by_username(username):
-        return User.query.filter_by(username=username).first()
-
-    @staticmethod
-    def login(user):
-        found_user = ModelUser.get_by_username(user.username)
-        if found_user and found_user.password == user.password:
-            return found_user
-        return None
-
-@login_manager.user_loader
-def load_user(user_id):
-    return ModelUser.get_by_id(user_id)
+app.secret_key = 'qwerty'  # Necesario para usar flash mensajes y sesiones
+engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
 
 @app.route('/')
 def index():
@@ -48,15 +16,27 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User(username=username, password=password)
-        logged_user = ModelUser.login(user)
-        if logged_user:
-            login_user(logged_user)
+
+        # Verificar si el usuario existe en la base de datos
+        query = "SELECT * FROM users WHERE username = :username AND password = :password;"
+        conn = engine.connect()
+        try:
+            result = conn.execute(text(query), {"username": username, "password": password}).fetchone()
+            conn.close()
+        except SQLAlchemyError as err:
+            flash(f"Error: {str(err.__cause__)}", 'danger')
+            return render_template('auth/login.html')
+
+        if result:
+            session['user_id'] = result.id  # Guardar el id del usuario en la sesión
+            session['username'] = result.username  # Guardar el username del usuario en la sesión
             return redirect(url_for('home'))
         else:
-            flash('Usuario o contraseña incorrectos')
-    return render_template('auth/login.html')
-
+            flash('Usuario o contraseña incorrecta', 'danger')
+            return render_template('auth/login.html')
+    else:
+        return render_template('auth/login.html')
+    
 @app.route('/logout')
 def logout():
     logout_user()
