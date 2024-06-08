@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block body %}
+
+<div class="main-content">
+    <div class="character-list">
+        <h1>Character List</h1>
+        {% for character in data %}
+        <div class="pc">
+            <ul>
+                {% for key, value in character.items() %}
+                <li><span class="key">{{ key }}:</span> <span class="value">{{ value }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    <form method="DELETE" action="{{ url_for('delete_character') }}">
+        <label for="character_name">Select Character to Delete:</label><br>
+        <select name="character_name" id="character_name">
+            {% for character in data %}
+                 <option value="{{ character.name}}">{{ character.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Delete Character">
+    </form>
+</div>
+
+
+{% endblock %}

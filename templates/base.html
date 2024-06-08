@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
+    <script src="{{ url_for('socketio_redirect')}}" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo">
+        <nav class="navbar">
+            <h1>DnD - Web Battle Manager</h1>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('gameRooms' ) }}">Game Rooms</a></li>
+                <li><a href="{{ url_for('characters') }}">Characters</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% block body %} {% endblock %}
+    <footer class="footer">    
+        <div class="footer-content container">
+            <div  class="contenedor-de-redes">
+                <div class="redes">
+                    <h3>Redes</h3>
+                    <div id="contenedor-redes">
+                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
+                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
+                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
+                        <a class="enlace" href="{{url_for('github_redirect') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                    </div>
+                </div>
+                <a href="#"><h3>Dejanos tu opinion</h3></a>
+            </div>
+            <div class="creditos">
+                <h3>proyecto IDS creado 1C 2024 ©</h3>
+                <p>por William Ramirez, Luciano Celano [ingresen sus nombres]</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
