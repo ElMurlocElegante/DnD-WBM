@@ -36,8 +36,33 @@ def login():
     
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """logica de registrar a un usuario"""
-    return render_template('auth/register.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # Verificar si el correo ya existe en la base de datos
+        query = "SELECT * FROM users WHERE email = :email;"
+        conn = engine.connect()
+        try:
+            result = conn.execute(text(query), {"email": email}).fetchone()
+            if result:
+                flash('El correo ya está en uso', 'danger')
+                conn.close()
+                return render_template('auth/register.html')
+
+            # Insertar el nuevo usuario en la base de datos
+            query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
+            conn.execute(text(query), {"username": username, "email": email, "password": password})
+            conn.commit()
+            conn.close()
+            flash('Usuario registrado correctamente', 'success')
+            return redirect(url_for('login'))
+        except SQLAlchemyError as err:
+            flash(f"Error: {str(err.__cause__)}", 'danger')
+            return render_template('auth/register.html')
+    else:
+        return render_template('auth/register.html')
 
 @app.route('/home')
 def home():
