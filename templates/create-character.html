@@ -163,6 +163,11 @@
                 <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
             {% endfor %}
         </fieldset> <br>
+        <fieldset class="sideInfo">
+            <legend>Equipment</legend>
+            <div id="backgroundEquipment"></div>
+            <div id="classEquipment"></div>
+        </fieldset>
         <fieldset>
             <legend>Personality Traits</legend>
             <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
@@ -184,6 +189,7 @@
 
 
 </div>
-<script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/loadEquipment.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 {% endblock %}
