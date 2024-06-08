@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
-app.secret_key = 'qwerty'  # Necesario para usar flash mensajes y sesiones
+app.secret_key = 'qwerty'  
 engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
 
 @app.route('/')
@@ -16,8 +16,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        # Verificar si el usuario existe en la base de datos
         query = "SELECT * FROM users WHERE username = :username AND password = :password;"
         conn = engine.connect()
         try:
@@ -26,10 +24,9 @@ def login():
         except SQLAlchemyError as err:
             flash(f"Error: {str(err.__cause__)}", 'danger')
             return render_template('auth/login.html')
-
         if result:
-            session['user_id'] = result.id  # Guardar el id del usuario en la sesión
-            session['username'] = result.username  # Guardar el username del usuario en la sesión
+            session['user_id'] = result.id  
+            session['username'] = result.username 
             return redirect(url_for('home'))
         else:
             flash('Usuario o contraseña incorrecta', 'danger')
@@ -37,54 +34,27 @@ def login():
     else:
         return render_template('auth/login.html')
     
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """logica de registrar a un usuario"""
+    return render_template('auth/register.html')
+
+@app.route('/home')
+def home():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return render_template('home.html', username=session.get('username'))
+    
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
-@app.route('/home')
-@login_required
-def home():
-    return render_template('home.html')
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-
-        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
-        if existing_user:
-            flash('El nombre de usuario o el correo electrónico ya están en uso')
-            return redirect(url_for('register'))
-
-        new_user = User(username=username, email=email, password=password)
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Usuario registrado correctamente')
-            return redirect(url_for('login'))
-        except exc.SQLAlchemyError as err:
-            flash('Error al registrar usuario: ' + str(err.__cause__))
-    return render_template('auth/register.html')
 
 @app.route('/users', methods=['GET'])
 def users():
     users = User.query.all()
     data = [{'id': u.id, 'username': u.username, 'email': u.email} for u in users]
     return jsonify(data), 200
-
-@app.route('/create_user', methods=['POST'])
-def create_user():
-    new_user = request.get_json()
-    user = User(username=new_user['username'], email=new_user['email'], password=new_user['password'])
-    try:
-        db.session.add(user)
-        db.session.commit()
-        return jsonify({'message': 'Usuario creado correctamente'}), 201
-    except exc.SQLAlchemyError as err:
-        return jsonify({'message': 'Error al crear usuario: ' + str(err.__cause__)})
 
 @app.route('/users/<id>', methods=['PATCH'])
 def update_user(id):
