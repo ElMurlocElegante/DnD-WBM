@@ -40,10 +40,11 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        query = "SELECT * FROM users WHERE email = :email;"
+        query_email = "SELECT * FROM users WHERE email = :email;"
+        query_username = "SELECT * FROM users WHERE username = :username;"
         conn = engine.connect()
         try:
-            result = conn.execute(text(query), {"email": email}).fetchone()
+            result = conn.execute(text(query_email), {"email": email}).fetchone()
             if result:
                 flash('El correo ya está en uso', 'danger')
                 conn.close()
