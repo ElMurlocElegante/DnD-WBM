@@ -3,6 +3,7 @@
 {% block body %}
 
 <div class="form-container">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_create.character.css') }}">
     <h2>Manage Characters</h2>
     <!-- Formulario para agregar nuevos personajes -->
     <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">

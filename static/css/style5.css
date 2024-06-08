@@ -1,0 +1,135 @@
+/* TEST CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #2e2e2e;
+    color: #fff;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #1a1a1a;
+    padding: 20px 0;
+}
+
+header .logo img {
+    width: 150px;
+}
+
+header nav {
+    float: left;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header .user-info {
+    float: right;
+}
+
+header .user-info input {
+    padding: 5px;
+    margin-right: 20px;
+    border: none;
+}
+
+header .user-info a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    display: flex;
+    padding: 20px 0;
+}
+
+aside {
+    width: 25%;
+    background: #3e3e3e;
+    padding: 20px;
+    margin-right: 20px;
+}
+
+aside section {
+    margin-bottom: 20px;
+}
+
+aside .character-info h2 {
+    margin-bottom: 10px;
+}
+
+aside .character-info img {
+    width: 100%;
+}
+
+aside .stats .stat-block span,
+aside .saving-throws .saving-throw-block span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.main-content {
+    width: 75%;
+}
+
+.tabs {
+    display: flex;
+    background: #1a1a1a;
+}
+
+.tabs .tab-button {
+    flex: 1;
+    padding: 10px;
+    background: #1a1a1a;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.tabs .tab-button.active {
+    background: #e8491d;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background: #3e3e3e;
+    margin-top: 10px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+footer {
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+footer p {
+    margin: 0;
+}

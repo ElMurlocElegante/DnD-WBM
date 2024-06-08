@@ -1,0 +1,174 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #1c1c1c;
+    color: #f0f0f0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Container for Form */
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Headings */
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #e8491d;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #e8491d;
+}
+
+/* Fieldsets and Legends */
+fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #e8491d;
+}
+
+/* Attributes Section */
+#attributes {
+    display: flex;
+    flex-direction: column;
+}
+
+.attribute-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.attribute-row label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.attribute-row input[type="number"] {
+    width: 60px;
+}
+
+.attribute-row div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.mod-input,
+.total-input {
+    width: 60px;
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 4px;
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #e8491d;
+    margin-bottom: 10px;
+}
+
+.header-row span {
+    flex: 1;
+    text-align: center;
+}
+
+.race-header {
+    display: flex;
+    flex: 2;
+    justify-content: space-between;
+}
+
+/* Proficiencies Section */
+.sideInfo {
+    margin-top: 20px;
+}
+
+#allSkills {
+    margin-top: 20px;
+}
+
+#allSkills input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Textareas */
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e8491d;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #cf3b0f;
+}
