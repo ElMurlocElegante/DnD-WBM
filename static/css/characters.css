@@ -1,0 +1,96 @@
+/* lista de personajes */
+.character-list {
+    background-color: rgb(47, 47, 47);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 60%;
+    justify-content: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* espacio debajo de character */
+}
+
+.character-list h1 {
+    width: 100%;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.pc {
+    background-color: rgb(73, 57, 57);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: calc(25% - 20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.pc ul {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.pc li {
+    padding: 5px 0;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pc li:last-child {
+    border-bottom: none;
+}
+
+.pc li span.key {
+    font-weight: bold;
+    color: #ddd;
+}
+
+.pc li span.value {
+    color: #888;
+}
+
+/* estilo de los botones */
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: #e50914;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #f40612;
+}
+/* boton especificado de pcreacion de persnaje */
+.character-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -20px;
+    
+}
+
+.character-actions form {
+    display: inline-block;
+}
+
+.character-actions button {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.character-actions select {
+    margin-right: 10px;
+}
+
+

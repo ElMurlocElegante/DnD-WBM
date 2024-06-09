@@ -3,11 +3,12 @@
 {% block body %}
 
 <div class="main-content">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/characters.css') }}">
     <form action="{{ url_for('logout') }}" method="GET">
-        <button type="submit">Cerrar sesión</button>
+        <button type="submit" class="btn-red">Logout</button>
     </form>
     <form action="{{ url_for('delete_account') }}" method="POST">
-        <button type="submit">Eliminar cuenta</button>
+        <button type="submit" class="btn-red">Delete account</button>
     </form>
     <div class="character-list">
         <h1>Character List</h1>
@@ -21,16 +22,19 @@
         </div>
         {% endfor %}
     </div>
-    <form method="DELETE" action="{{ url_for('delete_character') }}">
-        <label for="character_name">Select Character to Delete:</label><br>
-        <select name="character_name" id="character_name">
-            {% for character in data %}
-                 <option value="{{ character.name}}">{{ character.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Delete Character">
-    </form>
+    <div class="character-actions">
+        <form method="GET" action="{{ url_for('createCharacter') }}">
+            <button type="submit" class="btn-red">Create character</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_character') }}">
+            <label for="character_name">Select Character to Delete:</label><br>
+            <select name="character_name" id="character_name" class="btn-red">
+                {% for character in data %}
+                     <option value="{{ character.name }}">{{ character.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-red">Delete Character</button>
+        </form>
+    </div>
 </div>
-
-
 {% endblock %}
