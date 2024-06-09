@@ -42,8 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
             intelligence: intelligence,
             wisdom: wisdom,
             charisma: charisma,
-            proficienciesLanguages: null,
-            equipment: null,
+            proficienciesLanguages: JSON.stringify({
+                languages: null,
+                otherProficiencies: null
+            }),
+            equipment: JSON.stringify({
+                equipment: null
+            }),
             lore: JSON.stringify({
                 personalityTraits: personalityTraits,
                 ideals: ideals,
@@ -62,6 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             console.log('Respuesta recibida desde Flask:', data);
+            form.removeEventListener('submit', arguments.callee);
+            form.submit();
         })
         .catch(error => {
             console.error('Error al enviar el formulario:', error);

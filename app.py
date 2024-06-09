@@ -181,16 +181,16 @@ def delete_character(character_name):
 
 @app.route("/characters/add_character", methods=['POST'])
 def add_character():
-    if 'username' in session:  # Verifica si el usuario está en la sesión
+    if ( session.get('user_id') is not None and session.get('username') is not None ):
         conn = engine.connect()
         character_data = request.json  # Obtener los datos JSON del cuerpo de la solicitud
         query = """
         INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
                                 xp, hp, strength, dexterity, constitution, intelligence, wisdom, charisma, 
-                                proficiency_skills, proficiency_n_languages, equipment, lore)
+                                proficiency_skills, proficiency_n_language, equipment, lore)
         VALUES (:username, :character_name, :class, :subclass, :background, :race, :alignment, 
                 :xp, :hp, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
-                :proficiency_skills, :proficiency_n_languages, :equipment, :lore)
+                :proficiency_skills, :proficiency_n_language, :equipment, :lore)
         """
         params = {
             "username": session["username"],
@@ -209,7 +209,7 @@ def add_character():
             "wisdom": character_data["wisdom"],
             "charisma": character_data["charisma"],
             "proficiency_skills": ','.join(character_data["skillProficiencies"]),
-            "proficiency_n_languages": character_data.get("proficienciesLanguages"),
+            "proficiency_n_language": character_data.get("proficienciesLanguages"),
             "equipment": character_data.get("equipment"),
             "lore": character_data["lore"]
         }

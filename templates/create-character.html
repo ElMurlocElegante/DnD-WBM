@@ -5,7 +5,7 @@
 <div class="form-container">
     <h2>Manage Characters</h2>
     <!-- Formulario para agregar nuevos personajes -->
-    <form id="characterForm">
+    <form action="{{ url_for('characters')}}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
         <label for="class">Class</label>
