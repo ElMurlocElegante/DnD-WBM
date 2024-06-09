@@ -2,14 +2,15 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 28, 2024 at 07:07 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: localhost
+-- Tiempo de generación: 08-06-2024 a las 23:49:24
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -17,10 +18,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `DnD-WBM`
+-- Base de datos: `DnD-WBM`
 --
 
--- Table structure for table `characters`
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `characters`
+--
+
 CREATE TABLE `characters` (
   `username` varchar(40) NOT NULL,
   `character_name` varchar(40) NOT NULL,
@@ -45,12 +51,16 @@ CREATE TABLE `characters` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table structure for table `users`
+--
+-- Estructura de tabla para la tabla `users`
+--
+
 CREATE TABLE `users` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`username`)
+  `password` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Estructura de tabla para la tabla `rooms`
@@ -64,6 +74,7 @@ CREATE TABLE `rooms` (
   `code` varchar(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 COMMIT;
 
