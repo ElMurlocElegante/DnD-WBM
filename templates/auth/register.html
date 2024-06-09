@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block body %}
+<div class="bodyRegister">
     <div class="login-container">
         <div class="login-form">
             <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="Logo" class="logo">
@@ -30,9 +25,20 @@
                 <div class="form-group">
                     <input type="password" id="password" name="password" placeholder="Contraseña" required>
                 </div>
-                <button type="submit">Registrarse</button>
+                <button class="registerBtn" type="submit">Registrarse</button>
             </form>
         </div>
     </div>
+</div>
+{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
 </body>
 </html>

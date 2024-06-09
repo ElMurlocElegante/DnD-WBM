@@ -11,7 +11,7 @@ import random
 from string import ascii_uppercase
 
 app = Flask(__name__)
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
 app.config['SECRET_KEY'] = 'SECRET'
 socketio = SocketIO(app)
 '''
@@ -110,8 +110,21 @@ def logout():
     session.clear()
     return render_template("home.html")
 
-@app.route("/characters", methods=['GET'])
+@app.route('/check_login', methods=['GET'])
+def check_login():
+    if 'user_id' in session and 'username' in session:
+        return jsonify({'logged_in': True})
+    else:
+        return jsonify({'logged_in': False})
+
+@app.route("/characters")
 def characters():
+    if ( session.get('user_id') is not None and session.get('username') is not None ):
+        return render_template("characters.html")
+    return redirect(url_for('login'))
+
+@app.route("/create_character", methods=['GET'])
+def createCharacter():
     index_route = os.path.join(app.root_path, 'data', 'class', 'index.json')
     races_route = os.path.join(app.root_path, 'data', 'races.json')
     backgrounds_route = os.path.join(app.root_path, 'data', 'backgrounds.json')
@@ -258,11 +271,24 @@ def gameRooms():
 @app.route("/joinRoom", methods=['POST'])
 def joinRoom():
     if request.method == 'POST':
-        name = request.form['name']
         code = request.form['code']
         session["room"] = code
-        session["name"] = name
-        return redirect(url_for('room'))
+
+        try:
+            conn = engine.connect()
+            query = "SELECT ingame,maxplayers FROM rooms WHERE code = '" + code + "';"
+            result = conn.execute(text(query))
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+        players = {}
+        row = result.first()
+        players['ingame'] = row[0]
+        players['maxplayers'] = row[1]
+        if (players['maxplayers'] > players['ingame']):
+            return redirect(url_for('room'))
+        return 
+        
 
 
 @app.route("/roomCreation")
@@ -283,7 +309,7 @@ def room():
     for row in result:
         rooms.append(row.code)
 
-    if room is None or session.get("name") is None or room not in rooms:
+    if room is None or session.get("username") is None or room not in rooms:
         return redirect(url_for('home'))
     return render_template("room.html", code=room)
 
@@ -291,7 +317,7 @@ def room():
 def roomCreated():
     if request.method == 'POST':
         roomName = request.form['roomName']
-        creatorName = request.form['creatorName']
+        creatorName = session.get['username']
         maxPlayers = request.form['maxPlayers']
         code = codeGenerator(4)
 
@@ -312,13 +338,12 @@ def roomCreated():
             return jsonify(str(err.__cause__))
 
         session["room"] = code
-        session["name"] = creatorName
         return redirect(url_for('room'))
 
 @socketio.on("connect")
 def connect(auth):
     room = session.get("room")
-    name = session.get("name")
+    name = session.get("username")
 
     try:
         conn = engine.connect()
@@ -353,7 +378,7 @@ def connect(auth):
 @socketio.on("disconnect")
 def disconnect():
     room = session.get("room")
-    name = session.get("name")
+    name = session.get("username")
 
     try:
         conn = engine.connect()
@@ -421,11 +446,11 @@ def message(data):
     if room not in rooms:
         return
     content = {
-        "name": session.get("name"),
+        "name": session.get("username"),
         "message": data["data"]
     }
     send(content, to=room)
-    print(f"{session.get('name')} said: {data['data']}")
+    print(f"{session.get('username')} said: {data['data']}")
 
 
 if __name__ == "__main__":

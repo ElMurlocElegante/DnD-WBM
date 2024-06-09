@@ -45,7 +45,7 @@ body {
     font-size: 16px;
   }
   
-  button {
+  .loginbtn {
     width: 100%;
     padding: 10px;
     background: #e50914;
@@ -56,21 +56,21 @@ body {
     cursor: pointer;
   }
   
-  button:hover {
+  .loginbtn:hover {
     background: #f40612;
   }
   
-  p {
+  .firstTime {
     margin-top: 20px;
     font-size: 14px;
   }
   
-  p a {
+  .firstTime a {
     color: #fff;
     text-decoration: none;
     font-weight: bold;
   }
   
-  p a:hover {
+  .firstTime a:hover {
     text-decoration: underline;
   }
