@@ -285,13 +285,32 @@ def joinRoom():
         players['maxplayers'] = row[1]
         if (players['maxplayers'] > players['ingame']):
             return redirect(url_for('room'))
-        return 
+        
+        try:
+            conn = engine.connect()
+            query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
+            result = conn.execute(text(query))
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+        rooms = []
+        for row in result:
+            room = {}
+            room["room_creator"] = row.room_creator
+            room["room_name"] = row.room_name
+            room["ingame"] = row.ingame
+            room["maxplayers"] = row.maxplayers
+            rooms.append(room)
+
+        return render_template("rooms.html", rooms=rooms, data="sala llena")
         
 
 
 @app.route("/roomCreation")
 def roomCreation():
-    return render_template("createRoom.html")
+    if ( session.get('user_id') is not None and session.get('username') is not None ):
+        return render_template("createRoom.html")
+    return redirect(url_for('login'))
 
 @app.route("/room")
 def room():

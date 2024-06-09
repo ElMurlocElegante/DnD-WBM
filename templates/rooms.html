@@ -3,6 +3,9 @@
 {% block body %}
 <main>
     <section class="rooms">
+        {% if data %}
+        <p>{{data}}</p>
+        {% endif %}
         {%for room in rooms %}
         <article class="room-container">
             <h4 class="room-item">{{room["room_creator"]}}</h4>
