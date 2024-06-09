@@ -133,3 +133,10 @@ footer {
 footer p {
     margin: 0;
 }
+
+
+.sideInfo {
+    background-color: #34495e;
+    padding: 10px;
+    border-radius: 4px;
+}

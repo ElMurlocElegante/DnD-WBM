@@ -3,9 +3,9 @@
 {% block body %}
 
 <div class="form-container">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_create.character.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
     <h2>Manage Characters</h2>
-    <!-- Formulario para agregar nuevos personajes -->
+    <div class="main-container">
     <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
@@ -139,6 +139,10 @@
                 </div>
             </div>
         </fieldset>
+        
+        
+
+        <div class="side-info-container">
         <fieldset class="sideInfo">    
             <legend>Choose your Proficiencies</legend>    
             <fieldset class="sideInfo">
@@ -156,13 +160,17 @@
                 <p id="raceRemainingSkills"></p>
                 <div id="raceSkills"></div>
             </fieldset>
-        </fieldset>        
+        </fieldset>
+        </div>
         <fieldset id="allSkills">
             <legend>Proficiencies</legend>
             {% for skill in skills %}
                 <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                 <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
             {% endfor %}
+
+
+            
         </fieldset> <br>
         <fieldset>
             <legend>Personality Traits</legend>
@@ -182,6 +190,7 @@
         </fieldset>
         <input type="submit" value="Add Character">
     </form>
+    </div>
 
 
 </div>

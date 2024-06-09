@@ -3,11 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 from flask_socketio import SocketIO, join_room, leave_room, send
-from flask_mysqldb import MySQL
 import os
 import json
 import random
 from string import ascii_uppercase
+
+
+
+
+
 
 app = Flask(__name__)
 engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
