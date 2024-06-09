@@ -47,68 +47,35 @@ CREATE TABLE `characters` (
   `proficiency_n_languange` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `equipment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `lore` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
-  `id` int(11) NOT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
-  `id` smallint(5) UNSIGNED NOT NULL,
+  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `password` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `users`
---
+-- Estructura de tabla para la tabla `rooms`
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
-(1, 'DMatias', 'dejeanmatias@gmail.com', '314159'),
-(3, 'manolo', 'mdejean@fi.uba.ar', '123456'),
-(7, 'mateo', 'matiasdejeangonzalez@gmail.com', '123456'),
-(8, 'diego', 'd2g6cnba@gmail.com', '123qwe'),
-(9, 'tobias', 'jdsahjas@gmail.com', '123456'),
-(10, 'pepito', 'pepito@gmail.com', 'qwerty'),
-(11, 'nicolas', 'nicogamer@gmail.com', '123456'),
-(12, 'martin', 'martin@gmail.com', 'qwerty'),
-(13, 'masdmlad', 'wddwdw@gmasda', 'adsda');
+CREATE TABLE `rooms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_creator` varchar(20) NOT NULL,
+  `room_name` varchar(20) NOT NULL,
+  `ingame` int(11) NOT NULL,
+  `maxplayers` int(11) NOT NULL,
+  `code` varchar(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Índices para tablas volcadas
---
 
---
--- Indices de la tabla `characters`
---
-ALTER TABLE `characters`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `characters`
---
-ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
