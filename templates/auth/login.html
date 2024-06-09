@@ -11,6 +11,15 @@
         <div class="login-form">
             <img src="{{ url_for('static', filename='imagenes/dnd.jpg') }}" alt="Logo" class="logo">
             <h2>Iniciar sesión</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
             <form method="POST" action="{{ url_for('login') }}">
                 <div class="form-group">
                     <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
