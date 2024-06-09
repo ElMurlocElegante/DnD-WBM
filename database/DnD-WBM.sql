@@ -38,7 +38,7 @@ CREATE TABLE `characters` (
   `wisdom` tinyint(2) NOT NULL,
   `charisma` tinyint(2) NOT NULL,
   `proficiency_skills` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
-  `proficiency_n_languange` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
+  `proficiency_n_language` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `equipment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `lore` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `id` int(11) NOT NULL AUTO_INCREMENT,

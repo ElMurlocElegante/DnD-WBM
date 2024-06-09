@@ -181,31 +181,49 @@ def delete_character(character_name):
 
 @app.route("/characters/add_character", methods=['POST'])
 def add_character():
-    conn = engine.connect()
-    new_character = request.get_json()
-    try:
-        character_name = request.form.get('character_name')
-        class_name = request.form.get('class')
-        xp = request.form.get('xp')
-        hp = request.form.get('hp')
-        alignment = request.form.get('alignment')
-        background = request.form.get('background')
-        race = request.form.get('race')
-        ac = request.form.get('ac')
-        strength = request.form.get('strength')
-        dexterity = request.form.get('dexterity')
-        constitution = request.form.get('constitution')
-        intelligence = request.form.get('intelligence')
-        wisdom = request.form.get('wisdom')
-        charisma = request.form.get('charisma')
-        personality_traits = request.form.get('personality_traits')
-        ideals = request.form.get('ideals')
-        bonds = request.form.get('bonds')
-        flaws = request.form.get('flaws')
-    except SQLAlchemyError as err:
-        return jsonify(str(err.__cause__))
-    return redirect(url_for('characters'))
+    if 'username' in session:  # Verifica si el usuario está en la sesión
+        conn = engine.connect()
+        character_data = request.json  # Obtener los datos JSON del cuerpo de la solicitud
+        query = """
+        INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
+                                xp, hp, strength, dexterity, constitution, intelligence, wisdom, charisma, 
+                                proficiency_skills, proficiency_n_languages, equipment, lore)
+        VALUES (:username, :character_name, :class, :subclass, :background, :race, :alignment, 
+                :xp, :hp, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
+                :proficiency_skills, :proficiency_n_languages, :equipment, :lore)
+        """
+        params = {
+            "username": session["username"],
+            "character_name": character_data["characterName"],
+            "class": character_data["className"],
+            "subclass": character_data.get("subclassName"),
+            "background": character_data["background"],
+            "race": character_data["race"],
+            "alignment": character_data["alignment"],
+            "xp": character_data["xp"],
+            "hp": character_data["hp"],
+            "strength": character_data["strength"],
+            "dexterity": character_data["dexterity"],
+            "constitution": character_data["constitution"],
+            "intelligence": character_data["intelligence"],
+            "wisdom": character_data["wisdom"],
+            "charisma": character_data["charisma"],
+            "proficiency_skills": ','.join(character_data["skillProficiencies"]),
+            "proficiency_n_languages": character_data.get("proficienciesLanguages"),
+            "equipment": character_data.get("equipment"),
+            "lore": character_data["lore"]
+        }
 
+        try:
+            result = conn.execute(text(query), params)
+            conn.commit()
+            conn.close()
+            return jsonify({'message': 'Character added successfully.'}), 201
+        except SQLAlchemyError as err:
+            return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)})
+    else:
+        return jsonify({"message": "    Not Logged In"}), 400
+    
 @app.route("/about")
 def about():
     return render_template("about.html")

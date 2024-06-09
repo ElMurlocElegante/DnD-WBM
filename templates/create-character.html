@@ -5,7 +5,7 @@
 <div class="form-container">
     <h2>Manage Characters</h2>
     <!-- Formulario para agregar nuevos personajes -->
-    <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
+    <form id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
         <label for="class">Class</label>
@@ -186,7 +186,7 @@
             <legend>Flaws</legend>
             <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
         </fieldset>
-        <input type="submit" value="Add Character">
+        <button type="submit">Create Character</button>
     </form>
 
 
@@ -194,4 +194,6 @@
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/sendNewCharacterData.js') }}"></script>
+
 {% endblock %}
