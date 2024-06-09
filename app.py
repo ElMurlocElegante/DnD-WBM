@@ -11,7 +11,7 @@ import random
 from string import ascii_uppercase
 
 app = Flask(__name__)
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
 app.config['SECRET_KEY'] = 'SECRET'
 socketio = SocketIO(app)
 '''
@@ -44,8 +44,6 @@ def codeGenerator(lenght):
 
 @app.route("/")
 def home():
-    if session['room'] != None:
-        session.pop('room', None)
     return render_template("home.html")
 
 # Account Things
