@@ -56,7 +56,7 @@ CREATE TABLE `characters` (
 --
 
 CREATE TABLE `users` (
-  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
