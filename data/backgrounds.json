@@ -1588,16 +1588,6 @@
 			"hasFluffImages": true
 		},
 		{
-			"name": "Augen Trust (Spy)",
-			"source": "EGW",
-			"page": 203,
-			"_copy": {
-				"name": "Variant Criminal (Spy)",
-				"source": "PHB"
-			},
-			"hasFluff": true
-		},
-		{
 			"name": "Azorius Functionary",
 			"source": "GGR",
 			"page": 33,

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash, session
+from flask import Flask, jsonify, request, render_template, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
@@ -108,26 +108,7 @@ def register():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Sesión cerrada correctamente', 'success')
-    return redirect(url_for('login'))
-
-@app.route('/delete_account', methods=['POST'])
-def delete_account():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    user_id = session['user_id']
-    conn = engine.connect()
-    query = f"DELETE FROM users WHERE id = {user_id};"
-    try:
-        conn.execute(text(query))
-        conn.commit()
-        conn.close()
-        session.clear()
-        flash('Cuenta eliminada correctamente', 'success')
-    except SQLAlchemyError as err:
-        flash(f"Error: {str(err.__cause__)}", 'danger')
-    return redirect(url_for('login'))
+    return render_template("home.html")
 
 @app.route("/characters", methods=['GET'])
 def characters():
@@ -252,8 +233,7 @@ def roll_dice():
         return jsonify({"error": "Formato de dice incorrecto. Debe ser 'dn' o 'ndn', donde 'n' es un número mayor que cero."}), 400
     
     return index(dice)
-
-# Rooms
+  
 @app.route("/gameRooms")
 def gameRooms():
 
