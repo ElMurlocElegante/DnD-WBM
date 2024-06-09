@@ -139,9 +139,6 @@
                 </div>
             </div>
         </fieldset>
-        
-        
-
         <div class="side-info-container">
         <fieldset class="sideInfo">    
             <legend>Choose your Proficiencies</legend>    
@@ -168,26 +165,35 @@
                 <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                 <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
             {% endfor %}
-
-
-            
         </fieldset> <br>
         <fieldset>
-            <legend>Personality Traits</legend>
-            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
+            <legend>Equipment</legend>
+            <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
         </fieldset>
-        <fieldset>
-            <legend>Ideals</legend>
-            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
+        <fieldset class="sideInfo">
+            <legend>Lore</legend>
+            <fieldset>
+                <legend>Character Backstory</legend>
+                <textarea name="backstory" id="backstory" rows="5" cols="33"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Personality Traits</legend>
+                <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Ideals</legend>
+                <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Bonds</legend>
+                <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend>Flaws</legend>
+                <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
+            </fieldset>
         </fieldset>
-        <fieldset>
-            <legend>Bonds</legend>
-            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
-        </fieldset>
-        <fieldset>
-            <legend>Flaws</legend>
-            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
-        </fieldset>
+
         <input type="submit" value="Add Character">
     </form>
     </div>
