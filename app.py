@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, url_for, redirect, session
+from flask import Flask, jsonify, request, render_template, url_for, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
@@ -11,7 +11,7 @@ import random
 from string import ascii_uppercase
 
 app = Flask(__name__)
-engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
 app.config['SECRET_KEY'] = 'SECRET'
 socketio = SocketIO(app)
 '''
