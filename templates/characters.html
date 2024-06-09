@@ -3,6 +3,10 @@
 {% block body %}
 
 <div class="main-content">
+    <form action="{{ url_for('logout') }}" method="GET">
+        <button type="submit">Cerrar sesión</button>
+    </form>
+    
     <div class="character-list">
         <h1>Character List</h1>
         {% for character in data %}
