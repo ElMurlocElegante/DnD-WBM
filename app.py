@@ -44,6 +44,69 @@ def codeGenerator(lenght):
 
 @app.route("/")
 def home():
+    return render_template("home.html")
+
+# Account Things
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        query = "SELECT * FROM users WHERE username = :username AND password = :password;"
+        conn = engine.connect()
+        try:
+            result = conn.execute(text(query), {"username": username, "password": password}).fetchone()
+            conn.close()
+        except SQLAlchemyError as err:
+            flash(f"Error: {str(err.__cause__)}", 'danger')
+            return render_template('auth/login.html')
+        if result:
+            session['user_id'] = result.id  
+            session['username'] = result.username 
+            return redirect(url_for('home'))
+        else:
+            flash('Usuario o contraseña incorrecta', 'danger')
+            return render_template('auth/login.html')
+    else:
+        return render_template('auth/login.html')
+    
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        query_email = "SELECT * FROM users WHERE email = :email;"
+        query_username = "SELECT * FROM users WHERE username = :username;"
+        conn = engine.connect()
+        try:
+            result = conn.execute(text(query_email), {"email": email}).fetchone()
+            if result:
+                flash('El correo ya está en uso', 'danger')
+                conn.close()
+                return render_template('auth/register.html')
+            result_username = conn.execute(text(query_username), {"username": username}).fetchone()
+            if result_username:
+                flash('El nombre de usuario ya está en uso', 'danger')
+                conn.close()
+                return render_template('auth/register.html')
+            query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
+            conn.execute(text(query), {"username": username, "email": email, "password": password})
+            conn.commit()
+            conn.close()
+            flash('Usuario registrado correctamente', 'success')
+            return redirect(url_for('login'))
+        except SQLAlchemyError as err:
+            flash(f"Error: {str(err.__cause__)}", 'danger')
+            return render_template('auth/register.html')
+    else:
+        return render_template('auth/register.html')
+
+
+@app.route('/logout')
+def logout():
     session.clear()
     return render_template("home.html")
 
