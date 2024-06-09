@@ -55,21 +55,70 @@ document.addEventListener('DOMContentLoaded', function(){
             .catch(error => console.error('Error fetching class data:', error));
     }
 
-    function addClassEquipment(data,type) {
+    function fetchEquipmenCategorytData(itemConditions) {
+        return fetch(`../../data/items-base.json`)
+            .then(response => response.json())
+            .then(data => {
+                var equipmentData = data.baseitem;
+                if (equipmentData) {
+                    var filteredData = equipmentData.filter(item => evaluateConditions(item, itemConditions));
+                    return filteredData;
+                } else {
+                    console.log('Item no encontrado:', itemConditions);
+                    return [];
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching class data:', error);
+                return [];
+            });
+    }
+    
+    function evaluateConditions(item, conditions) {
+        if (item.age) return false
+        else {
+        if (conditions.includes('weapon')) {
+            if (!item.weapon) return false;
+        }
+        if (conditions.includes('Melee')) {
+            if (item.type !== 'M') return false;
+        }
+        if (conditions.includes('instrumentMusical')) {
+            if (item.type !== 'INS') return false;
+        }
+        if (conditions.includes('Martial')) {
+            if (item.weaponCategory !== 'martial') return false;
+        }
+        if (conditions.includes('Simple')) {
+            if (item.weaponCategory !== 'simple') return false;
+        }
+        if (conditions.includes('focusSpellcasting')) {
+            if (item.type !== 'SCF') return false;
+            if (conditions.includes('Arcane')) {
+                if (item.scfType !== 'arcane') return false;
+            } else if (conditions.includes('Druidic')) {
+                if (item.scfType !== 'druid') return false;
+            }
+        }
+        }
+
+        return true;
+    }
+    function addClassEquipment(data, type) {
         const container = document.getElementById(`${type}Equipment`); // Asegúrate de tener un contenedor en tu HTML con este ID
         container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos elementos
     
         data.forEach((dataSet, index) => {
-            console.log(dataSet, index )
             const groupDiv = document.createElement('div');
             groupDiv.classList.add('checkbox-group');
     
             // Crear un nombre de grupo único para los radio buttons
             const groupName = `equipment-group-${index}`;
-
+    
             // Iterar sobre todas las claves del objeto (a, b, c, etc.)
             Object.keys(dataSet).forEach(key => {
                 dataSet[key].forEach(item => {
+                    
                     const checkboxWrapper = document.createElement('div');
                     checkboxWrapper.classList.add('checkbox-wrapper');
     
@@ -80,20 +129,34 @@ document.addEventListener('DOMContentLoaded', function(){
                     if (typeof item === 'string') {
                         label.textContent = item;
                         checkbox = createRadioButton(groupName, item);
+                        checkboxWrapper.appendChild(checkbox);
+                        checkboxWrapper.appendChild(label);
+                        groupDiv.appendChild(checkboxWrapper);
                     } else if (typeof item === 'object') {
                         if (item.item) {
                             label.textContent = `${item.item} (x${item.quantity})`;
                             checkbox = createRadioButton(groupName, item.item);
+                            checkboxWrapper.appendChild(checkbox);
+                            checkboxWrapper.appendChild(label);
+                            groupDiv.appendChild(checkboxWrapper);
                         } else if (item.equipmentType) {
-                            label.textContent = item.equipmentType;
-                            checkbox = createRadioButton(groupName, item.equipmentType);
+                            fetchEquipmenCategorytData(item.equipmentType)
+                                .then(equipmentTypeList => {
+                                    equipmentTypeList.forEach(equipmentItem => {
+                                        const equipmentWrapper = document.createElement('div');
+                                        equipmentWrapper.classList.add('checkbox-wrapper');
+                                        
+                                        const equipmentLabel = document.createElement('label');
+                                        equipmentLabel.textContent = equipmentItem.name;
+    
+                                        const equipmentCheckbox = createRadioButton(groupName, equipmentItem.name);
+                                        equipmentWrapper.appendChild(equipmentCheckbox);
+                                        equipmentWrapper.appendChild(equipmentLabel);
+                                        groupDiv.appendChild(equipmentWrapper);
+                                    });
+                                });
                         }
                     }
-    
-                    // Añadir el checkbox y el label al wrapper y luego al grupo
-                    checkboxWrapper.appendChild(checkbox);
-                    checkboxWrapper.appendChild(label);
-                    groupDiv.appendChild(checkboxWrapper);
                 });
             });
     
@@ -101,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function(){
             container.appendChild(groupDiv);
         });
     }
-    
     function createRadioButton(groupName, value) {
         const radio = document.createElement('input');
         radio.type = 'radio';

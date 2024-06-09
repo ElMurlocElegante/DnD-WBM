@@ -370,7 +370,22 @@ button:hover {
 }
 
 /* Equipamiento */
+.checkbox-group {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.checkbox-wrapper label {
+    margin-left: 10px;
+}
 /* rooms Styling */
 
 .rooms {
