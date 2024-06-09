@@ -107,7 +107,27 @@ def register():
 @app.route('/logout')
 def logout():
     session.clear()
+    flash('Sesión cerrada correctamente', 'success')
     return render_template("home.html")
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = engine.connect()
+    query = f"DELETE FROM users WHERE id = {user_id};"
+    try:
+        conn.execute(text(query))
+        conn.commit()
+        conn.close()
+        session.clear()
+        flash('Cuenta eliminada correctamente', 'success')
+    except SQLAlchemyError as err:
+        flash(f"Error: {str(err.__cause__)}", 'danger')
+    
+    return redirect(url_for('login'))
 
 @app.route('/check_login', methods=['GET'])
 def check_login():
