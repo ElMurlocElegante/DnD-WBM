@@ -165,7 +165,8 @@
         </fieldset> <br>
         <fieldset class="sideInfo">
             <legend>Equipment</legend>
-            <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
+            <div id="backgroundEquipment"></div>
+            <div id="classEquipment"></div>
         </fieldset>
         <fieldset>
             <legend>Personality Traits</legend>
@@ -189,5 +190,6 @@
 
 </div>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/loadEquipment.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 {% endblock %}
