@@ -15,7 +15,8 @@
             {% endfor %}
         </select> <br>
         <label for="xp">XP</label> <br>
-        <input type="number" name="xp" id="xp" required> <br>
+        <input type="number" name="xp" id="xp"> <br>
+        <span id="level"></span> <br>
         <label for="hp">Hit Points</label> <br>
         <input type="number" name="hp" id="hp" required> <br>
         <label for="alignment">Alignment</label>
@@ -186,4 +187,6 @@
 </div>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
+
 {% endblock %}
