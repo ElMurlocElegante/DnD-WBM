@@ -8,15 +8,26 @@
     <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
-        <label for="class">Class</label>
-        <select name="class" id="class">
-            {% for class_name in classes %}
-                <option value="{{ class_name }}">{{ class_name|upper }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="xp">XP</label> <br>
-        <input type="number" name="xp" id="xp"> <br>
-        <span id="level"></span> <br>
+        <section id="xpContainer">
+            <label for="xp">XP</label> <br>
+            <input type="number" name="xp" id="xp" min="0">
+            <p id="levelStats">Level: <span id="level">1</span> PB: +<span id="pb">2</span></p>
+        </section>
+        <section id="classContainer">
+            <label for="class">Class</label>
+            <select name="class" id="class">
+                {% for class_name in classes %}
+                    <option value="{{ class_name }}">{{ class_name|upper }}</option>
+                {% endfor %}
+            </select> <br>
+            <section id="subclassContainer">
+                <label for="subclass"></label>
+                <select name="subclass" id="subclass">
+                
+                </select>
+            </section>
+        </section>
+
         <label for="hp">Hit Points</label> <br>
         <input type="number" name="hp" id="hp" required> <br>
         <label for="alignment">Alignment</label>
@@ -188,5 +199,5 @@
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
-
+<script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>
 {% endblock %}
