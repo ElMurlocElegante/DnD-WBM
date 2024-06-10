@@ -138,8 +138,18 @@ def check_login():
 
 @app.route("/characters")
 def characters():
-    if ( session.get('user_id') is not None and session.get('username') is not None ):
-        return render_template("characters.html")
+    if session.get('user_id') is not None and session.get('username') is not None:
+        conn = engine.connect()
+        query = text("SELECT * FROM `characters` WHERE `username` = :username")
+        
+        try:
+            result = conn.execute(query, {"username": session["username"]})
+            characters = [dict(row._mapping) for row in result.fetchall()]
+            conn.close()
+            return render_template("characters.html", data=characters)
+        except SQLAlchemyError as err:
+            conn.close()
+            return jsonify({'message': 'Se ha producido un error: ' + str(err.__cause__)})
     return redirect(url_for('login'))
 
 @app.route("/create_character", methods=['GET'])
