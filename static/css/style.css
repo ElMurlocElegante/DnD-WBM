@@ -2,8 +2,12 @@
     text-decoration: none;
 }
 
+a:link{
+    color: inherit;
+}
+
 a:visited{
-    color:inherit
+    color: inherit;
 }
 
 /* Header Styling */
@@ -196,6 +200,85 @@ main{
 button:hover {
     background-color: #b71c1c;
 }
+
+/* Login Styling */
+.bodyLogin, .bodyRegister {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(7, 1, 12);
+    color: #fff;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-form {
+    background: rgb(7, 1, 12);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+  
+  .login-form h2 {
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group input {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .loginBtn, .registerBtn {
+    width: 90%;
+    padding: 10px;
+    background: #e50914;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .loginBtn:hover, .registerBtn:hover {
+    background: #f40612;
+  }
+  
+  .firstTime {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .firstTime a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .firstTime a:hover {
+    text-decoration: underline;
+  }
+
 
 /* Character List Styling */
 .character-list {
@@ -410,7 +493,7 @@ button:hover {
     width: 25%;
 }
 
-.btn-join{
+.btn-join, .btn-join-modal{
     cursor: pointer;
     width: 30%;
     color: white;
@@ -500,6 +583,68 @@ h2 {
     padding-right: 10px;
 }
 
+/* About page Styling */
+
+.members {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 98%;
+    height: 100%;
+    margin-top: 10px;
+    margin-left: 2%;
+}
+
+.member{
+    height: calc(100% /2);
+}
+
+.personalData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.name {
+    height: 5%;
+    width: 100%;
+    text-align: left;
+}
+
+.profile {
+    height: 75%;
+    width: 65%;
+    border-radius: 10px;
+}
+
+.aboutMedia{
+   display: flex;
+   flex-direction: row;
+   height: 10%;
+   gap: 5px;
+}
+  
+#media-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+  
+.media-link{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+}
+  
+.aboutMedia a img{
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin: 2px;
+}
+
 /* Footer Styling */
 
 .footer{
@@ -565,3 +710,24 @@ h2 {
     max-width: 1200px;
     margin: 0 auto;
   }
+/* css para los mensajes de flash */
+.flashes {
+    list-style: none;
+    padding: 0;
+}
+
+.flashes li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flashes .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flashes .danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}

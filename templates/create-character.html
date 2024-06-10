@@ -5,7 +5,7 @@
 <div class="form-container">
     <h2>Manage Characters</h2>
     <!-- Formulario para agregar nuevos personajes -->
-    <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
+    <form action="{{ url_for('characters')}}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
         <section id="xpContainer">
@@ -27,9 +27,15 @@
                 </select>
             </section>
         </section>
-
-        <label for="hp">Hit Points</label> <br>
-        <input type="number" name="hp" id="hp" required> <br>
+        <fieldset>
+            <legend>Hit Points</legend>
+            <section id="hpCalc">
+                <button type="button" id="hpRoll">Roll !</button>
+                <button type="button" id="hpMax">Maxmimum</button>
+                <button type="button" id="hpAvg">Average</button>
+                <input type="number" name="hp" id="hp">
+            </section>
+        </fieldset>
         <label for="alignment">Alignment</label>
         <select name="alignment" id="alignment">
             <option value="Lawful Good">Lawful Good</option>
@@ -191,13 +197,15 @@
             <legend>Flaws</legend>
             <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
         </fieldset>
-        <input type="submit" value="Add Character">
+        <button type="submit">Create Character</button>
     </form>
 
 
 </div>
-<script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/sendNewCharacterData.js') }}"></script>
 {% endblock %}

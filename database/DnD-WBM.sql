@@ -38,7 +38,7 @@ CREATE TABLE `characters` (
   `wisdom` tinyint(2) NOT NULL,
   `charisma` tinyint(2) NOT NULL,
   `proficiency_skills` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
-  `proficiency_n_languange` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
+  `proficiency_n_language` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `equipment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `lore` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'Tratar como JSON, MariaDB utiliza longtext como referencia',
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,10 +47,11 @@ CREATE TABLE `characters` (
 
 -- Table structure for table `users`
 CREATE TABLE `users` (
+  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`username`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Estructura de tabla para la tabla `rooms`

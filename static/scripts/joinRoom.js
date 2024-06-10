@@ -4,7 +4,20 @@ const closeModal = document.querySelector('.closeBtn')
 
 openModal.forEach(button => {
     button.addEventListener('click', () => {
-        modal.showModal();
+        fetch('/check_login', 
+            {   method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.logged_in) {
+                    modal.showModal();
+                } else {
+                    window.location.href = '/login';
+                }
+            })
     })
 })
 
