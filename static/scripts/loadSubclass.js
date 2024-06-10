@@ -34,13 +34,16 @@ document.addEventListener('DOMContentLoaded', function() {
             subclassText = document.getElementById('classContainer').querySelector('label[for="subclass"]');
             subclassText.innerHTML = `Select a Subclass`;
             subclassList.forEach(function(subclass) {
-                subclassOption = document.createElement('option');
+                const subclassOption = document.createElement('option');
                 subclassOption.value = subclass.name;
                 subclassOption.innerHTML = subclass.name;
 
                 subclassSelect.appendChild(subclassOption);
             });
         } else {
+            const noneSubclass = document.createElement('option');
+            noneSubclass.value = "";
+            subclassSelect.appendChild(noneSubclass);
             subclassContainer.style.display = 'none';
         }
     }
