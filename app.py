@@ -20,15 +20,36 @@ puerto: 3307
 ///IMPORTANTE///
 '''
 
-def codeGenerator(lenght):
+def queryRead(query, args=None):
+    if args:
+        try:
+            conn = engine.connect()
+            result = conn.execute(text(query), args)
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+    else:
+        try:
+            conn = engine.connect()
+            result = conn.execute(text(query))
+            conn.close()
+        except SQLAlchemyError as err:
+            return jsonify(str(err.__cause__))
+    return result
 
+def queryCUD(query, args):
     try:
         conn = engine.connect()
-        query = "SELECT code FROM rooms;"
-        result = conn.execute(text(query))
+        result = conn.execute(text(query), args)
+        conn.commit()
         conn.close()
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
+    return result
+
+def codeGenerator(lenght):
+    
+    result = queryRead("SELECT code FROM rooms;")
     codes = []
     for row in result:
         codes.append(row.code)
@@ -54,13 +75,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         query = "SELECT * FROM users WHERE username = :username AND password = :password;"
-        conn = engine.connect()
-        try:
-            result = conn.execute(text(query), {"username": username, "password": password}).fetchone()
-            conn.close()
-        except SQLAlchemyError as err:
-            flash(f"Error: {str(err.__cause__)}", 'danger')
-            return render_template('auth/login.html')
+        result = queryRead(query,{"username": username, "password": password}).fetchone()
         if result:
             session['user_id'] = result.id  
             session['username'] = result.username 
@@ -79,22 +94,17 @@ def register():
         password = request.form['password']
         query_email = "SELECT * FROM users WHERE email = :email;"
         query_username = "SELECT * FROM users WHERE username = :username;"
-        conn = engine.connect()
         try:
-            result = conn.execute(text(query_email), {"email": email}).fetchone()
+            result = queryRead(query_email,{"email": email}).fetchone()
             if result:
                 flash('El correo ya está en uso', 'danger')
-                conn.close()
                 return render_template('auth/register.html')
-            result_username = conn.execute(text(query_username), {"username": username}).fetchone()
+            result_username = queryRead(query_username, {"username": username}).fetchone()
             if result_username:
                 flash('El nombre de usuario ya está en uso', 'danger')
-                conn.close()
                 return render_template('auth/register.html')
             query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
-            conn.execute(text(query), {"username": username, "email": email, "password": password})
-            conn.commit()
-            conn.close()
+            queryCUD(query, {"username": username, "email": email, "password": password})
             flash('Usuario registrado correctamente', 'success')
             return redirect(url_for('login'))
         except SQLAlchemyError as err:
@@ -116,12 +126,9 @@ def delete_account():
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = engine.connect()
-    query = f"DELETE FROM users WHERE id = {user_id};"
+    query = "DELETE FROM users WHERE id = :id"
     try:
-        conn.execute(text(query))
-        conn.commit()
-        conn.close()
+        queryCUD(query, {"id": user_id})
         session.clear()
         flash('Cuenta eliminada correctamente', 'success')
     except SQLAlchemyError as err:
@@ -139,16 +146,12 @@ def check_login():
 @app.route("/characters")
 def characters():
     if session.get('user_id') is not None and session.get('username') is not None:
-        conn = engine.connect()
-        query = text("SELECT * FROM `characters` WHERE `username` = :username")
-        
+        query = "SELECT * FROM `characters` WHERE `username` = :username"
         try:
-            result = conn.execute(query, {"username": session["username"]})
+            result = queryRead(query, {"username": session["username"]})
             characters = [dict(row._mapping) for row in result.fetchall()]
-            conn.close()
             return render_template("characters.html", data=characters)
         except SQLAlchemyError as err:
-            conn.close()
             return jsonify({'message': 'Se ha producido un error: ' + str(err.__cause__)})
     return redirect(url_for('login'))
 
@@ -192,7 +195,6 @@ def delete_character(character_name):
 @app.route("/characters/add_character", methods=['POST'])
 def add_character():
     if ( session.get('user_id') is not None and session.get('username') is not None ):
-        conn = engine.connect()
         character_data = request.json  # Obtener los datos JSON del cuerpo de la solicitud
         query = """
         INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
@@ -225,9 +227,7 @@ def add_character():
         }
 
         try:
-            result = conn.execute(text(query), params)
-            conn.commit()
-            conn.close()
+            result = queryCUD(query, params)
             return jsonify({'message': 'Character added successfully.'}), 201
         except SQLAlchemyError as err:
             return jsonify({'message': 'Se ha producido un error' + str(err.__cause__)})
@@ -296,10 +296,8 @@ def roll_dice(dice):
 def gameRooms():
 
     try:
-        conn = engine.connect()
         query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
-        result = conn.execute(text(query))
-        conn.close()
+        result = queryRead(query)
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
     rooms = []
@@ -320,10 +318,8 @@ def joinRoom():
         session["room"] = code
 
         try:
-            conn = engine.connect()
-            query = "SELECT ingame,maxplayers FROM rooms WHERE code = '" + code + "';"
-            result = conn.execute(text(query))
-            conn.close()
+            query = "SELECT ingame,maxplayers FROM rooms WHERE code = :code"
+            result = queryRead(query, {"code": code})
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
         players = {}
@@ -334,10 +330,8 @@ def joinRoom():
             return redirect(url_for('room'))
         
         try:
-            conn = engine.connect()
             query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
-            result = conn.execute(text(query))
-            conn.close()
+            result = queryRead(query)
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
         rooms = []
@@ -363,10 +357,8 @@ def roomCreation():
 def room():
     room = session.get("room")
     try:
-        conn = engine.connect()
         query = "SELECT code FROM rooms;"
-        result = conn.execute(text(query))
-        conn.close()
+        result = queryRead(query)
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
     rooms = []
@@ -381,23 +373,19 @@ def room():
 def roomCreated():
     if request.method == 'POST':
         roomName = request.form['roomName']
-        creatorName = session.get['username']
+        creatorName = session.get('username')
         maxPlayers = request.form['maxPlayers']
         code = codeGenerator(4)
 
         try:
-            conn = engine.connect()
-            query = text("""INSERT INTO rooms (room_creator, room_name, ingame, maxplayers, code)
-                            VALUES (:creatorName, :roomName, :ingame, :maxPlayers, :code)""")
-            conn.execute(query, {
+            query = "INSERT INTO rooms (room_creator, room_name, ingame, maxplayers, code) VALUES (:creatorName, :roomName, :ingame, :maxPlayers, :code)"
+            queryCUD(query, {
                 'creatorName': creatorName,
                 'roomName': roomName,
                 'ingame': 0,
                 'maxPlayers': maxPlayers,
                 'code': code
             })
-            conn.commit()
-            conn.close()
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
 
@@ -410,10 +398,8 @@ def connect(auth):
     name = session.get("username")
 
     try:
-        conn = engine.connect()
         query = "SELECT code FROM rooms;"
-        result = conn.execute(text(query))
-        conn.close()
+        result = queryRead(query)
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
     rooms = []
@@ -429,11 +415,8 @@ def connect(auth):
     send({"name": name, "message": "has entered the room"}, to=room)
 
     try:
-        conn = engine.connect()
-        query = text("UPDATE rooms SET ingame = ingame + 1 WHERE code = '"+ room +"';")
-        result = conn.execute(query, {'code': room})
-        conn.commit()
-        conn.close()
+        query = "UPDATE rooms SET ingame = ingame + 1 WHERE code = :code"
+        result = queryCUD(query, {"code": room})
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
 
@@ -445,10 +428,8 @@ def disconnect():
     name = session.get("username")
 
     try:
-        conn = engine.connect()
         query = "SELECT code FROM rooms;"
-        result = conn.execute(text(query))
-        conn.close()
+        result = queryRead(query)
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
     rooms = []
@@ -459,20 +440,15 @@ def disconnect():
     if room in rooms:
 
         try:
-            conn = engine.connect()
-            query = f"UPDATE rooms SET ingame = ingame - 1 WHERE code = '{room}';"
-            result = conn.execute(text(query))
-            conn.commit()
-            conn.close()
+            query = "UPDATE rooms SET ingame = ingame - 1 WHERE code = :code"
+            result = queryCUD(query, {"code": room})
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
 
         
         try:
-            conn = engine.connect()
-            query = "SELECT ingame FROM rooms WHERE code = '"+ room +"';" 
-            result = conn.execute(text(query))
-            conn.close()
+            query = "SELECT ingame FROM rooms WHERE code = :code" 
+            result = queryRead(query, {"code": room})
         except SQLAlchemyError as err:
             return jsonify(str(err.__cause__))
         
@@ -482,11 +458,8 @@ def disconnect():
         if ingame <= 0:
 
             try:
-                conn = engine.connect()
-                query = f"""DELETE FROM rooms WHERE code = '{room}';"""
-                result = conn.execute(text(query))
-                conn.commit()
-                conn.close()
+                query = "DELETE FROM rooms WHERE code = :code"
+                result = queryCUD(query, {"code": room})
             except SQLAlchemyError as err:
                 jsonify(str(err.__cause__))
 
@@ -498,10 +471,8 @@ def disconnect():
 def message(data):
     room = session.get("room")
     try:
-        conn = engine.connect()
         query = "SELECT code FROM rooms;"
-        result = conn.execute(text(query))
-        conn.close()
+        result = queryRead(query)
     except SQLAlchemyError as err:
         return jsonify(str(err.__cause__))
     rooms = []
