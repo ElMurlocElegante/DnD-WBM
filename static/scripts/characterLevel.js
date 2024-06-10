@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded',function(){
                         const level = experienceTable.experience[i].level;
                         const pb = experienceTable.experience[i].pb;
         
-                        levelSpan = document.getElementById('level');
-                        levelSpan.innerHTML = level;
-                        pbSpan = document.getElementById('pb');
-                        pbSpan.innerHTML = pb;
+                        levelInput = document.getElementById('level');
+                        levelInput.value = level;
+                        pbInput = document.getElementById('pb');
+                        pbInput.value = pb;
         
                         break;
                     }

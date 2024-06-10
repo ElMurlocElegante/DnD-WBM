@@ -8,10 +8,14 @@
     <form action="{{ url_for('characters')}}" id="characterForm">
         <label for="character_name">Character Name:</label><br>
         <input type="text" id="character_name" name="character_name" required><br>
-        <section id="xpContainer">
-            <label for="xp">XP</label> <br>
-            <input type="number" name="xp" id="xp" min="0">
-            <p id="levelStats">Level: <span id="level">1</span> PB: +<span id="pb">2</span></p>
+        <section class="attribute-row" id="xpContainer">
+                <label for="xp">XP</label> <br>
+                <input type="number" name="xp" id="xp" min="0" value="0" max="355000">
+                <label for="level">Level: </label>
+                <input type="text" id="level" readonly class="total-input" value="1">
+
+                <label for="pb">PB: </label>
+                <input type="text" id="pb" readonly class="total-input" value="2">
         </section>
         <section id="classContainer">
             <label for="class">Class</label>
@@ -33,7 +37,7 @@
                 <button type="button" id="hpRoll">Roll !</button>
                 <button type="button" id="hpMax">Maximum</button>
                 <button type="button" id="hpAvg">Average</button>
-                <input type="number" name="hp" id="hp">
+                <input type="number" name="hp" id="hp" min="0">
             </section>
         </fieldset>
         <label for="alignment">Alignment</label>
@@ -61,10 +65,10 @@
             {% endfor %}
         </select> <br>
         <label for="ac">AC:</label><br>
-        <input type="number" name="ac" id="ac">
+        <input type="number" name="ac" id="ac" min="0" value="0">
         <fieldset>
             <legend>Attributes</legend>
-            <div id="attributes">
+            <section id="attributes">
                 <div class="attribute-row">
                     <label for="availablePoints">Points</label>
                     <input type="text" id="availablePoints" readonly class="total-input" value="27">
@@ -82,9 +86,9 @@
                     <span>Mod.</span>
                     <span>Total</span>
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="strengthContainer">
                     <label for="strength">STR:</label>
-                    <input type="number" id="strength" name="strength">
+                    <input type="number" id="strength" name="strength" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-str2" value="2">
                     </div>
@@ -94,9 +98,9 @@
                     <input type="text" name="modStrength" readonly class="mod-input">
                     <input type="text" name="totalStrength" readonly class="total-input">
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="dexterityContainer">
                     <label for="dexterity">DEX:</label>
-                    <input type="number" id="dexterity" name="dexterity">
+                    <input type="number" id="dexterity" name="dexterity" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-dex2" value="2">
                     </div>
@@ -106,9 +110,9 @@
                     <input type="text" name="modDexterity" readonly class="mod-input">
                     <input type="text" name="totalDexterity" readonly class="total-input">
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="constitutionContainer">
                     <label for="constitution">CON:</label>
-                    <input type="number" id="constitution" name="constitution">
+                    <input type="number" id="constitution" name="constitution" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-con2" value="2">
                     </div>
@@ -118,9 +122,9 @@
                     <input type="text" name="modConstitution" readonly class="mod-input">
                     <input type="text" name="totalConstitution" readonly class="total-input">
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="intelligenceContainer">
                     <label for="intelligence">INT:</label>
-                    <input type="number" id="intelligence" name="intelligence">
+                    <input type="number" id="intelligence" name="intelligence" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-int2" value="2">
                     </div>
@@ -130,9 +134,9 @@
                     <input type="text" name="modIntelligence" readonly class="mod-input">
                     <input type="text" name="totalIntelligence" readonly class="total-input">
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="wisdomContainer">
                     <label for="wisdom">WIS:</label>
-                    <input type="number" id="wisdom" name="wisdom">
+                    <input type="number" id="wisdom" name="wisdom" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-wis2" value="2">
                     </div>
@@ -142,9 +146,9 @@
                     <input type="text" name="modWisdom" readonly class="mod-input">
                     <input type="text" name="totalWisdom" readonly class="total-input">
                 </div>
-                <div class="attribute-row">
+                <div class="attribute-row" id="charismaContainer">
                     <label for="charisma">CHA:</label>
-                    <input type="number" id="charisma" name="charisma">
+                    <input type="number" id="charisma" name="charisma" min="8" value="8" max="15">
                     <div>
                         <input type="checkbox" name="raceBonus" id="raceBonus-cha2" value="2">
                     </div>
@@ -154,7 +158,24 @@
                     <input type="text" name="modCharisma" readonly class="mod-input">
                     <input type="text" name="totalCharisma" readonly class="total-input">
                 </div>
-            </div>
+            </section> <br>
+            <section id="abilityScoreImprovements">
+                <div class="attribute-row">
+                    <label for="availableAbilityImprovements">Ability Score Improvements</label>
+                    <input type="text" id="availableAbilityImprovements" readonly class="total-input" value="0">
+                </div>
+                <div class="header-row">
+                    <span>STR</span><span>DEX</span><span>CON</span><span>INT</span><span>WIS</span><span>CHA</span>
+                </div>
+                <div class="attribute-row" id="abilityScoreImprovementsInputs">
+                    <input type="number" id="strengthImprovement" name="strength" min="0">
+                    <input type="number" id="dexterityImprovement" name="dexterity" min="0">
+                    <input type="number" id="constitutionImprovement" name="constitution" min="0">
+                    <input type="number" id="intelligenceImprovement" name="intelligence" min="0">
+                    <input type="number" id="wisdomImprovement" name="wisdom" min="0">
+                    <input type="number" id="charismaImprovement" name="charisma" min="0">
+                </div>
+            </section>
         </fieldset>
         <fieldset class="sideInfo">    
             <legend>Choose your Proficiencies</legend>    

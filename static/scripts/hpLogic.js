@@ -21,16 +21,16 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function rollHP(die) {
         const hp = document.getElementById('hp');
-        const level = document.getElementById('xp');
-        const conMod = document.querySelector('input[name="modConstitution"]');
+        const level = parseInt(document.getElementById('level').innerText);
+        const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
 
-        hp.value = die + parseInt(conMod.value);
-        if (level.value - 1 > 0){
-            fetch(`roll_dice/${level.value - 1}d${die}`)
+        hp.value = die + conMod;
+        if (level - 1 > 0){
+            fetch(`roll_dice/${level - 1}d${die}`)
                 .then(response => response.json())
                 .then(data => {
                         const result = data.total;
-                        hp.value =  die + parseInt(conMod.value) + result + parseInt(conMod.value) * (level.value - 1)
+                        hp.value =  die + conMod + result + conMod * (level - 1)
                 })
         }
 
@@ -38,25 +38,25 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     function avgHP(die) {
         const hp = document.getElementById('hp');
-        const level = document.getElementById('xp');
-        const conMod = document.querySelector('input[name="modConstitution"]');
+        const level = parseInt(document.getElementById('level').innerText);
+        const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
 
-        console.log(die + parseInt(conMod.value))
         var avg = 0;
         for(var i=1; i<=die; i++){
             avg += i;
         }
         avg = Math.round(avg / die);
 
-        hp.value = (die + parseInt(conMod.value)) + ((avg + parseInt(conMod.value))* (level.value-1))
+        hp.value = (die + conMod) + ((avg + conMod)* (level - 1))
 
     }
 
     function maxHP(die) {
         const hp = document.getElementById('hp');
-        const level = document.getElementById('xp')
-        const conMod = document.querySelector('input[name="modConstitution"]');
-        hp.value = (die + parseInt(conMod.value)) * level.value
+        const level = parseInt(document.getElementById('level').innerText);
+        const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
+
+        hp.value = (die + conMod) * level
     }
 
     const selectedClass = document.getElementById('class');
