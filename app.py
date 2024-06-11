@@ -79,7 +79,7 @@ def login():
         if result:
             session['user_id'] = result.id  
             session['username'] = result.username 
-            return redirect(url_for('home'))
+            return redirect(url_for('characters'))
         else:
             flash('Usuario o contraseña incorrecta', 'danger')
             return render_template('auth/login.html')
@@ -489,4 +489,4 @@ def message(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
