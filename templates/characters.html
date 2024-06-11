@@ -37,7 +37,7 @@
       {% endwith %}
       <form method="POST" action="{{ url_for('delete_character') }}">
         <label for="character_name">Select Character to Delete:</label><br>
-        <select name="character_name" id="character_name" class="btn-red">
+        <select name="character_id" id="character_id" class="btn-red">
             {% for character in data %}
                  <option value="{{ character.id }}">{{ character.character_name}}</option>
             {% endfor %}

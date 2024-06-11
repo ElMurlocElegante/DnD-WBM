@@ -190,13 +190,8 @@ def createCharacter():
 
 @app.route('/delete_character', methods=['POST'])
 def delete_character():
-    if 'username' not in session:
-        flash('User not logged in.', 'danger')
-        return redirect(url_for('login'))
-
     username = session['username']
     character_id = request.form.get('character_id')  # Cambiado a 'character_id' para reflejar el nombre correcto
-
     if not character_id:
         flash('Character ID is required.', 'danger')
         return redirect(url_for('characters'))
@@ -293,7 +288,6 @@ def get_class_data(json_file):
 
 @app.route('/roll_dice/<dice>')
 def roll_dice(dice):
-
     if dice.startswith("d"):
         if dice[1:].isdigit():
             num_caras = int(dice[1:])
@@ -314,7 +308,6 @@ def roll_dice(dice):
   
 @app.route("/gameRooms")
 def gameRooms():
-
     try:
         query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
         result = queryRead(query)
@@ -509,4 +502,4 @@ def message(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, debug=True)
