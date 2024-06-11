@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const ideals = document.getElementById('ideals').value;
         const bonds = document.getElementById('bonds').value;
         const flaws = document.getElementById('flaws').value;
+        const equipment = document.getElementById('equipment').value
+
 
         const jsonBody = {
             characterName: characterName,
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 otherProficiencies: null
             }),
             equipment: JSON.stringify({
-                equipment: null
+                equipment: equipment
             }),
             lore: JSON.stringify({
                 personalityTraits: personalityTraits,
