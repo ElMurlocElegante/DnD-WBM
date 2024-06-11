@@ -12,17 +12,40 @@ body {
     color: #f0f0f0;
     font-size: 16px;
     line-height: 1.5;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Container for Form */
-.form-container {
-    max-width: 800px;
-    margin: 20px auto;
+/* Main Container */
+.main-container {
+    display: flex;
+    max-width: 98%; /* Ajusta el tamaño según sea necesario */
+    width: 100%;
+    margin: 20px;
+    justify-content: space-between;
+}
+
+/* Form and Side Container */
+.form-container,
+.side-info-container {
+    flex: 1;
+    margin: 10px;
     padding: 20px;
     background-color: #2b2b2b;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+/* Lore Section */
+.side-info-container:nth-child(3) {
+    flex-basis: 100%;
+}
+ #lore 
+ {
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+ }
 
 /* Headings */
 h2 {
@@ -65,6 +88,7 @@ textarea:focus {
 }
 
 /* Fieldsets and Legends */
+
 fieldset {
     border: 1px solid #555;
     padding: 15px;
@@ -80,14 +104,18 @@ legend {
 
 /* Attributes Section */
 #attributes {
-    display: flex;
+    display: inline-grid;
     flex-direction: column;
+    justify-content: center;
+    ;
 }
 
 .attribute-row {
     display: flex;
     align-items: center;
+    justify-content: center; 
     margin-bottom: 10px;
+    text-align: auto;
 }
 
 .attribute-row label {
@@ -136,7 +164,6 @@ legend {
 
 /* Proficiencies Section */
 .sideInfo {
-    
     margin-top: 20px;
 }
 

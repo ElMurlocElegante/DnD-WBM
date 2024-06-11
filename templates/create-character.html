@@ -2,204 +2,231 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 
-<div class="form-container">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
     <h2>Manage Characters</h2>
+
+
     <div class="main-container">
-    <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
-        <label for="character_name">Character Name:</label><br>
-        <input type="text" id="character_name" name="character_name" required><br>
-        <label for="class">Class</label>
-        <select name="class" id="class">
-            {% for class_name in classes %}
-                <option value="{{ class_name }}">{{ class_name|upper }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="xp">XP</label> <br>
-        <input type="number" name="xp" id="xp" required> <br>
-        <label for="hp">Hit Points</label> <br>
-        <input type="number" name="hp" id="hp" required> <br>
-        <label for="alignment">Alignment</label>
-        <select name="alignment" id="alignment">
-            <option value="Lawful Good">Lawful Good</option>
-            <option value="Lawful Neutral">Lawful Neutral</option>
-            <option value="Lawful Evil">Lawful Evil</option>
-            <option value="Neutral Good">Neutral Good</option>
-            <option value="Neutral"> Neutral</option>
-            <option value="Neutral Evil">Neutral Evil</option>
-            <option value="Chaotic Good">Chaotic Good</option>
-            <option value="Chaotic Neutral">Chaotic Neutral</option>
-            <option value="Chaotil Evil">Chaotic Evil</option>
-        </select> <br>
-        <label for="background">Background</label>
-        <select name="background" id="background">
-            {%for background in backgrounds %}
-                <option value="{{ background.name }}">{{ background.name }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="race">Race</label>
-        <select name="race" id="race">
-            {% for race_data in races %}
-                <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="ac">AC:</label><br>
-        <input type="number" name="ac" id="ac">
-        <fieldset>
-            <legend>Attributes</legend>
-            <div id="attributes">
-                <div class="attribute-row">
-                    <label for="availablePoints">Points</label>
-                    <input type="text" id="availablePoints" readonly class="total-input" value="27">
-                </div>
-                <div class="header-row">
-                    <span></span>
-                    <span>Base</span>
-                    <div class="race-header">
-                        <span>Race</span>
-                        <div>
-                            <span>+2</span>
-                            <span>+1</span>
+        <!--Inicio Form-->
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('add_character') }}" id="characterForm">
+                <div class="character-info">
+                    <div class="character-name">
+                        <label for="character_name">Character Name:</label><br>
+                        <input type="text" id="character_name" name="character_name" required><br>
+                        <label for="class">Class</label>
+                        <select name="class" id="class">
+                            {% for class_name in classes %}
+                                <option value="{{ class_name }}">{{ class_name|upper }}</option>
+                            {% endfor %}
+                        </select> <br>
+                        <label for="xp">XP</label> <br>
+                        <input type="number" name="xp" id="xp" required> <br>
+                        <label for="hp">Hit Points</label> <br>
+                        <input type="number" name="hp" id="hp" required> <br>
+                        <label for="alignment">Alignment</label>
+                        <select name="alignment" id="alignment">
+                            <option value="Lawful Good">Lawful Good</option>
+                            <option value="Lawful Neutral">Lawful Neutral</option>
+                            <option value="Lawful Evil">Lawful Evil</option>
+                            <option value="Neutral Good">Neutral Good</option>
+                            <option value="Neutral"> Neutral</option>
+                            <option value="Neutral Evil">Neutral Evil</option>
+                            <option value="Chaotic Good">Chaotic Good</option>
+                            <option value="Chaotic Neutral">Chaotic Neutral</option>
+                            <option value="Chaotic Evil">Chaotic Evil</option>
+                        </select> <br>
+                        <label for="background">Background</label>
+                        <select name="background" id="background">
+                            {%for background in backgrounds %}
+                                <option value="{{ background.name }}">{{ background.name }}</option>
+                            {% endfor %}
+                        </select> <br><br>
+                        <label for="race">Race</label>
+                        <select name="race" id="race">
+                            {% for race_data in races %}
+                                <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
+                            {% endfor %}
+                        </select> <br>
+                        <label for="ac">AC:</label><br>
+                        <input type="number" name="ac" id="ac">
+                    </div>
+
+                    
+                    <fieldset>
+                    <legend>Attributes</legend>
+                    <div id="attributes">
+                        <div class="attribute-row">
+                            <label for="availablePoints">Points</label>
+                            <input type="text" id="availablePoints" readonly class="total-input" value="27">
+                        </div>
+                        <div class="header-row">
+                            <span></span>
+                            <span>Base</span>
+                            <div class="race-header">
+                                <span>Race</span>
+                                <div>
+                                    <span>+2</span>
+                                    <span>+1</span>
+                                </div>
+                            </div>
+                            <span>Mod.</span>
+                            <span>Total</span>
+                        </div>
+                        <div class="attribute-row">
+                            <label for="strength">STR:</label>
+                            <input type="number" id="strength" name="strength">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-str2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-str1" value="1">
+                            </div>
+                            <input type="text" name="modStrength" readonly class="mod-input">
+                            <input type="text" name="totalStrength" readonly class="total-input">
+                        </div>
+                        <div class="attribute-row">
+                            <label for="dexterity">DEX:</label>
+                            <input type="number" id="dexterity" name="dexterity">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-dex2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-dex1" value="1">
+                            </div>
+                            <input type="text" name="modDexterity" readonly class="mod-input">
+                            <input type="text" name="totalDexterity" readonly class="total-input">
+                        </div>
+                        <div class="attribute-row">
+                            <label for="constitution">CON:</label>
+                            <input type="number" id="constitution" name="constitution">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-con2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-con1" value="1">
+                            </div>
+                            <input type="text" name="modConstitution" readonly class="mod-input">
+                            <input type="text" name="totalConstitution" readonly class="total-input">
+                        </div>
+                        <div class="attribute-row">
+                            <label for="intelligence">INT:</label>
+                            <input type="number" id="intelligence" name="intelligence">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-int2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-int1" value="1">
+                            </div>
+                            <input type="text" name="modIntelligence" readonly class="mod-input">
+                            <input type="text" name="totalIntelligence" readonly class="total-input">
+                        </div>
+                        <div class="attribute-row">
+                            <label for="wisdom">WIS:</label>
+                            <input type="number" id="wisdom" name="wisdom">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-wis2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-wis1" value="1">
+                            </div>
+                            <input type="text" name="modWisdom" readonly class="mod-input">
+                            <input type="text" name="totalWisdom" readonly class="total-input">
+                        </div>
+                        <div class="attribute-row">
+                            <label for="charisma">CHA:</label>
+                            <input type="number" id="charisma" name="charisma">
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-cha2" value="2">
+                            </div>
+                            <div>
+                                <input type="checkbox" name="raceBonus" id="raceBonus-cha1" value="1">
+                            </div>
+                            <input type="text" name="modCharisma" readonly class="mod-input">
+                            <input type="text" name="totalCharisma" readonly class="total-input">
                         </div>
                     </div>
-                    <span>Mod.</span>
-                    <span>Total</span>
+                </fieldset>
+                    
                 </div>
-                <div class="attribute-row">
-                    <label for="strength">STR:</label>
-                    <input type="number" id="strength" name="strength">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-str2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-str1" value="1">
-                    </div>
-                    <input type="text" name="modStrength" readonly class="mod-input">
-                    <input type="text" name="totalStrength" readonly class="total-input">
-                </div>
-                <div class="attribute-row">
-                    <label for="dexterity">DEX:</label>
-                    <input type="number" id="dexterity" name="dexterity">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-dex2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-dex1" value="1">
-                    </div>
-                    <input type="text" name="modDexterity" readonly class="mod-input">
-                    <input type="text" name="totalDexterity" readonly class="total-input">
-                </div>
-                <div class="attribute-row">
-                    <label for="constitution">CON:</label>
-                    <input type="number" id="constitution" name="constitution">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-con2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-con1" value="1">
-                    </div>
-                    <input type="text" name="modConstitution" readonly class="mod-input">
-                    <input type="text" name="totalConstitution" readonly class="total-input">
-                </div>
-                <div class="attribute-row">
-                    <label for="intelligence">INT:</label>
-                    <input type="number" id="intelligence" name="intelligence">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-int2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-int1" value="1">
-                    </div>
-                    <input type="text" name="modIntelligence" readonly class="mod-input">
-                    <input type="text" name="totalIntelligence" readonly class="total-input">
-                </div>
-                <div class="attribute-row">
-                    <label for="wisdom">WIS:</label>
-                    <input type="number" id="wisdom" name="wisdom">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-wis2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-wis1" value="1">
-                    </div>
-                    <input type="text" name="modWisdom" readonly class="mod-input">
-                    <input type="text" name="totalWisdom" readonly class="total-input">
-                </div>
-                <div class="attribute-row">
-                    <label for="charisma">CHA:</label>
-                    <input type="number" id="charisma" name="charisma">
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-cha2" value="2">
-                    </div>
-                    <div>
-                        <input type="checkbox" name="raceBonus" id="raceBonus-cha1" value="1">
-                    </div>
-                    <input type="text" name="modCharisma" readonly class="mod-input">
-                    <input type="text" name="totalCharisma" readonly class="total-input">
-                </div>
-            </div>
-        </fieldset>
-        <div class="side-info-container">
-        <fieldset class="sideInfo">    
-            <legend>Choose your Proficiencies</legend>    
-            <fieldset class="sideInfo">
-                <legend>Class Proficiencies</legend>
-                <p id="classRemainingSkills"></p>
-                <div id="classSkills"></div>
-            </fieldset>
-            <fieldset class="sideInfo">
-                <legend>Background Proficiencies</legend>
-                <p id="backgroundRemainingSkills"></p>
-                <div id="backgroundSkills"></div>
-            </fieldset>
-            <fieldset class="sideInfo">
-                <legend>Race Proficiencies</legend>
-                <p id="raceRemainingSkills"></p>
-                <div id="raceSkills"></div>
-            </fieldset>
-        </fieldset>
+            </form>
         </div>
-        <fieldset id="allSkills">
+
+        <!--Profesiones Form-->
+        <div class="side-info-container" id="side">
+            <fieldset class="sideInfo">  
+                <legend>Choose your Proficiencies</legend>    
+                <fieldset class="sideInfo">
+                    <legend>Class Proficiencies</legend>
+                    <p id="classRemainingSkills"></p>
+                    <div id="classSkills"></div>
+                </fieldset>
+                <fieldset class="sideInfo">
+                    <legend>Background Proficiencies</legend>
+                    <p id="backgroundRemainingSkills"></p>
+                    <div id="backgroundSkills"></div>
+                </fieldset>
+                <fieldset class="sideInfo">
+                    <legend>Race Proficiencies</legend>
+                    <p id="raceRemainingSkills"></p>
+                    <div id="raceSkills"></div>
+                </fieldset>
+                <fieldset id="allSkills">
             <legend>Proficiencies</legend>
             {% for skill in skills %}
                 <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                 <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
             {% endfor %}
-        </fieldset> <br>
-        <fieldset>
+        	</fieldset>
+         <br>
+         <fieldset>
             <legend>Equipment</legend>
             <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
         </fieldset>
-        <fieldset class="sideInfo">
-            <legend>Lore</legend>
-            <fieldset>
-                <legend>Character Backstory</legend>
-                <textarea name="backstory" id="backstory" rows="5" cols="33"></textarea>
+
             </fieldset>
-            <fieldset>
-                <legend>Personality Traits</legend>
-                <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
-            </fieldset>
-            <fieldset>
-                <legend>Ideals</legend>
-                <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
-            </fieldset>
-            <fieldset>
-                <legend>Bonds</legend>
-                <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
-            </fieldset>
-            <fieldset>
-                <legend>Flaws</legend>
-                <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
-            </fieldset>
+            
+        </div>
+    </div>
+
+   
+    <!-- Lore Form-->
+
+<div id="lore">
+    <fieldset class="sideInfo">
+        <legend>Lore</legend>
+        <fieldset>
+            <legend>Character Backstory</legend>
+            <textarea name="backstory" id="backstory" rows="5" cols="33"></textarea>
         </fieldset>
+        <fieldset>
+            <legend>Personality Traits</legend>
+            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Ideals</legend>
+            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Bonds</legend>
+            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Flaws</legend>
+            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
+        </fieldset>
+        <!-- Final Form -->
+        
+    </fieldset>
+</div>
 
         <input type="submit" value="Add Character">
+  
+
     </form>
     </div>
 
-
-</div>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 {% endblock %}
