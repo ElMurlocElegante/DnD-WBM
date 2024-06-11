@@ -79,7 +79,7 @@ def login():
         if result:
             session['user_id'] = result.id  
             session['username'] = result.username 
-            return redirect(url_for('characters'))
+            return redirect(url_for('home'))
         else:
             flash('Usuario o contraseña incorrecta', 'danger')
             return render_template('auth/login.html')
