@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function rollHP(die) {
         const hp = document.getElementById('hp');
-        const level = parseInt(document.getElementById('level').innerText);
+        const level = parseInt(document.getElementById('level').value);
         const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
 
         hp.value = die + conMod;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     function avgHP(die) {
         const hp = document.getElementById('hp');
-        const level = parseInt(document.getElementById('level').innerText);
+        const level = parseInt(document.getElementById('level').value);
         const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
 
         var avg = 0;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function maxHP(die) {
         const hp = document.getElementById('hp');
-        const level = parseInt(document.getElementById('level').innerText);
+        const level = parseInt(document.getElementById('level').value);
         const conMod = parseInt(document.querySelector('input[name="modConstitution"]').value);
 
         hp.value = (die + conMod) * level
