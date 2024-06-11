@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Evitar el envío del formulario de forma estándar
         const characterName = document.getElementById('character_name').value;
         const className = document.getElementById('class').value;
+        const subclassName = document.getElementById('subclass').value;
         const xp = document.getElementById('xp').value;
         const hp = document.getElementById('hp').value;
         const alignment = document.getElementById('alignment').value;
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const jsonBody = {
             characterName: characterName,
             className: className,
-            subclassName: null,
+            subclassName: subclassName,
             xp: xp,
             hp: hp,
             alignment: alignment,

@@ -1,23 +1,17 @@
 document.addEventListener('DOMContentLoaded', function(){
 
-    // Puntos iniciales disponibles
-    var availablePoints = 27;
-
-
     function fetchRaceData (event) {
         if (event.target === undefined){
             var selectedRace = event.value;
         } else {
             var selectedRace = event.target.value;
         }
-        var [raceName, raceSource] = selectedRace.split('|');
+        const [raceName, raceSource] = selectedRace.split('|');
 
         fetch('../../data/races.json')
             .then(response => response.json())
             .then(data => {
-                var raceData = data.race.find(function(rc) {
-                    return rc.name === raceName && rc.source === raceSource;
-                });
+                const raceData = data.race.find(rc => rc.name === raceName && rc.source === raceSource);
                 if (raceData) {
                     disableAllCheckbox();
                     if(raceData.ability){
@@ -27,26 +21,25 @@ document.addEventListener('DOMContentLoaded', function(){
                     }
 
                 } else {
-                    console.log('Raza no encontrado:', selectedRace);
+                    console.log('Raza no encontrada:', selectedRace);
                 }
             })
             .catch(error => console.error('Error fetching raza:', error));
     }
 
-
     function enableCheckbox(data, type) {
         const raceBonusCheckboxes = document.querySelectorAll('input[name="raceBonus"]');
-        var maxSelect = 0;
+        let maxSelect = 0;
     
         // Eliminar todos los event listeners existentes
-        raceBonusCheckboxes.forEach(function(checkbox) {
+        raceBonusCheckboxes.forEach(checkbox => {
             checkbox.removeEventListener('change', checkboxChooseChangeHandler);
             checkbox.removeEventListener('change', checkboxAnyChangeHandler);
         });
     
-        Object.keys(data[0]).forEach(function(element) {
+        Object.keys(data[0]).forEach(element => {
             if (element !== 'choose') {
-                var checkbox = document.querySelector(`input[id="raceBonus-${element}${data[0][element]}"`);
+                const checkbox = document.querySelector(`input[id="raceBonus-${element}${data[0][element]}"`);
                 checkbox.disabled = true;
                 checkbox.checked = true;
             } else if (element === 'choose') {
@@ -54,11 +47,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 maxSelect = data[0].choose.count;
     
                 // Agregar event listener a cada checkbox
-                data[0].choose.from.forEach(function(attribute) {
-                    var checkbox = document.querySelector(`input[id="raceBonus-${attribute}1"`);
+                data[0].choose.from.forEach(attribute => {
+                    const checkbox = document.querySelector(`input[id="raceBonus-${attribute}1"`);
                     checkbox.disabled = false;
                     checkbox.checked = false;
-                    checkbox.addEventListener('change', function(event){
+                    checkbox.addEventListener('change', event => {
                         checkboxChooseChangeHandler(maxSelect,event);
                     });
                 });
@@ -66,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function(){
         });
         updateAllRowsTotalAndModifier();
     }
-    
-    // Actualizar el recuento máximo de habilidades
+
     function checkboxChooseChangeHandler(maxSelect, event) {
         var checkedBoxes = document.querySelectorAll('input[type="checkbox"][name="raceBonus"]:checked:not(:disabled)');
         if (checkedBoxes.length > maxSelect) {
@@ -75,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         updateAllRowsTotalAndModifier();
     }
+
     function checkboxAnyChangeHandler(maxSelect, event) {
         var checkedBonus1 = document.querySelectorAll('input[type="checkbox"][name="raceBonus"][value="1"]:checked:not(:disabled)');
         var checkedBonus2 = document.querySelectorAll('input[type="checkbox"][name="raceBonus"][value="2"]:checked:not(:disabled)');
@@ -104,11 +97,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function enableAllCheckbox() {
         const raceBonusCheckboxes = document.querySelectorAll('input[name="raceBonus"]');
-        raceBonusCheckboxes.forEach(function(bonus) {
+        raceBonusCheckboxes.forEach(bonus => {
             bonus.removeEventListener('change', checkboxChooseChangeHandler);
             bonus.removeEventListener('change', checkboxAnyChangeHandler);
             bonus.disabled = false;
-            bonus.addEventListener('change', function(event){
+            bonus.addEventListener('change', event => {
                 checkboxAnyChangeHandler(1,event);
             });
         })
@@ -118,15 +111,16 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     function disableAllCheckbox() {
         const raceBonusCheckboxes = document.querySelectorAll('input[name="raceBonus"]');
-        raceBonusCheckboxes.forEach(function(bonus) {
+        raceBonusCheckboxes.forEach(bonus => {
             bonus.disabled = true;
             bonus.checked = false;
         })
     }
+
     // Función para actualizar los puntos disponibles
-    function updateAvailablePoints() {
+    function updateAvailablePoints(points) {
         const availablePointsInput = document.getElementById('availablePoints');
-        availablePointsInput.value = availablePoints;
+        availablePointsInput.value = points;
     }
 
     // Función para calcular el costo de aumento de un atributo
@@ -145,39 +139,91 @@ document.addEventListener('DOMContentLoaded', function(){
         return costPerPoint[value];
     }
 
-    // Función para manejar cambios en los atributos
+    // Función para actualizar los puntos de mejora de habilidad disponibles según el nivel del personaje
+    function updateAvailableAbilityImprovements(level) {
+        console.log(level)
+        const availableAbilityImprovementsInput = document.getElementById('abilityScoreImprovementsInputs').querySelectorAll('input')
+        const availableAbilityImprovementsPoints = document.getElementById('availableAbilityImprovements');
+        const improvementsAtLevels = [4, 8, 12, 16, 19]; // Niveles donde se obtienen mejoras de habilidad
+        const availableAbilityImprovements = improvementsAtLevels.filter(lvl => lvl <= level).length * 2; // Cada mejora permite aumentar dos puntos
+        availableAbilityImprovementsPoints.value = availableAbilityImprovements;
+        
+        availableAbilityImprovementsInput.forEach(function(asi) {
+            asi.value=0;
+        })
+        
+    }
+
+    // Función para calcular y actualizar los puntos de mejora de habilidad utilizados
+    function updateASIValues() {
+        const asiInputs = document.getElementById('abilityScoreImprovements').querySelectorAll('input[type="number"]');
+        var totalASIUsed = 0;
+        asiInputs.forEach(input => {
+            totalASIUsed += parseInt(input.value) || 0;
+        });
+
+        const availableASI = parseInt(document.getElementById('availableAbilityImprovements').value);
+        return availableASI - totalASIUsed;
+    }
+
+    // Función para manejar los cambios en los puntos de mejora de habilidad
+    function handleASIChange(event) {
+        const remainingASI = updateASIValues();
+        if (remainingASI < 0) {
+            event.target.value = parseInt(event.target.value) - 1;
+        }
+        const row = document.getElementById(`${event.target.name}Container`);
+        updateTotalAndModifier(row);
+    }
+    // Evento para actualizar los puntos de mejora de habilidad cuando cambia el nivel del personaje
+    document.getElementById('level').addEventListener('input', function() {
+        console.log('@')
+        updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));
+    });
+
+    // Inicializar puntos de mejora de habilidad basados en el nivel inicial del personaje
+    updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));
+
+    // Agregar evento de escucha a los inputs de ASI
+    const ASIInputs = document.getElementById('abilityScoreImprovements').querySelectorAll('input[type="number"]');
+    ASIInputs.forEach(input => {
+        input.value = 0; // Valor inicial
+        input.addEventListener('input', handleASIChange);
+    });
+    
     function handleAttributeChange(input) {
+        var availablePoints = parseInt(document.getElementById('availablePoints').value)
         const currentValue = parseInt(input.value);
         const previousValue = parseInt(input.dataset.previousValue) || 8; // Valor predeterminado inicial
         const costDifference = calculateCost(currentValue) - calculateCost(previousValue);
-        
         // Verificar si hay suficientes puntos disponibles para el cambio
-        if (availablePoints - costDifference >= 0) {
-            availablePoints -= costDifference;
+        if ((availablePoints - costDifference) >= 0) {
+            availablePoints -= costDifference; 
             input.dataset.previousValue = currentValue; // Actualizar el valor anterior del input
         } else {
             // Restaurar el valor anterior si no hay suficientes puntos disponibles
             input.value = previousValue;
         }
-
         // Actualizar puntos disponibles
-        updateAvailablePoints();
+        updateAvailablePoints(availablePoints);
 
         // Actualizar total y modificador
         updateTotalAndModifier(input.closest('.attribute-row'));
     }
+
     function updateAllRowsTotalAndModifier() {
-        const attributeRows = Array.from(document.querySelectorAll('.attribute-row')).filter(function(row) {
-            return row.querySelector('label').getAttribute('for') !== 'availablePoints';
-        });
+        const attributeRows = Array.from(document.getElementById('attributes').querySelectorAll('.attribute-row')).filter(row => row.querySelector('label').getAttribute('for') !== 'availablePoints');
         // Actualizar total y modificador inicialmente
         attributeRows.forEach(row => {
             updateTotalAndModifier(row);
         });
     }
+
     // Función para calcular el total y el modificador de un atributo
     function updateTotalAndModifier(row) {
-        const baseValue = parseInt(row.querySelector('input[type="number"]').value);
+        const baseInput = row.querySelector('input[type="number"]')
+        const baseValue = parseInt(baseInput.value);
+        const ASIValue = parseInt(document.getElementById('abilityScoreImprovementsInputs').querySelector(`input[name="${baseInput.name}"]`).value)
         let raceBonus = 0;
 
         // Sumar bonificaciones de raza seleccionadas
@@ -186,22 +232,25 @@ document.addEventListener('DOMContentLoaded', function(){
         });
 
         // Calcular el total y el modificador
-        const total = baseValue + raceBonus;
+        const total = baseValue + raceBonus + ASIValue;
         const modifier = Math.floor((total - 10) / 2);
 
         // Actualizar los campos de total y modificador
         row.querySelector('input[name^="total"]').value = total;
         row.querySelector('input[name^="mod"]').value = modifier >= 0 ? `+${modifier}` : modifier;
     }
-
+    // Actualizar puntos disponibles inicialmente
+    updateAvailablePoints(27);
     // Agregar evento de escucha a los inputs de los atributos
-    const attributeInputs = document.querySelectorAll('.attribute-row input[type="number"]');
+    const attributeInputs = document.getElementById('attributes').querySelectorAll('.attribute-row input[type="number"]');
     attributeInputs.forEach(input => {
         input.value = 8;
+        input.min = 8; // Establecer el valor mínimo desde JavaScript
+        handleAttributeChange(input);
         input.addEventListener('input', () => handleAttributeChange(input));
     });
 
-    var raceSelect = document.getElementById('race');
+    const raceSelect = document.getElementById('race');
     raceSelect.addEventListener('change', fetchRaceData);
     fetchRaceData(raceSelect);
 
@@ -211,8 +260,6 @@ document.addEventListener('DOMContentLoaded', function(){
         checkbox.addEventListener('change', () => updateTotalAndModifier(checkbox.closest('.attribute-row')));
     });
 
-    // Actualizar puntos disponibles inicialmente
-    updateAvailablePoints();
     updateAllRowsTotalAndModifier();
 
 });

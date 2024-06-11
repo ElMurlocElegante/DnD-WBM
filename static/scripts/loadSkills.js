@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             backgroundData = copyData;
                         }
                     }
-                    // Aquí puedes procesar backgroundData como desees
                     addProficiencies(backgroundData.skillProficiencies[0], 'background');
                 } else {
                     console.log('Background no encontrado:', selectedBackground);
