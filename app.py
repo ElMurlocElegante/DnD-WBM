@@ -188,8 +188,28 @@ def createCharacter():
 
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
-@app.route("/characters/delete_character", methods=['DELETE'])
-def delete_character(character_name):
+@app.route('/delete_character', methods=['POST'])
+def delete_character():
+    if 'username' not in session:
+        flash('User not logged in.', 'danger')
+        return redirect(url_for('login'))
+
+    username = session['username']
+    character_id = request.form.get('character_id')  # Cambiado a 'character_id' para reflejar el nombre correcto
+
+    if not character_id:
+        flash('Character ID is required.', 'danger')
+        return redirect(url_for('characters'))
+
+    query = "DELETE FROM characters WHERE username = :username AND id = :id"
+    try:
+        result = queryCUD(query, {"username": username, "id": character_id})
+        if isinstance(result, str):  # Si hay un error
+            flash(f"Error: {result}", 'danger')
+        else:
+            flash('Character deleted successfully.', 'success')
+    except SQLAlchemyError as err:
+        flash(f"Database error: {str(err.__cause__)}", 'danger')
     return redirect(url_for('characters'))
 
 @app.route("/characters/add_character", methods=['POST'])

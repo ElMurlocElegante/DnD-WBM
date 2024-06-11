@@ -26,15 +26,25 @@
         <form method="GET" action="{{ url_for('createCharacter') }}">
             <button type="submit" class="btn-red">Create character</button>
         </form>
-        <form method="POST" action="{{ url_for('delete_character') }}">
-            <label for="character_name">Select Character to Delete:</label><br>
-            <select name="character_name" id="character_name" class="btn-red">
-                {% for character in data %}
-                     <option value="{{ character.name }}">{{ character.name }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" class="btn-red">Delete Character</button>
-        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      <form method="POST" action="{{ url_for('delete_character') }}">
+        <label for="character_name">Select Character to Delete:</label><br>
+        <select name="character_name" id="character_name" class="btn-red">
+            {% for character in data %}
+                 <option value="{{ character.id }}">{{ character.character_name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-red">Delete Character</button>
+    </form>
+    
     </div>
 </div>
 {% endblock %}
