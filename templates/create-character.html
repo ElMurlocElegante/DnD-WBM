@@ -177,6 +177,23 @@
                 </div>
             </section>
         </fieldset>
+        <fieldset>
+            <legend>Other Proficiencies</legend>
+            <fieldset id="language">
+                <legend>Languages</legend>
+                <section id="languageProfList">
+                    <section id="languageProfBackground"></section>
+                    <section id="languageProfClass"></section>
+                    <section id="languageProfRace"></section>
+                </section>
+            </fieldset>
+            <fieldset id="items">
+                <legend>Items and Tools</legend>
+                <section id="itemProfList">
+                    <section></section>
+                </section>
+            </fieldset>
+        </fieldset>
         <fieldset class="sideInfo">    
             <legend>Choose your Proficiencies</legend>    
             <fieldset class="sideInfo">
@@ -226,6 +243,7 @@
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/loadItemLanguage.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/sendNewCharacterData.js') }}"></script>

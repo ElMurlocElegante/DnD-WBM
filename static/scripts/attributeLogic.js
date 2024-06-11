@@ -191,20 +191,19 @@ document.addEventListener('DOMContentLoaded', function(){
         input.addEventListener('input', handleASIChange);
     });
     
-    function handleAttributeChange(input, availablePoints) {
+    function handleAttributeChange(input) {
+        var availablePoints = parseInt(document.getElementById('availablePoints').value)
         const currentValue = parseInt(input.value);
         const previousValue = parseInt(input.dataset.previousValue) || 8; // Valor predeterminado inicial
         const costDifference = calculateCost(currentValue) - calculateCost(previousValue);
-
         // Verificar si hay suficientes puntos disponibles para el cambio
-        if (availablePoints - costDifference >= 0) {
-            availablePoints -= costDifference;
+        if ((availablePoints - costDifference) >= 0) {
+            availablePoints -= costDifference; 
             input.dataset.previousValue = currentValue; // Actualizar el valor anterior del input
         } else {
             // Restaurar el valor anterior si no hay suficientes puntos disponibles
             input.value = previousValue;
         }
-
         // Actualizar puntos disponibles
         updateAvailablePoints(availablePoints);
 
@@ -240,7 +239,8 @@ document.addEventListener('DOMContentLoaded', function(){
         row.querySelector('input[name^="total"]').value = total;
         row.querySelector('input[name^="mod"]').value = modifier >= 0 ? `+${modifier}` : modifier;
     }
-
+    // Actualizar puntos disponibles inicialmente
+    updateAvailablePoints(27);
     // Agregar evento de escucha a los inputs de los atributos
     const attributeInputs = document.getElementById('attributes').querySelectorAll('.attribute-row input[type="number"]');
     attributeInputs.forEach(input => {
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function(){
         input.addEventListener('input', () => handleAttributeChange(input));
     });
 
-    var raceSelect = document.getElementById('race');
+    const raceSelect = document.getElementById('race');
     raceSelect.addEventListener('change', fetchRaceData);
     fetchRaceData(raceSelect);
 
@@ -260,8 +260,6 @@ document.addEventListener('DOMContentLoaded', function(){
         checkbox.addEventListener('change', () => updateTotalAndModifier(checkbox.closest('.attribute-row')));
     });
 
-    // Actualizar puntos disponibles inicialmente
-    updateAvailablePoints(27);
     updateAllRowsTotalAndModifier();
 
 });
