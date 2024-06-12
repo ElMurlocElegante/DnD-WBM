@@ -257,6 +257,14 @@ def about():
 def github_redirect():
     return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
 
+@app.route("/igmatias")
+def igmatias_redirect():
+    return redirect("https://www.instagram.com/matias_dejean/?hl=en")
+
+@app.route("/igmartina")
+def igmartina_redirect():
+    return redirect ("https://www.instagram.com/martumm_/")
+
 @app.route("/socketio")
 def socketio_redirect():
     return redirect("https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js")
