@@ -254,6 +254,7 @@ def about():
     return render_template("about.html")
 
 @app.route("/github/<profile>/<repo>")
+@app.route("/github/<profile>")
 def github_redirect(profile, repo=None):
     if repo:
         return redirect(f"https://github.com/{profile}/{repo}")
