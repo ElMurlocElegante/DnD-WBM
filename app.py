@@ -253,17 +253,16 @@ def add_character():
 def about():
     return render_template("about.html")
 
-@app.route("/github")
-def github_redirect():
-    return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
+@app.route("/github/<profile>/<repo>")
+def github_redirect(profile, repo=None):
+    if repo:
+        return redirect(f"https://github.com/{profile}/{repo}")
+    else:
+        return redirect(f"https://github.com/{profile}")
 
-@app.route("/igmatias")
-def igmatias_redirect():
-    return redirect("https://www.instagram.com/matias_dejean/?hl=en")
-
-@app.route("/igmartina")
-def igmartina_redirect():
-    return redirect ("https://www.instagram.com/martumm_/")
+@app.route("/ig/<profile>")
+def instagram_redirect(profile):
+    return redirect (f"https://www.instagram.com/{profile}/")
 
 @app.route("/socketio")
 def socketio_redirect():
