@@ -1,47 +1,61 @@
 /* General Reset */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
 }
 
 /* Body Styling */
 body {
-    background-color: #1c1c1c;
     color: #f0f0f0;
-    font-size: 16px;
-    line-height: 1.5;   
+    font-size: 16px;   
 }
 /* Headings */
 
 h2 {
     margin-bottom: 20px;
     text-align: center;
-    color: #e8491d;
+    color: white;
 }
+/* contenedor general */
+.contenedorGeneral {
+    height: 200vh;
+    box-sizing: border-box;
+    background-image: url('/static/images/tabern.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
 /* Main Container */
 
 .form-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     width: 100%;
+    height: 100%;
     max-width: 1600px;
-    margin: 20px auto;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #2b2b2b;
+    background-color: rgba(43, 43, 43, 0.7);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    line-height: 1.5;
+}
+
+/* Full info box */
+
+.full-info {
+    display: flex;
+    flex-direction: row;
+    height: 80%;
+    gap: 20px;
 }
 
 /* Form Styling */
-.form-container form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+#characterForm {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     width: 100%;
+    height: 100%;
 }
 
 label {
@@ -67,16 +81,17 @@ input[type="number"]:focus,
 select:focus,
 textarea:focus {
     outline: none;
-    border-color: #e8491d;
+    border-color: white;
 }
 /* Box Info Principal */
 .info-principal {
     display: flex;
     flex-direction:column;
+    width: 32%;
     margin: 0px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #2b2b2b;
+    background-color:  rgba(43, 43, 43, 0.4);
     border: 1px solid #555;
 }
 .info-principal fieldset {
@@ -86,6 +101,40 @@ textarea:focus {
     
 }
 
+.hpCalc {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contenedorBotonesRoll {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonRoll {
+    width: 25%;
+    height: 25%;
+    font-size: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.buttonRoll:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
 /* Box Info Atributos */
 .info-atributos{
     display: flex;
@@ -93,10 +142,10 @@ textarea:focus {
     justify-content:flex-start;
     align-items:center;
     padding: 20px;
-    background-color: #2b2b2b;
+    background-color: rgba(43, 43, 43, 0.4);
     border: 1px solid #555;
     border-radius: 8px;
-    width: 100%;    
+    width: 32%;    
 }
 
 
@@ -110,17 +159,36 @@ textarea:focus {
     
 } */
 
+#attributes {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.all-attributes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .attribute-row {
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    margin-bottom: 5px;
+    align-items: center;
     text-align: auto;
+    margin-right: 10px;
 }
 
 .attribute-row label {
     flex: 1;
     margin-right: 10px;
+}
+
+.attribute-row #xp {
+    width: 100px;
 }
 
 .attribute-row input[type="number"] {
@@ -145,21 +213,36 @@ textarea:focus {
 
 .header-row {
     display: flex;
-    justify-content: space-between;
+    width: 100%;
     font-weight: bold;
-    color: #e8491d;
+    color: white;
     margin-bottom: 10px;
+    margin-left: 10px;
+    justify-content: space-around;    
 }
 
-.header-row span {
-    flex: 1;
+.restoTitulos {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.header-row .base {
+    width: 15%;
     text-align: center;
 }
 
 .race-header {
     display: flex;
-    flex: 2;
-    justify-content: space-between; 
+    justify-content: space-between;
+    width: 50%; 
+}
+
+.race-header .seleccionExtra {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
 }
 
 /* Box Info Profesiones */
@@ -167,9 +250,10 @@ textarea:focus {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #2b2b2b;
+    background-color: rgba(43, 43, 43, 0.4);
     border: 1px solid #555;
     border-radius: 8px;
+    width: 32%;
 }
 .info-profesiones fieldset {
     border: 1px solid #555;
@@ -195,12 +279,23 @@ textarea:focus {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #2b2b2b;
     border: 1px solid #555;
     border-radius: 8px;
 }
 
 .lore fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+/* equipment box */
+
+.equipmentBox {
+    width: 100%;
+}
+
+.equipment {
     border: 1px solid #555;
     padding: 15px;
     border-radius: 4px;
@@ -228,23 +323,39 @@ textarea {
 legend {
     padding: 0 10px;
     font-weight: bold;
-    color: #e8491d;
+    color: white;
 }
 
 
 /* Submit Button */
-input[type="submit"] {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #e8491d;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
+
+.buttonContainer {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-input[type="submit"]:hover {
-    
-    background-color: #cf3b0f;
+.formButton {
+    width: 25%;
+    height: 25%;
+    font-size: 35px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.formButton:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
 
