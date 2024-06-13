@@ -2,41 +2,43 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 <main>
-    <section class="rooms">
-        {% if data %}
-        <p>{{data}}</p>
-        {% endif %}
-        {%for room in rooms %}
-        <article class="room-container">
-            <h4 class="room-item">{{room["room_creator"]}}</h4>
-            <h4 class="room-item">{{room["room_name"]}}</h4>
-            <h4 class="room-item">{{room["ingame"]}}/{{room["maxplayers"]}}</h4>
-            <div class="button-container room-item">
-                <button class="btn-join">join</button>
-            </div>
-        </article>
-        {% endfor %}
-    </section>
-    <section class="roomCreation">
-        <div class="content">
-            <h3>Didn't Find your Room? Create it!</h3>
-            <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
-        </div>
-    </section>
-    <dialog class="modal" id="modal">
-        <div class="modalHeader">
-            <button class="closeBtn">&times;</button>
-        </div>
-        <div class="modalBody">
-            <form action="/joinRoom" method="POST" class="roomJoining">
-                <label for="code">Room code</label>
-                <input type="text" id="code" name="code" placeholder="room code" required>
-                <div class="joinBtn">
-                    <button type="submit" class="btn-join-modal">join</button>
+    <div class="roomsContainer">
+        <section class="rooms">
+            {% if data %}
+            <p>{{data}}</p>
+            {% endif %}
+            {%for room in rooms %}
+            <article class="room-container">
+                <h4 class="room-item textShadow">{{room["room_creator"]}}</h4>
+                <h4 class="room-item textShadow">{{room["room_name"]}}</h4>
+                <h4 class="room-item textShadow">{{room["ingame"]}}/{{room["maxplayers"]}}</h4>
+                <div class="button-container room-item">
+                    <button class="btn-join">join</button>
                 </div>
-            </form>
-        </div>
-    </dialog>
+            </article>
+            {% endfor %}
+        </section>
+        <section class="roomCreation">
+            <div class="roomCreationContent">
+                <h3 class="textShadow">Didn't Find your Room? Create it!</h3>
+                <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
+            </div>
+        </section>
+        <dialog class="modal" id="modal">
+            <div class="modalHeader">
+                <button class="closeBtn">&times;</button>
+            </div>
+            <div class="modalBody">
+                <form action="/joinRoom" method="POST" class="roomJoining">
+                    <label for="code">Room code</label>
+                    <input type="text" id="code" name="code" placeholder="room code" required>
+                    <div class="joinBtn">
+                        <button type="submit" class="btn-join-modal">join</button>
+                    </div>
+                </form>
+            </div>
+        </dialog>
+    </div>
 </main>
 <script src="{{ url_for('static', filename='scripts/joinRoom.js') }}"></script>
 {% endblock %}

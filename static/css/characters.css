@@ -1,6 +1,6 @@
 /* lista de personajes */
 .character-list {
-    background-color: rgb(47, 47, 47);
+    background-color: rgba(47, 47, 47, 0.7);
     border: 1px solid #ddd;
     border-radius: 5px;
     display: flex;
