@@ -141,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // Función para actualizar los puntos de mejora de habilidad disponibles según el nivel del personaje
     function updateAvailableAbilityImprovements(level) {
-        console.log(level)
         const availableAbilityImprovementsInput = document.getElementById('abilityScoreImprovementsInputs').querySelectorAll('input')
         const availableAbilityImprovementsPoints = document.getElementById('availableAbilityImprovements');
         const improvementsAtLevels = [4, 8, 12, 16, 19]; // Niveles donde se obtienen mejoras de habilidad
@@ -176,10 +175,12 @@ document.addEventListener('DOMContentLoaded', function(){
         updateTotalAndModifier(row);
     }
     // Evento para actualizar los puntos de mejora de habilidad cuando cambia el nivel del personaje
-    document.getElementById('xp').addEventListener('change', function() {
-        console.log('@')
-        updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));
+    ['change','input'].forEach(function(event) {
+        document.getElementById('xp').addEventListener(event, function() {
+            updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));
+        });
     });
+
 
     // Inicializar puntos de mejora de habilidad basados en el nivel inicial del personaje
     updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));

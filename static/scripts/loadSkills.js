@@ -196,11 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
         var label = document.createElement('label');
         label.htmlFor = `${skill.toLowerCase()}-${type}`;
         label.textContent = `${skill}`;
-    
+
         var container = document.createElement('div');
+        container.className = 'checkbox-container'; // Añade la clase CSS
         container.appendChild(checkbox);
         container.appendChild(label);
-    
+
         return container;
     }
     

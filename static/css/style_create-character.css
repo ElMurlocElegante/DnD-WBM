@@ -114,8 +114,8 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: space-between; 
-    margin-bottom: 5px
-    text-align:auto;
+    margin-bottom: 5px;
+    text-align: auto;
 }
 
 .attribute-row label {
@@ -184,6 +184,11 @@ textarea:focus {
 #allSkills input[type="checkbox"] {
     margin-top: 10px;
     
+}
+
+.checkbox-container {
+    display: inline-block;
+    margin-right: 10px; /* Opcional: espacio entre los elementos */
 }
 
 .lore {

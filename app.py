@@ -79,7 +79,7 @@ def login():
         if result:
             session['user_id'] = result.id  
             session['username'] = result.username 
-            return redirect(url_for('home'))
+            return redirect(url_for('characters'))
         else:
             flash('Usuario o contraseña incorrecta', 'danger')
             return render_template('auth/login.html')
@@ -122,13 +122,15 @@ def logout():
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
-    if 'user_id' not in session:
+    if 'username' not in session:
         return redirect(url_for('login'))
 
-    user_id = session['user_id']
-    query = "DELETE FROM users WHERE id = :id"
+    username = session['username']
+    query_delete_characters = "DELETE FROM characters WHERE username = :username"
+    query_delete_user = "DELETE FROM users WHERE username = :username"
     try:
-        queryCUD(query, {"id": user_id})
+        queryCUD(query_delete_characters, {"username": username})
+        queryCUD(query_delete_user, {"username": username})
         session.clear()
         flash('Cuenta eliminada correctamente', 'success')
     except SQLAlchemyError as err:

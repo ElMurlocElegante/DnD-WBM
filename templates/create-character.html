@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block title %} DnD-WBM {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
+{% endblock %}
 {% block body %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
 <h2>Manage Characters</h2>
 
 <!--Main Container-->
@@ -238,8 +240,10 @@
             <fieldset id="allSkills">
                 <legend>Proficiencies</legend>
                 {% for skill in skills %}
+                <div class="checkbox-container">
                     <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
                     <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
+                </div>
                 {% endfor %}
             </fieldset> <br>
         </div>
@@ -270,8 +274,8 @@
     </form>
 </div>
 
-<script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>

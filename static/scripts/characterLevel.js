@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded',function(){
                         levelInput.value = level;
                         pbInput = document.getElementById('pb');
                         pbInput.value = pb;
-        
                         break;
                     }
                 }

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %} DnD-WBM {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/characters.css') }}">
+{% endblock %}
 {% block body %}
 <div class="charctersContainer">
     <div class="main-content">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/characters.css') }}">
         <form action="{{ url_for('logout') }}" method="GET">
             <button type="submit" class="btn-red">Logout</button>
         </form>
