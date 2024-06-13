@@ -2,13 +2,17 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 <main>
-    <form action="/roomCreated" method="POST" class="roomCreation">
-        <h2>Create Room</h2>
-        <label for="roomName">Room Name</label>
-        <input type="text" id="roomName" name="roomName" placeholder="room name" required>
-        <label for="maxPlayers">Number of players</label>
-        <input type="number" id="maxPlayers" name="maxPlayers" placeholder="number of players" required>
-        <button type="submit">create</button>
-    </form>
+    <div class="roomCreationContainer">
+        <form action="/roomCreated" method="POST" class="roomCreationForm">
+            <h2>Create Room</h2>
+            <div class="formContentRooms">
+                <label for="roomName">Room Name</label>
+                <input type="text" id="roomName" name="roomName" placeholder="room name" required>
+                <label for="maxPlayers">Number of players</label>
+                <input type="number" id="maxPlayers" name="maxPlayers" placeholder="number of players" required>
+            </div>
+            <button class="createRoomBtn" type="submit">create</button>
+        </form>
+    </div>
 </main>
 {% endblock %}
