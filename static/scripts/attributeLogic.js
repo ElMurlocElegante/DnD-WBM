@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function(){
         updateTotalAndModifier(row);
     }
     // Evento para actualizar los puntos de mejora de habilidad cuando cambia el nivel del personaje
-    document.getElementById('level').addEventListener('input', function() {
+    document.getElementById('xp').addEventListener('change', function() {
         console.log('@')
         updateAvailableAbilityImprovements(parseInt(document.getElementById('level').value));
     });

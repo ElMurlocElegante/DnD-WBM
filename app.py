@@ -188,8 +188,23 @@ def createCharacter():
 
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
-@app.route("/characters/delete_character", methods=['DELETE'])
-def delete_character(character_name):
+@app.route('/delete_character', methods=['POST'])
+def delete_character():
+    username = session['username']
+    character_id = request.form.get('character_id')  # Cambiado a 'character_id' para reflejar el nombre correcto
+    if not character_id:
+        flash('Character ID is required.', 'danger')
+        return redirect(url_for('characters'))
+
+    query = "DELETE FROM characters WHERE username = :username AND id = :id"
+    try:
+        result = queryCUD(query, {"username": username, "id": character_id})
+        if isinstance(result, str):  # Si hay un error
+            flash(f"Error: {result}", 'danger')
+        else:
+            flash('Character deleted successfully.', 'success')
+    except SQLAlchemyError as err:
+        flash(f"Database error: {str(err.__cause__)}", 'danger')
     return redirect(url_for('characters'))
 
 @app.route("/characters/add_character", methods=['POST'])
@@ -238,9 +253,17 @@ def add_character():
 def about():
     return render_template("about.html")
 
-@app.route("/github")
-def github_redirect():
-    return redirect("https://github.com/ElMurlocElegante/DnD-WBM")
+@app.route("/github/<profile>/<repo>")
+@app.route("/github/<profile>")
+def github_redirect(profile, repo=None):
+    if repo:
+        return redirect(f"https://github.com/{profile}/{repo}")
+    else:
+        return redirect(f"https://github.com/{profile}")
+
+@app.route("/ig/<profile>")
+def instagram_redirect(profile):
+    return redirect (f"https://www.instagram.com/{profile}/")
 
 @app.route("/socketio")
 def socketio_redirect():
@@ -273,7 +296,6 @@ def get_class_data(json_file):
 
 @app.route('/roll_dice/<dice>')
 def roll_dice(dice):
-
     if dice.startswith("d"):
         if dice[1:].isdigit():
             num_caras = int(dice[1:])
@@ -294,7 +316,6 @@ def roll_dice(dice):
   
 @app.route("/gameRooms")
 def gameRooms():
-
     try:
         query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
         result = queryRead(query)

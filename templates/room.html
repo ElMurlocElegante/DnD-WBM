@@ -2,14 +2,16 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 <main>
-    <section class="messageBox">
-        <h2>Chat room: {{code}}</h2>
-        <article class="messages" id="messages"></article>
-        <div class="inputs" onkeypress="handleKeyPress(event)">
-            <input type="text" rows="3" placeholder="message" name="message" id="message">
-            <button type="button" name="send" id="sendBtn" onclick="sendMessage()">send</button>
-        </div>
-    </section>
+    <div class="roomContainer">
+        <section class="messageBox">
+            <h2>Chat room: {{code}}</h2>
+            <article class="messages" id="messages"></article>
+            <div class="inputs" onkeypress="handleKeyPress(event)">
+                <input type="text" rows="3" placeholder="message" name="message" id="message">
+                <button type="button" name="send" id="sendBtn" onclick="sendMessage()">send</button>
+            </div>
+        </section>
+    </div>
 </main>
 <script type="text/javascript">
     var socketio = io();

@@ -74,6 +74,18 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
+    scroll-behavior: smooth;
+}
+
+.charctersContainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/static/images/characters.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .main-content {
@@ -82,13 +94,32 @@ body {
     padding: 20px;
 }
 
-main{
+/* Home Styling */
+
+.learnGame {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/static/images/battle.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.homeNavigation {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     gap: 10px;
+    height: 100vh;
+    background-image: url('/static/images/dragonvsdragon.webp');
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 200%;
 }
 
 .base {
@@ -182,7 +213,6 @@ main{
 }
 
 .button {
-    height: 15px;
     width: 150px;
     display: inline-block;
     padding: 15px 30px;
@@ -197,8 +227,8 @@ main{
     clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
 }
 
-button:hover {
-    background-color: #b71c1c;
+.button:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
 
 /* Login Styling */
@@ -208,6 +238,9 @@ button:hover {
     font-family: Arial, sans-serif;
     background-color: rgb(7, 1, 12);
     color: #fff;
+    background-image: url('/static/images/battle2.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .login-container {
@@ -335,7 +368,7 @@ button:hover {
     color: #888;
 }
 
-/* Form Container Styling */
+/* Chacacter Creation Styling */
 .form-container {
     width: 30%;
     background-color: rgb(47, 47, 47);
@@ -456,6 +489,18 @@ button:hover {
 
 /* rooms Styling */
 
+.roomsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/static/images/dragonvsdragon.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .rooms {
     height: 80%;
     width: 50%;
@@ -491,6 +536,19 @@ button:hover {
 .room-item{
     text-align: center;
     width: 25%;
+}
+
+.roomCreation {
+    width: 50%;
+    height: 16%;
+    background-image: url('/static/images/mage.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 30%;
+}
+
+.roomCreationContent {
+    margin-top: 45px;
 }
 
 .btn-join, .btn-join-modal{
@@ -542,12 +600,23 @@ button:hover {
 
 /* game room styling */
 
+.roomContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/static/images/knights.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
 .messageBox {
     border-color: black;
     border-width: 2px;
     border-style: solid;
     border-radius: 10px;
-    background-color: #8f8f8f;
+    background-color: rgba(143, 143, 143, 0.5);
     height: 80%;
     width: 80%;
     display: flex;
@@ -584,15 +653,12 @@ h2 {
 }
 
 /* About page Styling */
-
 .members {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 98%;
-    height: 100%;
-    margin-top: 10px;
-    margin-left: 2%;
+    height: 100vh;
+    background-color: grey;
 }
 
 .member{
@@ -605,6 +671,7 @@ h2 {
     justify-content: center;
     align-items: center;
     height: 80%;
+    margin-left: 10px;
 }
 
 .name {
@@ -624,6 +691,7 @@ h2 {
    flex-direction: row;
    height: 10%;
    gap: 5px;
+   margin-left: 10px;
 }
   
 #media-container{
@@ -657,6 +725,7 @@ h2 {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    box-sizing: border-box;
   }
   
   .contenedor-de-redes{
@@ -684,13 +753,16 @@ h2 {
   .redes{
     width: 50px;
     color: white;
-    display: block
+    display: block;
+    box-sizing: border-box;
+    width: 20%;
+    text-align: center;
   }
   
   #contenedor-redes{
     display: flex;
     padding: 10px;
-    gap: 10px;
+    justify-content: center;
   }
   
   .enlace{
@@ -710,6 +782,17 @@ h2 {
     max-width: 1200px;
     margin: 0 auto;
   }
+
+/* extras */
+
+.textShadow {
+    text-shadow:
+                -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;
+}
+
 /* css para los mensajes de flash */
 .flashes {
     list-style: none;
