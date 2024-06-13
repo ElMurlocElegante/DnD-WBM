@@ -76,23 +76,6 @@ body {
     scroll-behavior: smooth;
 }
 
-.charctersContainer{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('/static/images/characters.webp');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.main-content {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
 /* Home Styling */
 
 .learnGame {
@@ -312,60 +295,7 @@ body {
   }
 
 
-/* Character List Styling */
-.character-list {
-    background-color: rgb(47, 47, 47);
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    justify-content: flex-start;
-    padding: 10px; /* Añadir padding para el contenido interno */
-    box-sizing: border-box; /* Asegurar que el padding no aumente el ancho total */
-}
 
-.character-list h1 {
-    width: 100%; /* Asegurar que el encabezado ocupe el 100% del ancho del contenedor */
-    margin: 0 0 10px 0; /* Quitar margen superior y añadir margen inferior */
-    text-align: center; /* Alinear el texto a la izquierda */
-}
-
-.pc {
-    background-color: rgb(73, 57, 57);
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: calc(25% - 20px); /* Ajustar el ancho y el margen para mostrar 4 por fila */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 10px; /* Espacio entre las cajas */
-    box-sizing: border-box; /* Asegurar que el padding no aumente el ancho total */
-}
-.pc ul {
-    list-style-type: none;
-    padding: 10px;
-    margin: 0;
-}
-
-.pc li {
-    padding: 5px 0;
-    margin: 0;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-}
-
-.pc li:last-child {
-    border-bottom: none;
-}
-
-.pc li span.key {
-    font-weight: bold;
-    color: #ddd;
-}
-
-.pc li span.value {
-    color: #888;
-}
 
 /* Chacacter Creation Styling */
 .form-container {

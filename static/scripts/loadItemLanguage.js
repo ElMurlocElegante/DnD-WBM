@@ -25,11 +25,12 @@ document.addEventListener('DOMContentLoaded', function(){
                             backgroundData = copyData;
                         }
                     }
-                    const proficienciesKeys = Object.keys(backgroundData).filter(function(key) {
+                    const proficienciesEntries = Object.entries(backgroundData).filter(function(entry) {
+                        const key = entry[0];
                         return key.includes('Proficiencies') && !key.includes('skillProficiencies');
                     });
-                    if (proficienciesKeys){
-                        addProficiencies(proficienciesKeys, 'background');
+                    if (proficienciesEntries){
+                        addProficiencies(proficienciesEntries, 'background');
                     }
                 } else {
                     console.log('Background no encontrado:', selectedBackground);
@@ -50,11 +51,12 @@ document.addEventListener('DOMContentLoaded', function(){
             .then(data => {
                 var classData = data.class[0].startingProficiencies
                 if (classData) {
-                    const proficienciesKeys = Object.keys(classData).filter(function(key) {
+                    const proficienciesEntries = Object.entries(classData).filter(function(entry) {
+                        const key = entry[0];
                         return !key.includes('skills');
                     });
-                    if (proficienciesKeys) {
-                        addProficiencies(proficienciesKeys, 'race');
+                    if (proficienciesEntries) {
+                        addProficiencies(proficienciesEntries, 'race');
                     }
                 } else {
                     console.log('Clase no encontrada o no tiene habilidades definidas:', selectedClass);
@@ -78,11 +80,12 @@ document.addEventListener('DOMContentLoaded', function(){
                     return rc.name === raceName && rc.source === raceSource;
                 });
                 if (raceData) {
-                        const proficienciesKeys = Object.keys(raceData).filter(function(key) {
-                            return key.includes('Proficiencies') && !key.includes('skillProficiencies');
-                        });
-                        if (proficienciesKeys) {
-                            addProficiencies(proficienciesKeys, 'race');
+                    const proficienciesEntries = Object.entries(raceData).filter(function(entry) {
+                        const key = entry[0];
+                        return key.includes('Proficiencies') && !key.includes('skillProficiencies');
+                    });
+                        if (proficienciesEntries) {
+                            addProficiencies(proficienciesEntries, 'race');
                         }
                 } else {
                     console.log('Raza no encontrado:', selectedRace);
@@ -90,9 +93,34 @@ document.addEventListener('DOMContentLoaded', function(){
             })
             .catch(error => console.error('Error fetching raza:', error));
     }
+    function createCheckbox(element, type) {
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = `${element.toLowerCase()}-${type}`;
+        checkbox.id = `${element.toLowerCase()}-${type}`;
+        checkbox.value = `${element.toLowerCase()}`;
+        // checkbox.addEventListener('change', checkProficiencies);
 
+        var label = document.createElement('label');
+        label.htmlFor = `${element.toLowerCase()}-${type}`;
+        label.textContent = `${element}`;
+
+        var container = document.createElement('div');
+        container.className = 'checkbox-container';
+        container.appendChild(checkbox);
+        container.appendChild(label);
+
+        return container;
+    }
     function addProficiencies(data, type) {
-        console.log(type, data)
+        console.log(type, data);
+        data.forEach(function(element) {
+            element.forEach(function(proficiency) {
+                console.log(proficiency);
+                createCheckbox(proficiency, type)
+            });
+
+        });
     }
     const languages = document.getElementById('languageProfList');
     const items = document.getElementById('itemProfList');

@@ -1,58 +1,126 @@
+.main-content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.charctersContainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/static/images/characters.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 /* lista de personajes */
 .character-list {
-    background-color: rgba(47, 47, 47, 0.7);
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    width: 60%;
-    justify-content: flex-start;
+    text-align: center;
+    width: 80%;;
+    margin: 20px auto;
     padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 20px; /* espacio debajo de character */
+    background-color: rgba(30, 30, 30, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
 }
 
 .character-list h1 {
-    width: 100%;
-    margin: 0 0 10px 0;
     text-align: center;
+    color: #ff4d4d;
+    margin-bottom: 20px;
 }
 
 .pc {
-    background-color: rgb(73, 57, 57);
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: calc(25% - 20px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    box-sizing: border-box;
-}
-
-.pc ul {
-    list-style-type: none;
+    width: 20%;
+    height: 31%;
+    border: 1px solid #333;
+    border-radius: 8px;
+    margin: 5px;
     padding: 10px;
-    margin: 0;
+    background-color: rgba(37, 37, 37,0.7);
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: left;
+    vertical-align: top;
 }
 
-.pc li {
-    padding: 5px 0;
-    margin: 0;
-    border-bottom: 1px solid #ddd;
+.pc:hover {
+    background-color: #333;
+}
+
+.pc p {
+    margin: 3px 0;
+    font-size: 0.9em;
+}
+
+.pc p strong {
+    color: #ff4d4d;
+}
+
+.pc-header, .pc-xp-pb, pc-bg-al {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pc-header .name {
+    font-weight: bold;
+    font-size: 1em;
+    color: #ff6666;
+}
+
+.pc-header .race {
+    font-style: italic;
+    color: #b3b3b3;
+}
+
+.pc-class-level {
+    font-size: 0.9em;
+    height: 15%;
     display: flex;
     justify-content: space-between;
 }
 
-.pc li:last-child {
-    border-bottom: none;
+.pc-class-level strong {
+    color: #ff4d4d;
 }
 
-.pc li span.key {
-    font-weight: bold;
-    color: #ddd;
+.pc p span[name="alignment"] {
+    color: #b3b3b3;
+    font-style: italic;
 }
 
-.pc li span.value {
-    color: #888;
+.pc p span[name="xp"],
+.pc p span[name="pb"] {
+    color: #ff6666;
+}
+
+#character-attributes {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+#character-attributes p {
+    flex: 1 1 calc(30% - 10px);
+    text-align: center;
+    padding: 3px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    margin: 3px;
+    background-color: #2e2e2e;
+    font-size: 0.8em;
+    transition: background-color 0.3s ease;
+}
+
+#character-attributes p:hover {
+    background-color: #3a3a3a;
 }
 
 /* estilo de los botones */
@@ -92,25 +160,86 @@ button:hover {
     background: #f40612;
 }
 /* boton especificado de pcreacion de persnaje */
-.character-actions {
+.account-actions {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 50%;
+    justify-content: center;
     align-items: center;
-    margin-top: -20px;
+    justify-content:start;
+    align-items: center;
+    gap: 10%;
+    width: 20%;
     
 }
 
-.character-actions form {
+.account-actions form {
     display: inline-block;
+    width: 40%;
 }
 
-.character-actions button {
+.account-actions button {
     display: inline-block;
+    margin-right: 10px;
+    width: 100%;
+
+}
+
+.account-actions select {
     margin-right: 10px;
 }
 
-.character-actions select {
-    margin-right: 10px;
+/* Estilo para el popout de confirmación */
+.confirmation-popout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
+.confirmation-box {
+    background-color: #252525;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
 
+.confirmation-box h2 {
+    margin-bottom: 20px;
+}
+
+.confirmation-box button {
+    padding: 8px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.confirmation-box .btn-confirm {
+    background-color: #ff4d4d;
+    color: #fff;
+}
+
+.confirmation-box .btn-confirm:hover {
+    background-color: #ff1a1a;
+}
+
+.confirmation-box .btn-cancel {
+    background-color: #666;
+    color: #fff;
+}
+
+.confirmation-box .btn-cancel:hover {
+    background-color: #333;
+}

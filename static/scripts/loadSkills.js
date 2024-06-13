@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         label.textContent = `${skill}`;
 
         var container = document.createElement('div');
-        container.className = 'checkbox-container'; // Añade la clase CSS
+        container.className = 'checkbox-container';
         container.appendChild(checkbox);
         container.appendChild(label);
 
@@ -222,9 +222,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         var skillContainer = document.getElementById(id);
         skillContainer.innerHTML = '';
-
+        var onlyMandatory = true;
 
         Object.keys(dataSkills).forEach(function(element) {
+            
             if (element === 'choose') {
                 dataSkills.choose.from.forEach(function(skill) {
                     var skillElement = createSkillCheckbox(skill,type);
@@ -232,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     skillElement.disabled = false; // Enable for selection
                 });
                 chooseSetSkills(dataSkills, skillContainer, textRemaining);
+                onlyMandatory = false;
             } else if (element === 'any') {
                 fetchSkillNames().then(skillNames => {
                     skillNames.forEach(function(skill) {
@@ -240,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         skillElement.disabled = false; // Enable for selection
                     });
                     chooseAnySkills(dataSkills, skillContainer, textRemaining)
-
+                    onlyMandatory = false;
                 });
             } else {
                 var skillElement = createSkillCheckbox(element,type);
@@ -248,8 +250,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 skillElement.querySelector('input').disabled = true; // Disable specific skills
                 skillElement.querySelector('input').checked = true; // Check specific skills
                 checkSkills(skillElement.querySelector('input'));
+
             }
         });
+        if (onlyMandatory) {
+            document.getElementById(`${textRemaining}`).textContent = ``;
+        }
         checkSkills();
     }
     // Ejecutar la función para aplicar las proficiencias cuando cambie la selección
