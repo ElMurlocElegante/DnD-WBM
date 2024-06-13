@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block style %} {% endblock %}
     <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
     <script src="{{ url_for('socketio_redirect')}}" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 </head>
@@ -26,15 +27,11 @@
         <div class="footer-content container">
             <div  class="contenedor-de-redes">
                 <div class="redes">
-                    <h3>Redes</h3>
+                    <h3>Repositorio del proyecto</h3>
                     <div id="contenedor-redes">
-                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                        <a class="enlace" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                        <a class="enlace" href="{{url_for('github_redirect') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                        <a class="enlace" href="{{ url_for('github_redirect', profile='ElMurlocElegante', repo='DnD-WBM') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
                     </div>
                 </div>
-                
             </div>
             <div class="creditos">
                 <h3>proyecto IDS creado 1C 2024 ©</h3>

@@ -20,16 +20,31 @@
         </articcle>
         <articcle class="member">
             <div class="personalData">
-                <h3 class="name">Nombre</h3>
+                <h3 class="name">Martina Molina Moio</h3>
                 <img class="profile" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
             </div>
             <div class="aboutMedia">
                 <h4>Redes</h4>
                 <div id="media-container">
                     <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
+                    <a class="media-link" href="{{url_for('instagram_redirect', profile='martumm_') }}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
                     <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                    <a class="media-link" href="{{ url_for('github_redirect', profile='martinamoio') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                </div>
+            </div>
+        </articcle>
+        <articcle class="member">
+            <div class="personalData">
+                <h3 class="name">Luciano Celano</h3>
+                <img class="profile" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
+            </div>
+            <div class="aboutMedia">
+                <h4>Redes</h4>
+                <div id="media-container">
+                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
+                    <a class="media-link" href="{{ url_for('instagram_redirect', profile='lukura.c')}}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
+                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
+                    <a class="media-link" href="{{ url_for('github_redirect', profile='ElMurlocElegante') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
                 </div>
             </div>
         </articcle>
@@ -48,33 +63,18 @@
                 </div>
             </div>
         </articcle>
-        <articcle class="member">
+        <articcle class="member">   
             <div class="personalData">
-                <h3 class="name">Nombre</h3>
-                <img class="profile" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
+                <h3 class="name">Matias Dejean</h3>
+                <img class="profile" src="{{ url_for('static', filename='images/foto-matias.webp') }}" alt="Matias Dejean">
             </div>
             <div class="aboutMedia">
                 <h4>Redes</h4>
                 <div id="media-container">
                     <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
+                    <a class="media-link" href="{{url_for('instagram_redirect', profile='matias_dejean') }}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
                     <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
-                </div>
-            </div>
-        </articcle>
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">Nombre</h3>
-                <img class="profile" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia">
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                    <a class="media-link" href="{{ url_for('github_redirect', profile='mdejeann') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
                 </div>
             </div>
         </articcle>

@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const subclassSelect = document.getElementById('subclass');
         const subclassContainer = document.getElementById('subclassContainer');
         subclassSelect.innerHTML = ``;
-        if (parseInt(level.innerText) >= subclassLevel) {
+        if (parseInt(level.value) >= subclassLevel) {
             subclassContainer.style.display = 'block';
             subclassText = document.getElementById('classContainer').querySelector('label[for="subclass"]');
             subclassText.innerHTML = `Select a Subclass`;

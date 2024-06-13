@@ -1,6 +1,6 @@
 /* lista de personajes */
 .character-list {
-    background-color: rgb(47, 47, 47);
+    background-color: rgba(47, 47, 47, 0.7);
     border: 1px solid #ddd;
     border-radius: 5px;
     display: flex;
@@ -66,6 +66,26 @@ button {
     font-size: 16px;
     cursor: pointer;
     transition: background 0.3s ease;
+}
+
+/* Botones de acción */
+form .btn {
+    padding: 10px 20px;
+    background-color: #dc3545; /* Color rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form .btn:hover {
+    background-color: #c82333;
+}
+
+form select {
+    padding: 10px;
+    margin-right: 10px;
 }
 
 button:hover {

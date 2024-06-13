@@ -1,72 +1,89 @@
 {% extends "base.html" %}
 {% block title %} DnD-WBM {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
+{% endblock %}
 {% block body %}
 
-<div class="form-container">
-    <h2>Manage Characters</h2>
-    <!-- Formulario para agregar nuevos personajes -->
-    <form action="{{ url_for('characters')}}" id="characterForm">
-        <label for="character_name">Character Name:</label><br>
-        <input type="text" id="character_name" name="character_name" required><br>
-        <section class="attribute-row" id="xpContainer">
-                <label for="xp">XP</label> <br>
-                <input type="number" name="xp" id="xp" min="0" value="0" max="355000">
-                <label for="level">Level: </label>
-                <input type="text" id="level" readonly class="total-input" value="1">
+<h2>Manage Characters</h2>
 
-                <label for="pb">PB: </label>
-                <input type="text" id="pb" readonly class="total-input" value="2">
-        </section>
-        <section id="classContainer">
-            <label for="class">Class</label>
-            <select name="class" id="class">
-                {% for class_name in classes %}
-                    <option value="{{ class_name }}">{{ class_name|upper }}</option>
+<!--Main Container-->
+<div class="form-container">       
+    <form action="{{ url_for('characters')}}" id="characterForm">
+        <!--Box Info Principal-->
+        <div class="info-principal">
+
+            <label for="character_name">Character Name</label><br>
+            <input type="text" id="character_name" name="character_name" required><br>
+            
+            <section class="attribute-row" id="xpContainer">
+                    <label for="xp">XP</label> <br>
+                    <input type="number" name="xp" id="xp" min="0" value="0" max="355000">
+                    <label for="level">Level: </label>
+                    <input type="text" id="level" readonly class="total-input" value="1">
+
+                    <label for="pb">PB: </label>
+                    <input type="text" id="pb" readonly class="total-input" value="2">
+            </section>
+            
+            <section id="classContainer">
+                <label for="class">Class</label>
+                <select name="class" id="class">
+                    {% for class_name in classes %}
+                        <option value="{{ class_name }}">{{ class_name|upper }}</option>
+                    {% endfor %}
+                </select> <br>
+                <section id="subclassContainer">
+                    <label for="subclass"></label>
+                    <select name="subclass" id="subclass">
+                        <option value=""></option>
+                    </select>
+                </section>
+            </section>
+
+            <fieldset>
+                <legend>Hit Points</legend>
+                <section id="hpCalc">
+                    <button type="button" id="hpRoll">Roll !</button>
+                    <button type="button" id="hpMax">Maximum</button>
+                    <button type="button" id="hpAvg">Average</button>
+                    <input type="number" name="hp" id="hp" min="0">
+                </section>
+
+            </fieldset>
+
+            <label for="alignment">Alignment</label>
+            <select name="alignment" id="alignment">
+                <option value="Lawful Good">Lawful Good</option>
+                <option value="Lawful Neutral">Lawful Neutral</option>
+                <option value="Lawful Evil">Lawful Evil</option>
+                <option value="Neutral Good">Neutral Good</option>
+                <option value="Neutral"> Neutral</option>
+                <option value="Neutral Evil">Neutral Evil</option>
+                <option value="Chaotic Good">Chaotic Good</option>
+                <option value="Chaotic Neutral">Chaotic Neutral</option>
+                <option value="Chaotil Evil">Chaotic Evil</option>
+            </select> <br>
+
+            <label for="background">Background</label>
+            <select name="background" id="background">
+                {%for background in backgrounds %}
+                    <option value="{{ background.name }}">{{ background.name }}</option>
                 {% endfor %}
             </select> <br>
-            <section id="subclassContainer">
-                <label for="subclass"></label>
-                <select name="subclass" id="subclass">
-                    <option value=""></option>
-                </select>
-            </section>
-        </section>
-        <fieldset>
-            <legend>Hit Points</legend>
-            <section id="hpCalc">
-                <button type="button" id="hpRoll">Roll !</button>
-                <button type="button" id="hpMax">Maximum</button>
-                <button type="button" id="hpAvg">Average</button>
-                <input type="number" name="hp" id="hp" min="0">
-            </section>
-        </fieldset>
-        <label for="alignment">Alignment</label>
-        <select name="alignment" id="alignment">
-            <option value="Lawful Good">Lawful Good</option>
-            <option value="Lawful Neutral">Lawful Neutral</option>
-            <option value="Lawful Evil">Lawful Evil</option>
-            <option value="Neutral Good">Neutral Good</option>
-            <option value="Neutral"> Neutral</option>
-            <option value="Neutral Evil">Neutral Evil</option>
-            <option value="Chaotic Good">Chaotic Good</option>
-            <option value="Chaotic Neutral">Chaotic Neutral</option>
-            <option value="Chaotil Evil">Chaotic Evil</option>
-        </select> <br>
-        <label for="background">Background</label>
-        <select name="background" id="background">
-            {%for background in backgrounds %}
-                <option value="{{ background.name }}">{{ background.name }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="race">Race</label>
-        <select name="race" id="race">
-            {% for race_data in races %}
-                <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
-            {% endfor %}
-        </select> <br>
-        <label for="ac">AC:</label><br>
-        <input type="number" name="ac" id="ac" min="0" value="0">
-        <fieldset>
+            <label for="race">Race</label>
+            <select name="race" id="race">
+                {% for race_data in races %}
+                    <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
+                {% endfor %}
+            </select> <br>
+            <label for="ac">AC:</label><br>
+            <input type="number" name="ac" id="ac" min="0" value="0">
+        </div>
+
+        <!--Box Info Atributos-->
+        <div class="info-atributos">
+            <!--<fieldset> Error con el CSS Hay que FIX-->
             <legend>Attributes</legend>
             <section id="attributes">
                 <div class="attribute-row">
@@ -159,6 +176,7 @@
                     <input type="text" name="totalCharisma" readonly class="total-input">
                 </div>
             </section> <br>
+            <div class="in-info-atributos">
             <section id="abilityScoreImprovements">
                 <div class="attribute-row">
                     <label for="availableAbilityImprovements">Ability Score Improvements</label>
@@ -176,8 +194,32 @@
                     <input type="number" id="charismaImprovement" name="charisma" min="0">
                 </div>
             </section>
+            </div>
+            <!--</fieldset>-->
+        </div>
+
+        <!--Box Info Other Proficiencies-->
+        <fieldset>
+            <legend>Other Proficiencies</legend>
+            <fieldset id="language">
+                <legend>Languages</legend>
+                <section id="languageProfList">
+                    <section id="languageProfBackground"></section>
+                    <section id="languageProfClass"></section>
+                    <section id="languageProfRace"></section>
+                </section>
+            </fieldset>
+            <fieldset id="items">
+                <legend>Items and Tools</legend>
+                <section id="itemProfList">
+                    <section></section>
+                </section>
         </fieldset>
-        <fieldset class="sideInfo">    
+        
+
+        <!--Box Info Profesiones-->
+        <div class="info-profesiones">
+            <fieldset class="sideInfo">    
             <legend>Choose your Proficiencies</legend>    
             <fieldset class="sideInfo">
                 <legend>Class Proficiencies</legend>
@@ -194,41 +236,51 @@
                 <p id="raceRemainingSkills"></p>
                 <div id="raceSkills"></div>
             </fieldset>
-        </fieldset>        
-        <fieldset id="allSkills">
-            <legend>Proficiencies</legend>
-            {% for skill in skills %}
-                <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
-                <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
-            {% endfor %}
-        </fieldset> <br>
-        <fieldset>
-            <legend>Personality Traits</legend>
-            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
-        </fieldset>
-        <fieldset>
-            <legend>Ideals</legend>
-            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
-        </fieldset>
-        <fieldset>
-            <legend>Bonds</legend>
-            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
-        </fieldset>
-        <fieldset>
-            <legend>Flaws</legend>
-            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
-        </fieldset>
-        <fieldset class="equipment">
+            </fieldset> 
+            <fieldset id="allSkills">
+                <legend>Proficiencies</legend>
+                {% for skill in skills %}
+                <div class="checkbox-container">
+                    <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
+                    <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
+                </div>
+                {% endfor %}
+            </fieldset> <br>
+        </div>
+          
+          <fieldset class="equipment">
             <legend>Equipment</legend>
             <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
         </fieldset>
+        
+        <!--Box Info Lore-->
+        <div class="lore">
+            <fieldset>
+                <legend>Personality Traits</legend>
+                <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Ideals</legend>
+                <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Bonds</legend>
+                <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Flaws</legend>
+                <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
+            </fieldset>
+        </div>
         <button type="submit">Create Character</button>
     </form>
-
-
 </div>
-<script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
+
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>

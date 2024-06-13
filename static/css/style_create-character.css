@@ -1,0 +1,250 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #1c1c1c;
+    color: #f0f0f0;
+    font-size: 16px;
+    line-height: 1.5;   
+}
+/* Headings */
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #e8491d;
+}
+/* Main Container */
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Styling */
+.form-container form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #e8491d;
+}
+/* Box Info Principal */
+.info-principal {
+    display: flex;
+    flex-direction:column;
+    margin: 0px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #2b2b2b;
+    border: 1px solid #555;
+}
+.info-principal fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 8px;
+    
+}
+
+/* Box Info Atributos */
+.info-atributos{
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items:center;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border: 1px solid #555;
+    border-radius: 8px;
+    width: 100%;    
+}
+
+
+/* Error Fieldset hay que FIX
+.info-atributos fieldset {
+    
+    width: 100%; 
+    border: 1px solid #555;
+    padding: 20px;
+    border-radius: 8px;
+    
+} */
+
+.attribute-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    margin-bottom: 5px;
+    text-align: auto;
+}
+
+.attribute-row label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.attribute-row input[type="number"] {
+    width: 60px;
+}
+
+.attribute-row div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.mod-input,
+.total-input {
+    width: 60px;
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 4px;
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #e8491d;
+    margin-bottom: 10px;
+}
+
+.header-row span {
+    flex: 1;
+    text-align: center;
+}
+
+.race-header {
+    display: flex;
+    flex: 2;
+    justify-content: space-between; 
+}
+
+/* Box Info Profesiones */
+.info-profesiones{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border: 1px solid #555;
+    border-radius: 8px;
+}
+.info-profesiones fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+#allSkills {
+    margin-top: 20px;   
+}
+
+#allSkills input[type="checkbox"] {
+    margin-top: 10px;
+    
+}
+
+.checkbox-container {
+    display: inline-block;
+    margin-right: 10px; /* Opcional: espacio entre los elementos */
+}
+
+.lore {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border: 1px solid #555;
+    border-radius: 8px;
+}
+
+.lore fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+/* Textareas */
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+/* Fieldsets and Legends */
+
+ /* fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+}  */
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #e8491d;
+}
+
+
+/* Submit Button */
+input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e8491d;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    
+    background-color: #cf3b0f;
+}
+

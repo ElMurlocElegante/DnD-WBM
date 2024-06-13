@@ -2,28 +2,37 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 <main>
-    <div class="base">
-        <section class="createCharacter">
-            <div class="content">
-                <h3>Begin your adventure!</h3>
-                <p>Interested in playing? Create a D&D character to begin!</p>
-                <a href="{{ url_for('characters') }}" class="button">Create Character</a>
-            </div>
+    <div class="learnGame">
+        <section>
+            <h2 class="textShadow">New to D&D?</h2>
+            <p class="textShadow">learn how to play here</p>
+            <a href="https://www.dndbeyond.com/how-to-play-dnd" target="_blank" class="button">Learn the game</a>
         </section>
-        <section class="findRoom">
+    </div>
+    <div class="homeNavigation">
+        <div class="base">
+            <section class="createCharacter">
+                <div class="content">
+                    <h3 class="textShadow">Begin your adventure!</h3>
+                    <p class="textShadow">Interested in playing? Create a D&D character to begin!</p>
+                    <a href="{{ url_for('characters') }}" class="button">Create Character</a>
+                </div>
+            </section>
+            <section class="findRoom">
+                <div class="content">
+                    <h3 class="textShadow">Already have a Character?</h3>
+                    <p class="textShadow">Find your party and begin playing!</p>
+                    <a href="{{ url_for('gameRooms' ) }}" class="button">Find room</a>
+                </div>
+            </section>
+        </div>
+        <section class="top createRoom">
             <div class="content">
-                <h3>Already have a Character?</h3>
-                <p>Find your party and begin playing!</p>
-                <a href="{{ url_for('gameRooms' ) }}" class="button">Find room</a>
+                <h3 class="textShadow">Want to be a GM?</h3>
+                <p class="textShadow">Create the adventure that your friends will play!</p>
+                <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
             </div>
         </section>
     </div>
-    <section class="top createRoom">
-        <div class="content">
-            <h3>Want to be a GM?</h3>
-            <p>Create the adventure that your friends will play!</p>
-            <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
-        </div>
-    </section>
 </main>
 {% endblock %}
