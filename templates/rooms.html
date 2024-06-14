@@ -29,7 +29,7 @@
                 <button class="closeBtn">&times;</button>
             </div>
             <div class="modalBody">
-                <form action="/joinRoom" method="POST" class="roomJoining">
+                <form action="{{ url_for('joinRoom') }}" method="POST" class="roomJoining">
                     <label for="code">Room code</label>
                     <input type="text" id="code" name="code" placeholder="room code" required>
                     <div class="joinBtn">

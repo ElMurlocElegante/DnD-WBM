@@ -8,6 +8,7 @@ import os
 import json
 import random
 from string import ascii_uppercase
+from api import codeGenerator, queryCUD
 
 app = Flask(__name__)
 engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
@@ -70,7 +71,7 @@ def home():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login(): # login API
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -87,7 +88,7 @@ def login():
         return render_template('auth/login.html')
     
 @app.route('/register', methods=['GET', 'POST'])
-def register():
+def register(): #register API
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -121,7 +122,7 @@ def logout():
     return render_template("home.html")
 
 @app.route('/delete_account', methods=['POST'])
-def delete_account():
+def delete_account(): # delAcc API
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -146,7 +147,7 @@ def check_login():
         return jsonify({'logged_in': False})
 
 @app.route("/characters")
-def characters():
+def characters(): #Character API
     if session.get('user_id') is not None and session.get('username') is not None:
         query = "SELECT * FROM `characters` WHERE `username` = :username"
         try:
@@ -158,7 +159,7 @@ def characters():
     return redirect(url_for('login'))
 
 @app.route("/create_character", methods=['GET'])
-def createCharacter():
+def createCharacter(): #createCharacter API
     index_route = os.path.join(app.root_path, 'data', 'class', 'index.json')
     races_route = os.path.join(app.root_path, 'data', 'races.json')
     backgrounds_route = os.path.join(app.root_path, 'data', 'backgrounds.json')
@@ -191,7 +192,7 @@ def createCharacter():
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
 @app.route('/delete_character', methods=['POST'])
-def delete_character():
+def delete_character(): # deleteCharacter API
     username = session['username']
     character_id = request.form.get('character_id')  # Cambiado a 'character_id' para reflejar el nombre correcto
     if not character_id:
@@ -210,7 +211,7 @@ def delete_character():
     return redirect(url_for('characters'))
 
 @app.route("/characters/add_character", methods=['POST'])
-def add_character():
+def add_character(): #add character API
     if ( session.get('user_id') is not None and session.get('username') is not None ):
         character_data = request.json  # Obtener los datos JSON del cuerpo de la solicitud
         query = """
@@ -317,7 +318,7 @@ def roll_dice(dice):
     return jsonify({"error": "Formato de dice incorrecto. Debe ser 'dn' o 'ndn', donde 'n' es un número mayor que cero."}), 400
   
 @app.route("/gameRooms")
-def gameRooms():
+def gameRooms(): #Get rooms API
     try:
         query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
         result = queryRead(query)
@@ -335,7 +336,7 @@ def gameRooms():
     return render_template("rooms.html", rooms = rooms)
 
 @app.route("/joinRoom", methods=['POST'])
-def joinRoom():
+def joinRoom(): #join room API
     if request.method == 'POST':
         code = request.form['code']
         session["room"] = code
@@ -377,7 +378,7 @@ def roomCreation():
     return redirect(url_for('login'))
 
 @app.route("/room")
-def room():
+def room(): # room connection API
     room = session.get("room")
     try:
         query = "SELECT code FROM rooms;"
@@ -393,7 +394,7 @@ def room():
     return render_template("room.html", code=room)
 
 @app.route("/roomCreated", methods=['POST'])
-def roomCreated():
+def roomCreated(): #room created API
     if request.method == 'POST':
         roomName = request.form['roomName']
         creatorName = session.get('username')
