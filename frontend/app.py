@@ -12,21 +12,28 @@ def home():
 
 @app.route("/gameRooms")
 def gameRooms(): #Get rooms API
-    try:
-        query = "SELECT room_creator, room_name, ingame, maxplayers FROM rooms;"
-        result = queryRead(query)
-    except SQLAlchemyError as err:
-        return jsonify(str(err.__cause__))
-    rooms = []
-    for row in result:
-        room = {}
-        room["room_creator"] = row.room_creator
-        room["room_name"] = row.room_name
-        room["ingame"] = row.ingame
-        room["maxplayers"] = row.maxplayers
-        rooms.append(room)
+    rooms = requests.get('http://localhost:5001/api/rooms').json()
 
     return render_template("rooms.html", rooms = rooms)
+
+@app.route("/joinRoom", methods=['POST'])
+def joinRoom():
+    if request.method == 'POST':
+        code = request.form['code']
+        url = f'http://localhost:5001/api/join?code={code}'
+        response = request.get(url)
+        if response.status_code == 200:
+            return redirect(url_for('room'))
+        return redirect(url_for('gameRooms', ))
+    
+@app.route("/room")
+def room():
+    response = requests.get('http://localhost:5001/api/roomConnection')
+    if response.status_code != 200:
+        return redirect(url_for('home'))
+    data = response.json()
+    code = data.get('code')
+    return render_template("room.html", code=code)
 
 #Room Creation
 
