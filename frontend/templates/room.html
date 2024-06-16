@@ -4,7 +4,7 @@
 <main>
     <div class="roomContainer">
         <section class="messageBox">
-            <h2>Chat room: {{code}}</h2>
+            <h2 class="textShadow">Chat room: {{code}}</h2>
             <article class="messages" id="messages"></article>
             <div class="inputs" onkeypress="handleKeyPress(event)">
                 <input type="text" rows="3" placeholder="message" name="message" id="message">
@@ -27,7 +27,7 @@
 
                 const createMessage = (name, msg) => {
                     const content = `
-                    <div class="text">
+                    <div class="text textShadow">
                         <span>
                             <strong>${name}</strong>: ${msg}
                         </span>

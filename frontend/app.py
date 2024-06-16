@@ -41,9 +41,29 @@ def room():
 
 @app.route("/roomCreation")
 def roomCreation():
-    if ( session.get('user_id') is not None and session.get('username') is not None ):
+    if check_login:
         return render_template("createRoom.html")
     return redirect(url_for('login'))
+
+@app.route("/roomCreated", methods=['POST'])
+def roomCreated():
+    if request.method == 'POST':
+        roomName = request.form['roomName']
+        creatorName = session.get('username')
+        maxPlayers = request.form['maxPlayers']
+        data = {
+            "roomName": roomName,
+            "creatorName": creatorName,
+            "maxPlayers": maxPlayers
+        }
+        response = requests.post('http://localhost:5001/api/rooms/create', json=data)
+        if response.status_code == 200:
+            data = response.json()
+            session['room'] = data.get('code')
+            return redirect(url_for('room'))
+        flash(response.json()['message'], 'danger')
+        return redirect(url_for('roomCreation'))
+    return redirect(url_for('home'))
 
 #Characters
 

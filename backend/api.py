@@ -128,6 +128,24 @@ def roomConnection():
         return jsonify({"message": "error"}), 400
     return jsonify({"message": "success", "code": room}), 200
 
+@app.route('/api/rooms/create', methods=['POST'])
+def roomCreation():
+    data = request.get_json()
+    code = codeGenerator(4)
+    data["code"] = code
+    query = "INSERT INTO rooms (room_creator, room_name, ingame, maxplayers, code) VALUES (:creatorName, :roomName, :ingame, :maxPlayers, :code)"
+    result = queryCUD(query, {
+                    'creatorName': data.get("creatorName"),
+                    'roomName': data.get("roomName"),
+                    'ingame': 0,
+                    'maxPlayers': data.get("maxPlayers"),
+                    'code': code
+                })
+    if result:
+        return jsonify({"message": "room created successfully", "code": code}), 200
+    return jsonify({"message": "error creating room"}), 400
+    
+
 #login
 
 @app.route('/api/login', methods = ['POST'])
