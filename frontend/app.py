@@ -48,7 +48,7 @@ def roomCreation():
 #Characters
 
 @app.route("/characters")
-def characters(): #Character API
+def characters():
     if session.get('user_id') is not None and session.get('username') is not None:
             username = session['username']
             url = f'http://localhost:5001/api/characters?user={username}'
@@ -77,7 +77,18 @@ def delete_character():
         flash(response.json()['message'], 'success')
     else:
         flash(response.json()['message'], 'danger')
-    return redirect(url_for('characters')) 
+    return redirect(url_for('characters'))
+
+@app.route("/character/add", methods = ['POST'])
+def addCharacter():
+    if check_login():
+        character_data = request.get_json()
+        character_data["username"] = session['username']
+        response = requests.post("http://localhost:5001/api/data/character/add", json=character_data)
+        if response.status_code == 200:
+            return jsonify({"message": "success"}), 200
+        return jsonify({"message": "erro creating character"}), 400
+    return jsonify({"message": "not logged in"}), 401
     
 
 
@@ -86,9 +97,9 @@ def delete_character():
 @app.route('/check_login', methods=['GET'])
 def check_login():
     if 'user_id' in session and 'username' in session:
-        return jsonify({'logged_in': True})
+        return jsonify({'logged_in': True}), 200
     else:
-        return jsonify({'logged_in': False})
+        return jsonify({'logged_in': False}), 401
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():

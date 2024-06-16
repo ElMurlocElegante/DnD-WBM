@@ -13,7 +13,7 @@ from string import ascii_uppercase
 app = Flask(__name__)
 
 engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000/"}})
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
 socketio = SocketIO(app, cors_allowed_origins="http://127.0.0.1:5000")
 '''
 ///IMPORTANTE///
@@ -21,6 +21,28 @@ nombre DB: DnD-WBM
 puerto: 3307 
 ///IMPORTANTE///
 '''
+
+#extras
+
+@app.route('/api/roll_dice/<dice>')
+def roll_dice(dice):
+    if dice.startswith("d"):
+        if dice[1:].isdigit():
+            num_caras = int(dice[1:])
+            resultado = randint(1, num_caras)
+            return jsonify({"resultado": resultado, "total": resultado})
+    elif "d" in dice:
+        num_dados, num_caras = dice.split("d")
+        if num_dados.isdigit() and num_caras.isdigit():
+            num_dados = int(num_dados)
+            num_caras = int(num_caras)
+            if num_dados > 0 and num_caras > 0:
+                resultados = [randint(1, num_caras) for _ in range(num_dados)]
+                total = 0
+                for result in resultados:
+                    total += result
+                return jsonify({"resultados": resultados, "total": total})
+    return jsonify({"error": "Formato de dice incorrecto. Debe ser 'dn' o 'ndn', donde 'n' es un número mayor que cero."}), 400
 
 def queryRead(query, args=None):
     if args:
@@ -81,7 +103,7 @@ def get_rooms():
     return jsonify(rooms)
 
 @app.route("/api/join", methods = ['GET'])
-def join_room():
+def joinRoom():
     code = request.args.get('code')
     query = "SELECT ingame,maxplayers FROM rooms WHERE code = :code"
     result = queryRead(query, {"code": code})
@@ -208,6 +230,43 @@ def getClassData(jsonFile):
         return jsonify({"error": f"File Not Found: {jsonFile}"})
     with open(route, 'r') as json_file:
         return jsonify(json.load(json_file)), 200
+    
+@app.route("/api/data/character/add", methods = ['POST'])
+def addCharacter():
+    data = request.get_json()
+    query = """
+        INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
+                                xp, hp, strength, dexterity, constitution, intelligence, wisdom, charisma, 
+                                proficiency_skills, proficiency_n_language, equipment, lore)
+        VALUES (:username, :character_name, :class, :subclass, :background, :race, :alignment, 
+                :xp, :hp, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
+                :proficiency_skills, :proficiency_n_language, :equipment, :lore)
+        """
+    params = {
+            "username": data.get("username"),
+            "character_name": data.get("characterName"),
+            "class": data.get("className"),
+            "subclass": data.get("subclassName"),
+            "background": data.get("background"),
+            "race": data.get("race"),
+            "alignment": data.get("alignment"),
+            "xp": data.get("xp"),
+            "hp": data.get("hp"),
+            "strength": data.get("strength"),
+            "dexterity": data.get("dexterity"),
+            "constitution": data.get("constitution"),
+            "intelligence": data.get("intelligence"),
+            "wisdom": data.get("wisdom"),
+            "charisma": data.get("charisma"),
+            "proficiency_skills": ','.join(data.get("skillProficiencies")),
+            "proficiency_n_language": data.get("proficienciesLanguages"),
+            "equipment": data.get("equipment"),
+            "lore": data.get("lore")
+        }
+    result = queryCUD(query, params)
+    if result:
+        return jsonify({"message": "character created correctly"}), 200
+    return jsonify({"message": "error creating character"}), 400
 
 
 #delete account
