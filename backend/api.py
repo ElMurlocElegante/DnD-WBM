@@ -64,10 +64,6 @@ def codeGenerator(lenght):
             break
     return code
 
-@app.route("/api/data")
-def data():
-    return {"message": "hello from backend"}
-
 #Rooms
 
 @app.route("/api/rooms", methods = ['GET'])
@@ -151,6 +147,167 @@ def get_characters():
     result = queryRead(query, {"username": username})
     characters = [dict(row._mapping) for row in result.fetchall()]
     return jsonify(characters), 200
+
+@app.route("/api/index_data", methods=['GET'])
+def getIndexData():
+    index_route = os.path.join(app.root_path, 'data', 'class', 'index.json')
+    if not os.path.exists(index_route):
+        return jsonify({"error": "File Not Found, class index"}), 404
+    with open(index_route, 'r') as json_file:
+        classes = json.load(json_file)
+    return jsonify(classes), 200
+
+@app.route("/api/races_data", methods=['GET'])
+def getRacesData():
+    races_route = os.path.join(app.root_path, 'data', 'races.json')
+    if not os.path.exists(races_route):
+        return jsonify({"error": "File Not Found, races"}), 404
+    with open(races_route, 'r') as json_file:
+        race_details = [{"name": race['name'], "source": race['source']} for race in json.load(json_file)['race']]
+    return jsonify(race_details), 200
+
+@app.route("/api/backgrounds_data", methods=['GET'])
+def getBackgroundsData():
+    backgrounds_route = os.path.join(app.root_path, 'data', 'backgrounds.json')
+    if not os.path.exists(backgrounds_route):
+        return jsonify({"error": "File Not Found, backgrounds"})
+    with open(backgrounds_route, 'r') as json_file:
+        background_details = [{"name": background['name']} for background in json.load(json_file)['background']]
+    return jsonify(background_details), 200
+
+
+@app.route("/api/skills_data", methods=['GET'])
+def getCreateCharacterData():
+    skills_route = os.path.join(app.root_path, 'data', 'skills.json')
+    if not os.path.exists(skills_route):
+        return jsonify({"error": "File Not Found, skills"})
+    with open(skills_route, 'r') as json_file:
+        skills_details = [{"name": skill['name']} for skill in json.load(json_file)['skill']]
+    return jsonify(skills_details), 200
+
+@app.route("/api/delete_character/<string:username>/<int:character_id>", methods = ['DELETE'])
+def deleteCharacter(username, character_id):
+    query = "DELETE FROM characters WHERE username = :username AND id = :id"
+    result = queryCUD(query, {"username": username, "id": character_id})
+    if result:
+        return jsonify({"message": "character deleted successfully"}), 200
+    return jsonify({"message": "character not found"}), 404
+
+@app.route("/api/data/<string:jsonFile>", methods = ['GET'])
+def getData(jsonFile):
+    route = os.path.join(app.root_path, 'data', jsonFile)
+    if not os.path.exists(route):
+        return jsonify({"error": f"File Not Found: {jsonFile}"})
+    with open(route, 'r') as json_file:
+        return jsonify(json.load(json_file)), 200
+    
+@app.route("/api/data/class/<string:jsonFile>", methods = ['GET'])
+def getClassData(jsonFile):
+    route = os.path.join(app.root_path, 'data', 'class', jsonFile)
+    if not os.path.exists(route):
+        return jsonify({"error": f"File Not Found: {jsonFile}"})
+    with open(route, 'r') as json_file:
+        return jsonify(json.load(json_file)), 200
+
+
+#delete account
+
+@app.route("/api/delete_account/<string:username>", methods = ['DELETE'])
+def deleteAccount(username):
+    query_delete_characters = "DELETE FROM characters WHERE username = :username"
+    query_delete_user = "DELETE FROM users WHERE username = :username"
+    result_characters = queryCUD(query_delete_characters, {"username": username})
+    result_user = queryCUD(query_delete_user, {"username": username})
+    if result_characters and result_user:
+        return jsonify({"message": "user deletes successfully"}), 200
+    return jsonify({"message": "user not found"}), 404
+
+#socket io
+
+@socketio.on("connect")
+def connect(auth):
+
+    data = request.args.get('session')
+
+    print(data)
+
+    room = data['room']
+    name = data['username']
+
+    query = "SELECT code FROM rooms;"
+    result = queryRead(query)
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+
+    if room not in rooms:
+        leave_room(room)
+        return
+    join_room(room)
+    send({"name": name, "message": "has entered the room"}, to=room)
+
+    query = "UPDATE rooms SET ingame = ingame + 1 WHERE code = :code"
+    result = queryCUD(query, {"code": room})
+
+    print(f"{name} joined room {room}")
+
+@socketio.on("disconnect")
+def disconnect():
+
+    data = request.args.get('session')
+
+    room = data['room']
+    name = data['username']
+
+    query = "SELECT code FROM rooms;"
+    result = queryRead(query)
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+
+    leave_room(room)
+    if room in rooms:
+        query = "UPDATE rooms SET ingame = ingame - 1 WHERE code = :code"
+        result = queryCUD(query, {"code": room})
+        
+        query = "SELECT ingame FROM rooms WHERE code = :code" 
+        result = queryRead(query, {"code": room})
+        
+        for row in result:
+            ingame = row.ingame
+
+        if ingame <= 0:
+            query = "DELETE FROM rooms WHERE code = :code"
+            result = queryCUD(query, {"code": room})
+
+    
+    send({"name": name, "message": "has left the room"}, to=room)
+    print(f"{name} left room {room}")
+
+@socketio.on("message")
+def message(data):
+
+    sessionData = request.args.get('session')
+
+    room = sessionData['room']
+    name = sessionData['username']
+
+    query = "SELECT code FROM rooms;"
+    result = queryRead(query)
+
+    rooms = []
+    for row in result:
+        rooms.append(row.code)
+    if room not in rooms:
+        return
+    content = {
+        "name": name,
+        "message": data["data"]
+    }
+    send(content, to=room)
+    print(f"{name} said: {data['data']}")
+
+#main
 
 if __name__ == "__main__":
     socketio.run(app, port=5001)

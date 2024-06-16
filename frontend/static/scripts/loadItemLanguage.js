@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(){
         } else  {
             var selectedBackground = event.target.value
         }
-        fetch('../../data/backgrounds.json')
+        fetch('http://localhost:5001/api/data/backgrounds.json')
             .then(response => response.json())
             .then(data => {
                 var backgroundData = data.background.find(function(bg) {

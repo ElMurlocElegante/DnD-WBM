@@ -7,8 +7,7 @@ app.config['SECRET_KEY'] = 'SECRET'
 
 @app.route("/")
 def home():
-    data = requests.get('http://localhost:5001/api/data').json()
-    return render_template("home.html", data = data)
+    return render_template("home.html")
 
 #Game rooms 
 
@@ -24,7 +23,7 @@ def joinRoom():
         code = request.form['code']
         session["room"] = code
         url = f'http://localhost:5001/api/join?code={code}'
-        response = request.get(url)
+        response = requests.get(url)
         if response.status_code == 200:
             return redirect(url_for('room'))
         return redirect(url_for('gameRooms', ))
@@ -56,6 +55,31 @@ def characters(): #Character API
             characters = requests.get(url).json()         
             return render_template("characters.html", data=characters)
     return redirect(url_for('login'))
+
+@app.route("/create_character", methods=['GET'])
+def createCharacter():
+    classes = requests.get('http://localhost:5001/api/index_data').json()
+    race_details = requests.get('http://localhost:5001/api/races_data').json()
+    background_details = requests.get('http://localhost:5001/api/backgrounds_data').json()
+    skills_details = requests.get('http://localhost:5001/api/skills_data').json()
+    return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
+
+@app.route('/delete_character', methods=['POST'])
+def delete_character():
+    username = session['username']
+    character_id = request.form.get('character_id')
+    if not character_id:
+        flash('Character ID is required.', 'danger')
+        return redirect(url_for('characters'))
+    url = f"http://localhost:5001/api/delete_character/{username}/{character_id}"
+    response = requests.delete(url)
+    if response.status_code == 200:
+        flash(response.json()['message'], 'success')
+    else:
+        flash(response.json()['message'], 'danger')
+    return redirect(url_for('characters')) 
+    
+
 
 #login
 
@@ -109,7 +133,29 @@ def register():
         return render_template('auth/register.html')
     else:
         return render_template('auth/register.html')
-            
+
+#logout
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Sesión cerrada correctamente', 'success')
+    return render_template("home.html")
+
+#delete account
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    username = session['username']
+    url = f"http://localhost:5001/api/delete_account/{username}"
+    response = requests.delete(url)
+    if response.status_code == 200:
+        session.clear()
+        return redirect(url_for('login'))
+    return redirect(url_for('characters'))
+           
 
 #about
 
@@ -118,6 +164,14 @@ def about():
     return render_template("about.html")
 
 #Misc
+
+@app.route("/session")
+def getSessionData():
+    data = {
+        "username": session['username'],
+        "room": session['room']
+    }
+    return jsonify(data)
 
 @app.route("/github/<profile>/<repo>")
 @app.route("/github/<profile>")

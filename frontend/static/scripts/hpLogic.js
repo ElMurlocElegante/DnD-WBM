@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
         } else  {
             var selectedClass = event.value
         }
-        fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
+        fetch(`http://localhost:5001/api/data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
             .then(data => {
                 const classData = data.class[0].hd.faces;

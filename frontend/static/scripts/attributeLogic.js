@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         const [raceName, raceSource] = selectedRace.split('|');
 
-        fetch('../../data/races.json')
+        fetch('http://localhost:5001/api/data/races.json')
             .then(response => response.json())
             .then(data => {
                 const raceData = data.race.find(rc => rc.name === raceName && rc.source === raceSource);
