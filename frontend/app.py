@@ -1,7 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
 import requests
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'SECRET'
 
 @app.route("/")
 def home():
@@ -20,6 +22,7 @@ def gameRooms(): #Get rooms API
 def joinRoom():
     if request.method == 'POST':
         code = request.form['code']
+        session["room"] = code
         url = f'http://localhost:5001/api/join?code={code}'
         response = request.get(url)
         if response.status_code == 200:
@@ -28,12 +31,12 @@ def joinRoom():
     
 @app.route("/room")
 def room():
-    response = requests.get('http://localhost:5001/api/roomConnection')
-    if response.status_code != 200:
+    room = session.get("room")
+    url = f'http://localhost:5001/api/roomConnection?room={room}'
+    response = requests.get(url)
+    if response.status_code != 200 or room is None or session.get("username") is None:
         return redirect(url_for('home'))
-    data = response.json()
-    code = data.get('code')
-    return render_template("room.html", code=code)
+    return render_template("room.html", code=room)
 
 #Room Creation
 
@@ -48,14 +51,65 @@ def roomCreation():
 @app.route("/characters")
 def characters(): #Character API
     if session.get('user_id') is not None and session.get('username') is not None:
-        query = "SELECT * FROM `characters` WHERE `username` = :username"
-        try:
-            result = queryRead(query, {"username": session["username"]})
-            characters = [dict(row._mapping) for row in result.fetchall()]
+            username = session['username']
+            url = f'http://localhost:5001/api/characters?user={username}'
+            characters = requests.get(url).json()         
             return render_template("characters.html", data=characters)
-        except SQLAlchemyError as err:
-            return jsonify({'message': 'Se ha producido un error: ' + str(err.__cause__)})
     return redirect(url_for('login'))
+
+#login
+
+@app.route('/check_login', methods=['GET'])
+def check_login():
+    if 'user_id' in session and 'username' in session:
+        return jsonify({'logged_in': True})
+    else:
+        return jsonify({'logged_in': False})
+
+@app.route("/login", methods = ['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        data = {
+            "user": username,
+            "password": password
+        }
+        response = requests.post('http://localhost:5001/api/login', json=data)
+        if response.status_code == 200:
+            data = response.json()
+            id = data.get('user_id')
+            session['user_id'] = id
+            session['username'] = username
+            return redirect(url_for('characters'))
+        else:
+            flash('Usuario o contraseña incorrecta', 'danger')
+            return render_template('auth/login.html')
+    else:
+        return render_template('auth/login.html')
+
+#register
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        data = {
+            "user": username,
+            "password": password,
+            "email": email
+        }
+        response = requests.post('http://localhost:5001/api/register', json=data)
+        if response.status_code == 200:
+            flash(response.json()['message'], 'success')
+            return redirect(url_for('login'))
+        flash(response.json()['message'], 'danger')
+        return render_template('auth/register.html')
+    else:
+        return render_template('auth/register.html')
+            
 
 #about
 

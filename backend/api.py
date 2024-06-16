@@ -1,4 +1,4 @@
-from flask import Flask,jsonify, request, session, flash
+from flask import Flask,jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
@@ -13,7 +13,6 @@ from string import ascii_uppercase
 app = Flask(__name__)
 
 engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
-app.config['SECRET_KEY'] = 'SECRET'
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
 socketio = SocketIO(app)
 '''
@@ -88,7 +87,6 @@ def get_rooms():
 @app.route("/api/join", methods = ['GET'])
 def join_room():
     code = request.args.get('code')
-    session["room"] = code
     query = "SELECT ingame,maxplayers FROM rooms WHERE code = :code"
     result = queryRead(query, {"code": code})
     players = {}
@@ -99,24 +97,60 @@ def join_room():
         return jsonify({"message": f'joining room with code: {code}'}), 200
     return jsonify({"message": "room full"}), 400
 
-@app.route('/api/check_login', methods=['GET'])
-def check_login():
-    if 'user_id' in session and 'username' in session:
-        return jsonify({'logged_in': True}), 200
-    else:
-        return jsonify({'logged_in': False}), 400
     
-@app.route('/api/roomConnection')
+@app.route('/api/roomConnection', methods = ['GET'])
 def roomConnection():
-    room = session.get("room")
+    room = request.args.get('room')
     query = "SELECT code FROM rooms;"
     result = queryRead(query)
     rooms = []
     for row in result:
         rooms.append(row.code)
-    if room is None or session.get("username") is None or room not in rooms:
+    if room not in rooms:
         return jsonify({"message": "error"}), 400
     return jsonify({"message": "success", "code": room}), 200
+
+#login
+
+@app.route('/api/login', methods = ['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('user')
+    password = data.get('password')
+    query = "SELECT * FROM users WHERE username = :username AND password = :password;"
+    result = queryRead(query,{"username": username, "password": password}).fetchone()
+    if result:
+        return jsonify({"message": "login succesfull", "user_id": result.id}), 200
+    return jsonify({"message": "login failed"}), 401
+
+#register
+
+@app.route('/api/register', methods = ['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('user')
+    password = data.get('password')
+    email = data.get('email')
+    query_email = "SELECT * FROM users WHERE email = :email;"
+    query_username = "SELECT * FROM users WHERE username = :username;"
+    result_email = queryRead(query_email,{"email": email}).fetchone()
+    result_username = queryRead(query_username, {"username": username}).fetchone()
+    if result_email:
+        return jsonify({"message": "email in use"}), 409
+    if result_username:
+        return jsonify({"message": "username already in use"}), 409
+    query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
+    queryCUD(query, {"username": username, "email": email, "password": password})
+    return jsonify({"message": "user registered"}), 200
+
+# characters 
+@app.route('/api/characters', methods = ['GET'])
+def get_characters():
+    username = request.args.get('user')
+    query = "SELECT * FROM `characters` WHERE `username` = :username"
+    result = queryRead(query, {"username": username})
+    characters = [dict(row._mapping) for row in result.fetchall()]
+    return jsonify(characters), 200
 
 if __name__ == "__main__":
     socketio.run(app, port=5001)

@@ -4,7 +4,7 @@ const closeModal = document.querySelector('.closeBtn')
 
 openModal.forEach(button => {
     button.addEventListener('click', () => {
-        fetch('http://localhost:5001/api/check_login', 
+        fetch('/check_login', 
             {   method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
