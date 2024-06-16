@@ -13,8 +13,8 @@ from string import ascii_uppercase
 app = Flask(__name__)
 
 engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
-socketio = SocketIO(app)
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000/"}})
+socketio = SocketIO(app, cors_allowed_origins="http://127.0.0.1:5000")
 '''
 ///IMPORTANTE///
 nombre DB: DnD-WBM
@@ -225,14 +225,16 @@ def deleteAccount(username):
 #socket io
 
 @socketio.on("connect")
-def connect(auth):
+def connect():
 
     data = request.args.get('session')
 
+    sessionData = json.loads(data)
+
     print(data)
 
-    room = data['room']
-    name = data['username']
+    room = sessionData['room']
+    name = sessionData['username']
 
     query = "SELECT code FROM rooms;"
     result = queryRead(query)
@@ -256,8 +258,10 @@ def disconnect():
 
     data = request.args.get('session')
 
-    room = data['room']
-    name = data['username']
+    sessionData = json.loads(data)
+
+    room = sessionData['room']
+    name = sessionData['username']
 
     query = "SELECT code FROM rooms;"
     result = queryRead(query)
@@ -287,7 +291,9 @@ def disconnect():
 @socketio.on("message")
 def message(data):
 
-    sessionData = request.args.get('session')
+    dataJson = request.args.get('session')
+
+    sessionData = json.loads(dataJson)
 
     room = sessionData['room']
     name = sessionData['username']

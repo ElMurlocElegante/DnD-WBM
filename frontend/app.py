@@ -165,7 +165,7 @@ def about():
 
 #Misc
 
-@app.route("/session")
+@app.route("/session", methods = ['GET'])
 def getSessionData():
     data = {
         "username": session['username'],
