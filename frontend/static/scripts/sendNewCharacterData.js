@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }
         // Enviar el formulario mediante fetch
-        fetch('/characters/add_character', {
+        fetch('/character/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

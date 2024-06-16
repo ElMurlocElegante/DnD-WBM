@@ -4,7 +4,7 @@
 <main>
     <div class="roomContainer">
         <section class="messageBox">
-            <h2>Chat room: {{code}}</h2>
+            <h2 class="textShadow">Chat room: {{code}}</h2>
             <article class="messages" id="messages"></article>
             <div class="inputs" onkeypress="handleKeyPress(event)">
                 <input type="text" rows="3" placeholder="message" name="message" id="message">
@@ -14,37 +14,53 @@
     </div>
 </main>
 <script type="text/javascript">
-    var socketio = io();
 
-    const messages = document.getElementById("messages")
+    document.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/session')
+            .then(response => response.json())
+            .then(sessionData => {
+                var socketio = io('http://127.0.0.1:5001', {
+                    query: { session: JSON.stringify(sessionData) }
+                });
 
-    const createMessage = (name, msg) => {
-        const content = `
-        <div class="text">
-            <span>
-                <strong>${name}</strong>: ${msg}
-            </span>
-        </div>
-        `
-        messages.innerHTML += content;
-    }
+                const messages = document.getElementById("messages");
 
-    socketio.on("message", (data) => {
-        createMessage(data.name, data.message);
-    })
+                const createMessage = (name, msg) => {
+                    const content = `
+                    <div class="text textShadow">
+                        <span>
+                            <strong>${name}</strong>: ${msg}
+                        </span>
+                    </div>
+                    `;
+                    messages.innerHTML += content;
+                };
 
-    const sendMessage = () => {
-        const msg = document.getElementById("message")
-        if(msg.value == "") return;
-        socketio.emit("message", {data: msg.value})
-        msg.value = "";
-    };
+                socketio.on("message", (data) => {
+                    createMessage(data.name, data.message);
+                });
 
-    function handleKeyPress(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            sendMessage();
-        }
-    }
+                const sendMessage = () => {
+                    const msg = document.getElementById("message");
+                    if (msg.value == "") return;
+                    socketio.emit("message", { data: msg.value });
+                    msg.value = "";
+                };
+
+                function handleKeyPress(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        sendMessage();
+                    }
+                }
+
+                document.getElementById("sendBtn").addEventListener("click", sendMessage);
+                document.getElementById("message").addEventListener("keypress", handleKeyPress);
+            })
+            .catch(error => {
+                console.error('Error fetching session data:', error);
+            });
+    });
+ 
 </script>
 {% endblock %}

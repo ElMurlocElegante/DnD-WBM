@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var selectedClass = event.target.value
         }
         
-        fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
+        fetch(`http://localhost:5001/api/data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
             .then(data => {
                 var subclassLevel = data.class[0].classFeatures.find(item => typeof item === 'object' && item.gainSubclassFeature).classFeature.match(/\d+$/)[0];
