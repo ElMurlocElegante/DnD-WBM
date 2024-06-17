@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block style %} {% endblock %}
     <link rel="icon" href="{{ url_for('static', filename='images/DnD-Emblem.png') }}">
@@ -11,17 +13,22 @@
 </head>
 <body>
     <header>
-        <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo">
-        <nav class="navbar">
-            <h1>DnD - Web Battle Manager</h1>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('gameRooms' ) }}">Game Rooms</a></li>
-                <li><a href="{{ url_for('characters') }}">Characters</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-            </ul>
-        </nav>
+        <nav>
+        <ul class='nav-bar'>
+                <li class='logo'><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo"></a></li>
+                <input type='checkbox' id='check' />
+                <span class="menu">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('gameRooms' ) }}">Game Rooms</a></li>
+                    <li><a href="{{ url_for('characters') }}">Characters</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
+                </span>
+                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>  
+        </ul>
+        </nav>  
     </header>
+    <!-- fin de barra -->
     {% block body %} {% endblock %}
     <footer class="footer">    
         <div class="footer-content container">
@@ -35,7 +42,7 @@
             </div>
             <div class="creditos">
                 <h3>proyecto IDS creado 1C 2024 ©</h3>
-                <p>por William Ramirez, Luciano Celano, Matias Dejean, Martina Molina Moio [ingresen sus nombres]</p>
+                <p>por William Ramirez, Luciano Celano, Matias Dejean, Martina Molina Moio, Julio Marquez y José Castellano</p>
             </div>
         </div>
     </footer>
