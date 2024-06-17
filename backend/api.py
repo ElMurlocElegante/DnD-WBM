@@ -12,9 +12,9 @@ from string import ascii_uppercase
 
 app = Flask(__name__)
 
-engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
-socketio = SocketIO(app, cors_allowed_origins="http://127.0.0.1:5000")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*")
 '''
 ///IMPORTANTE///
 nombre DB: DnD-WBM
@@ -156,7 +156,7 @@ def login():
     query = "SELECT * FROM users WHERE username = :username AND password = :password;"
     result = queryRead(query,{"username": username, "password": password}).fetchone()
     if result:
-        return jsonify({"message": "login succesfull", "user_id": result.id}), 200
+        return jsonify({"message": "login succesfull"}), 200
     return jsonify({"message": "login failed"}), 401
 
 #register

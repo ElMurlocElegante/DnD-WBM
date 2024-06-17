@@ -26,7 +26,7 @@ def joinRoom():
         response = requests.get(url)
         if response.status_code == 200:
             return redirect(url_for('room'))
-        return redirect(url_for('gameRooms', ))
+    return redirect(url_for('gameRooms', ))
     
 @app.route("/room")
 def room():
@@ -41,7 +41,7 @@ def room():
 
 @app.route("/roomCreation")
 def roomCreation():
-    if check_login:
+    if check_login()[1] == 200:
         return render_template("createRoom.html")
     return redirect(url_for('login'))
 
@@ -69,7 +69,7 @@ def roomCreated():
 
 @app.route("/characters")
 def characters():
-    if session.get('user_id') is not None and session.get('username') is not None:
+    if check_login()[1] == 200:
             username = session['username']
             url = f'http://localhost:5001/api/characters?user={username}'
             characters = requests.get(url).json()         
@@ -101,7 +101,7 @@ def delete_character():
 
 @app.route("/character/add", methods = ['POST'])
 def addCharacter():
-    if check_login():
+    if check_login()[1] == 200:
         character_data = request.get_json()
         character_data["username"] = session['username']
         response = requests.post("http://localhost:5001/api/data/character/add", json=character_data)
@@ -116,7 +116,7 @@ def addCharacter():
 
 @app.route('/check_login', methods=['GET'])
 def check_login():
-    if 'user_id' in session and 'username' in session:
+    if 'username' in session:
         return jsonify({'logged_in': True}), 200
     else:
         return jsonify({'logged_in': False}), 401
@@ -133,8 +133,6 @@ def login():
         response = requests.post('http://localhost:5001/api/login', json=data)
         if response.status_code == 200:
             data = response.json()
-            id = data.get('user_id')
-            session['user_id'] = id
             session['username'] = username
             return redirect(url_for('characters'))
         else:
@@ -177,15 +175,16 @@ def logout():
 
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    username = session['username']
-    url = f"http://localhost:5001/api/delete_account/{username}"
-    response = requests.delete(url)
-    if response.status_code == 200:
-        session.clear()
-        return redirect(url_for('login'))
-    return redirect(url_for('characters'))
+    if check_login()[1] == 200:
+        username = session['username']
+        url = f"http://localhost:5001/api/delete_account/{username}"
+        response = requests.delete(url)
+        if response.status_code == 200:
+            session.clear()
+            return redirect(url_for('login'))
+        return redirect(url_for('characters'))
+    return redirect(url_for('login'))
+
            
 
 #about
