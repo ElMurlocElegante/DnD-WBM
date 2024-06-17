@@ -15,12 +15,10 @@
     padding: 12px 20px;
 }
 .logo {
-    
+    width: 10%;
     margin-bottom: 10px;
 }
-.logo img {
-    width: 90px;
-}
+.logo img {width: 90px;}
 .menu {display: flex;}
 .menu li {padding-left: 30px;}
 .menu li a {
@@ -228,83 +226,6 @@ body {
 .button:hover {
     background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
-
-/* Login Styling */
-.bodyLogin, .bodyRegister {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: rgb(7, 1, 12);
-    color: #fff;
-    background-image: url('/static/images/battle2.webp');
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .login-form {
-    background: rgb(7, 1, 12);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
-    text-align: center;
-  }
-  
-  .login-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group input {
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-    font-size: 16px;
-  }
-  
-  .loginBtn, .registerBtn {
-    width: 90%;
-    padding: 10px;
-    background: #e50914;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .loginBtn:hover, .registerBtn:hover {
-    background: #f40612;
-  }
-  
-  .firstTime {
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .firstTime a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .firstTime a:hover {
-    text-decoration: underline;
-  }
-
 
 
 
@@ -532,10 +453,11 @@ body {
 .roomCreation {
     width: 50%;
     height: 16%;
-    background-image: url('/static/images/mage.webp');
+    background-image: url('/static/images/drakebanner.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 30%;
+    border-radius: 10px;
 }
 
 .roomCreationContent {
