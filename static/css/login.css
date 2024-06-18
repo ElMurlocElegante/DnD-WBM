@@ -1,76 +1,81 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
-  }
-  
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .login-form {
-    background: rgba(0, 0, 0, 0.75);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
-    text-align: center;
-  }
-  
-  .logo {
-    width: 50%;
-    margin-bottom: 20px;
-  }
-  
-  .login-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-    font-size: 16px;
-  }
-  
-  .loginbtn {
-    width: 100%;
-    padding: 10px;
-    background: #e50914;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .loginbtn:hover {
-    background: #f40612;
-  }
-  
-  .firstTime {
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .firstTime a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .firstTime a:hover {
-    text-decoration: underline;
-  }
+.bodyLogin, .bodyRegister {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: rgb(7, 1, 12);
+  color: #fff;
+  background-image: url('/static/images/battle2.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  background: rgb(7, 1, 12);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 300px;
+  text-align: center;
+}
+
+.login-form .logo{
+  width: 290px;
+  margin: 0 auto;
+  padding: 20px;
+
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  width: 90%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: #fff;
+  font-size: 16px;
+}
+
+.loginBtn, .registerBtn {
+  width: 90%;
+  padding: 10px;
+  background: #e50914;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.loginBtn:hover, .registerBtn:hover {
+  background: #f40612;
+}
+
+.firstTime {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.firstTime a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.firstTime a:hover {
+  text-decoration: underline;
+}

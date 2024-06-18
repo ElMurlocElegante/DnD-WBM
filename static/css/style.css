@@ -1,420 +1,96 @@
+/* Nav Bar */
 *{
-    text-decoration: none;
-}
-
-a:link{
-    color: inherit;
-}
-
-a:visited{
-    color: inherit;
-}
-
-/* Header Styling */
-header {
-    display: flex;
-    flex-direction: row;
-    text-align: left;
-    background-color: #8f8f8f;
-    color: #fff;
-    border-bottom: #9e0b0f solid;
-}
-
-header img {
-    width: 200px;
-}
-
-.navbar {
-    display: flex;
-    flex-direction: column;
     box-sizing: border-box;
-    width: 100%;
+    margin: 0;
+    padding: 0;
 }
-
-.navbar h1 {
-    font-style: oblique;
-    text-align: center;
-    top: 18px;
-    left: 10px;
-}
-
-.navbar ul {
+.nav-bar {
     width: 100%;
     display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    background-color: hsl(0, 0%, 25%);
-    padding: 0px;
-    margin: 0px;
-    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    position: relative;
+    background-color: var(--color2);
+    padding: 12px 20px;
 }
-
-.navbar li {
-    width: 25%;
+.logo {
+    width: 10%;
+    margin-bottom: 10px;
 }
-
-.navbar a {
+.logo img {width: 90px;}
+.menu {display: flex;}
+.menu li {padding-left: 30px;}
+.menu li a {
+    display: inline-block;
     text-decoration: none;
-    padding: 15px;
-    display: block;
+    color: var(--color1);
     text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
+    text-transform: uppercase;
 }
-
-header a:hover {
-    background-color: hsl(0, 0%, 10%);
-    color: #9e0b0f;
+.menu li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color1);
+    transition: 0.15s ease-in-out;
 }
+.menu li a:hover:after {width: 100%;}
+.open-menu , .close-menu {
+    position: absolute;
+    color: var(--color1);
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: none;
+}
+.open-menu {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+.close-menu {
+    top: 20px;
+    right: 20px;
+}
+#check {display: none;}
+@media(max-width: 610px){
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 100;
+        background-color: var(--color2);
+        transition: all 0.2s ease-in-out;
+    }
+    .menu li {margin-top: 40px;}
+    .menu li a {padding: 10px;}
+    .open-menu , .close-menu {display: block;}
+    #check:checked ~ .menu {right: 0;}
+}
+/* Nav bar end */ 
 
 /* Main Container Styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: rgb(7, 1, 12);
     color: aliceblue;
+     --color1: #FFF ;
+    --color2: rgb(7, 1, 12) ;
     margin: 0;
     padding: 0;
     text-align: center;
     scroll-behavior: smooth;
 }
-
-/* Home Styling */
-
-.learnGame {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('/static/images/battle.webp');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.homeNavigation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 100vh;
-    background-image: url('/static/images/dragonvsdragon.webp');
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: 200%;
-}
-
-.base {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    width: 100%;
-    height: 45%;
-    gap: 10px;
-}
-
-.createCharacter, .findRoom {
-    display: flex;
-    box-sizing: border-box;
-    width: 40%;
-    height: 100%;
-    justify-content: start;
-    align-items: end;
-}
-
-.createCharacter {
-    background-image: url('/static/images/create-character.webp');
-}
-
-.findRoom {
-    background-image: url('/static/images/find-room.webp');
-}
-
-.createRoom {
-    background-image: url('/static/images/create-room.webp');
-}
-
-.createCharacter, .findRoom, .createRoom {
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.findRoom, .createRoom {
-    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
-    background-size: 120%;
-}
-
-.createCharacter {
-    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
-    background-size: 150%;
-}
-
-.createCharacter .content {
-    margin-bottom: 40px;
-    margin-left: 10px;
-}
-
-.findRoom .content {
-    margin-bottom: 300px;
-    margin-left: 10px;
-}
-
-
-.content {
-    text-align: center;
-}
-
-.createCharacter:hover {
-    background-size: 160%;
-    background-position: center;
-}
-
-.findRoom:hover, .createRoom:hover {
-    background-size: 130%;
-    background-position: center;
-}
-
-.createRoom {
-    box-sizing: border-box;
-    width: 40%;
-    height: 45%;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-}
-
-.createRoom .content {
-    margin-bottom: 20px;
-}
-
-.createCharacter button, .findRoom button, .createRoom button {
-    margin: auto;
-}
-
-.button {
-    width: 150px;
-    display: inline-block;
-    padding: 15px 30px;
-    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    transition: background-color 0.3s ease;
-    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
-}
-
-.button:hover {
-    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
-}
-
-/* Login Styling */
-.bodyLogin, .bodyRegister {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: rgb(7, 1, 12);
-    color: #fff;
-    background-image: url('/static/images/battle2.webp');
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .login-form {
-    background: rgb(7, 1, 12);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
-    text-align: center;
-  }
-  
-  .logo {
-    width: 50%;
-    margin-bottom: 20px;
-  }
-  
-  .login-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group input {
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-    font-size: 16px;
-  }
-  
-  .loginBtn, .registerBtn {
-    width: 90%;
-    padding: 10px;
-    background: #e50914;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .loginBtn:hover, .registerBtn:hover {
-    background: #f40612;
-  }
-  
-  .firstTime {
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  
-  .firstTime a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .firstTime a:hover {
-    text-decoration: underline;
-  }
-
-
-
-
-/* Chacacter Creation Styling */
-.form-container {
-    width: 30%;
-    background-color: rgb(47, 47, 47);
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Image Container Styling */
-.container {
-    display: flex;
-    justify-content: center;
-}
-
-.image {
-    margin-left: 5%;
-    margin-right: 5%;
-    text-align: center;
-    max-width: 150px; 
-}
-
-.image img {
-    width: 100%;
-    height: auto;
-}
-
-.image figcaption {
-    margin-top: 5px;
-    font-style: italic;
-    font-size: 14px;
-}
-
-.image figcaption.rank {
-    font-family: 'Courier New', Courier, monospace;
-    overflow-wrap: normal;
-    word-wrap: normal;
-    max-width: 100%; 
-    font-style: oblique;
-    font-weight: bold;
-}
-
-/* ATRIBUTOS */
-#attributes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-}
-
-.header-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.header-row span {
-    width: 60px;
-    text-align: center;
-}
-
-.race-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.race-header > div {
-    display: flex;
-    align-items: center;
-}
-
-.race-header span {
-    width: 60px;
-    text-align: center;
-}
-
-.attribute-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.attribute-row label {
-    width: 60px;
-    text-align: right;
-}
-
- input[type="number"],
-.attribute-row input[type="text"] {
-    width: 50px;
-    text-align: center;
-}
-
-.attribute-row input[type="checkbox"] {
-    margin: 0 5px;
-}
-
-.attribute-row div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    text-align: center;
-}
-
-.mod-input {
-    background-color: #9f9f9f;
-}
-
-.total-input {
-    background-color: #9f9f9f;
-}
-
-
 
 /* rooms Styling */
 
@@ -521,15 +197,37 @@ body {
 .roomCreation {
     width: 50%;
     height: 16%;
-    background-image: url('/static/images/mage.webp');
+    background-image: url('/static/images/drakebanner.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 30%;
+    border-radius: 10px;
 }
 
 .roomCreationContent {
     margin-top: 45px;
 }
+.roomCreationContent .button {
+ 
+    width: 150px;
+    display: inline-block;
+    padding: 15px 30px;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+ }
+    
+ .roomCreationContent .button:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
+
 
 .btn-join, .btn-join-modal{
     cursor: pointer;
