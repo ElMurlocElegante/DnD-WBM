@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/characters.css') }}">
+{% endblock %}
+{% block body %}
+<div class="charctersContainer">
+    <div class="main-content">
+        <section class="character-list">
+            <h1>Character List</h1>
+            {% for character in data %}
+            <div class="pc">
+                <div class="pc-header">
+                    <span class="name">{{ character.character_name }}</span>
+                    <span class="race">{{ character.race }}</span>
+                </div>
+                <div class="pc-class-level">
+                    <p><strong>Class:</strong> {{ character.class|upper }}
+                        {% if character.subclass %}
+                            ({{ character.subclass|upper }})
+                        {% endif %}
+                    </p>
+                    <p><strong>Level:</strong> <span name="level">{{ character.level }}</span></p>
+                </div>
+                <p><strong>Alignment:</strong> <span name="alignment">{{ character.alignment }}</span></p>
+                <p class="pc-xp-pb">
+                    <span class="xp"><strong>XP:</strong> <span name="xp">{{ character.xp }}</span></span>
+                    <span><strong>PB: </strong> +<span name="pb">{{ character.pb }}</span></span>
+                </p>
+
+                <p><strong>Background:</strong> {{ character.background }}</p>
+                <section id="character-attributes">
+                    <p><strong>STR:</strong> {{ character.strength }}</p>
+                    <p><strong>DEX:</strong> {{ character.dexterity }}</p>
+                    <p><strong>CON:</strong> {{ character.constitution }}</p>
+                    <p><strong>INT:</strong> {{ character.intelligence }}</p>
+                    <p><strong>WIS:</strong> {{ character.wisdom }}</p>
+                    <p><strong>CHA:</strong> {{ character.charisma }}</p>
+                </section>
+                <form method="POST" action="{{ url_for('delete_character') }}" class="delete-character" onsubmit="return confirmDelete()">
+                    <input type="hidden" name="character_id" value="{{ character.id }}" id="">
+                    <button type="submit" class="btn btn-red">Delete Character</button>
+                    </form>
+            </div>
+            {% endfor %}
+        </section>
+        
+        <div class="account-actions">
+            <form action="{{ url_for('logout') }}" method="GET">
+                <button type="submit" class="btn-red">Logout</button>
+            </form>
+            <form action="{{ url_for('profile') }}" >
+                <button type="submit" class="btn-red">profile</button>
+            </form>
+            <form method="GET" action="{{ url_for('createCharacter') }}">
+                <button type="submit" class="btn-red">Create character</button>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='scripts/characterDataProcess.js') }}"></script>
+{% endblock %}

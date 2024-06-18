@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %} DnD-WBM {% endblock %}
+{% block body %}
+<main>
+    <section class="profileContainer">
+        <article class="profile">
+            <img src="{{ url_for('static', filename='images/profile.webp') }}" alt="profile">
+            <div class="profileData">
+                <h2 class="textShadow">USERNAME: {{data['username']}}</h2>
+                <h3 class="textShadow">EMAIL: {{data['email']}}</h3>
+                <div class="profileButtons">
+                    <button type="submit" class="btn-del-account">Delete account</button>
+                    <button type="submit" class="btn-change-pass">Change password</button>
+                </div>
+            </div>
+        </article>
+    </section>
+    <dialog class="modalPass" id="modalPass">
+        <div class="modalHeader">
+            <button class="closeBtn closeBtnPass">&times;</button>
+        </div>
+        <div class="modalBodyPass">
+            <form action="{{ url_for('changePassword') }}" method="POST" class="passForm">
+                <div class="passChangeInfo">
+                    <label for="currentPassword">current password</label>
+                    <input type="password" name="currentPassword" placeholder="your password" required>
+                    <label for="newPassword">new password</label>
+                    <input type="password" name="newPassword" placeholder="new password" required>
+                </div>
+                <div class="joinBtn">
+                    <button type="submit" class="btn-join-modal">Change password</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+    <dialog class="modalDelete" id="modalDelete">
+        <div class="modalHeader">
+            <button class="closeBtn closeBtnDelete">&times;</button>
+        </div>
+        <div class="modalBodyDelete">
+            <form action="{{ url_for('delete_account') }}" method="POST" class="deleteForm">
+                <h4>Are you sure?</h4>
+                <p><span class="textWeight">this process is irreversible</span></p>
+                <div class="profileDeleteButtons">
+                    <div class="joinBtn">
+                        <button type="submit" class="btn-join-modal yesProfileBtn">yes</button>
+                    </div>
+                    <div class="joinBtn">
+                        <button type="button" class="btn-join-modal closeBtnDelete noProfileBtn">no</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</main>
+<script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
+{% endblock %}

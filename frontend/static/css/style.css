@@ -1,0 +1,633 @@
+/* Nav Bar */
+*{
+    box-sizing: border-box;
+    padding: 0;
+}
+.nav-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    position: relative;
+    background-color: var(--color2);
+    padding: 12px 20px;
+}
+.logo {
+    width: 10%;
+    margin-bottom: 10px;
+}
+.logo img {width: 90px;}
+.menu {display: flex;}
+.menu li {padding-left: 30px;}
+.menu li a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color1);
+    text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
+    text-transform: uppercase;
+}
+.menu li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color1);
+    transition: 0.15s ease-in-out;
+}
+.menu li a:hover:after {width: 100%;}
+.open-menu , .close-menu {
+    position: absolute;
+    color: var(--color1);
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: none;
+}
+.open-menu {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+.close-menu {
+    top: 20px;
+    right: 20px;
+}
+#check {display: none;}
+@media(max-width: 610px){
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 80%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 100;
+        background-color: var(--color2);
+        transition: all 0.2s ease-in-out;
+    }
+    .menu li {margin-top: 40px;}
+    .menu li a {padding: 10px;}
+    .open-menu , .close-menu {display: block;}
+    #check:checked ~ .menu {right: 0;}
+}
+/* Nav bar end */ 
+
+/* Main Container Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: rgb(7, 1, 12);
+    color: aliceblue;
+     --color1: #FFF ;
+    --color2: rgb(7, 1, 12) ;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    scroll-behavior: smooth;
+}
+
+/* rooms Styling */
+
+.roomCreationContainer {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/static/images/createRoom.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.roomCreationForm {
+    width: 50%;
+    height: 25%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(48, 47, 47, 0.7);
+}
+
+.createRoomBtn {
+    cursor: pointer;
+    width: 15%;
+    height: 10%;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.createRoomBtn:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
+.formContentRooms {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.roomsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/static/images/dragonvsdragon.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.rooms {
+    height: 80%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.rooms::-webkit-scrollbar-thumb {
+    background-color: #9e0b0f;
+    border-radius: 10px;
+}
+
+.rooms::-webkit-scrollbar-track{
+    background-color: red;
+}
+
+.rooms::-webkit-scrollbar-button{
+    display: none;
+}
+
+.room-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    height: 50px;
+}
+
+.room-item{
+    text-align: center;
+    width: 25%;
+}
+
+.roomCreation {
+    width: 50%;
+    height: 16%;
+    background-image: url('/static/images/drakebanner.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 30%;
+    border-radius: 10px;
+}
+
+.roomCreationContent {
+    margin-top: 45px;
+}
+.roomCreationContent .button {
+ 
+    width: 150px;
+    display: inline-block;
+    padding: 15px 30px;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+ }
+    
+ .roomCreationContent .button:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
+
+
+.btn-join, .btn-join-modal{
+    cursor: pointer;
+    width: 30%;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.modal {
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+    position: fixed;
+    background-color: #8f8f8f;
+}
+
+
+
+.modalHeader {
+    position: relative;
+}
+
+.closeBtn {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.roomJoining{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* game room styling */
+
+.roomContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/static/images/party.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.messageBox {
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: rgba(143, 143, 143, 0.5);
+    height: 80%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.messages {
+    overflow-y: scroll;
+    flex: 1;
+    width: 100%;
+}
+
+.inputs {
+    padding: 10px;
+    display: flex;
+}
+
+h2 {
+    text-align: center;
+}
+
+#message {
+    flex: 1;
+}
+
+.text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+}
+
+/* About page Styling */
+.members {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100vh;
+    background-image: url('/static/images/about.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.member{
+    height: calc(100% /2);
+}
+
+.personalData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    margin-left: 10px;
+}
+
+.name {
+    height: 5%;
+    width: 100%;
+    text-align: left;
+}
+
+.profileAbout {
+    height: 75%;
+    width: 65%;
+    border-radius: 10px;
+}
+
+.aboutMedia{
+   display: flex;
+   flex-direction: row;
+   height: 10%;
+   gap: 5px;
+   margin-left: 10px;
+}
+  
+#media-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+  
+.media-link{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+}
+  
+.aboutMedia a img{
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin: 2px;
+}
+
+/* Profile Styling */
+
+.profileContainer {
+    height: 100vh;
+    background-image: url('/static/images/background.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 150%;
+}
+
+.profile {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.profile img {
+    width: auto;
+    height: 50%;
+    border-radius: 30px;
+}
+
+.profileData {
+    height: 25%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.profileButtons {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.modalBodyPass, .modalBodyDelete {
+    width: 100%;
+    height: 100%;
+}
+
+.passForm {
+    display: flex;
+    padding-top: 15%;
+    width: 100%;
+    height: 50%;
+    gap: 45px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.deleteForm {
+    display: flex;
+    width: 100%;
+    height: 50%;
+    padding-top: 10%;
+    flex-direction: column;
+}
+
+.passChangeInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.btn-del-account, .btn-change-pass {
+    cursor: pointer;
+    width: 50%;
+    height: 45%;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.btn-del-account:hover, 
+.btn-change-pass:hover,
+.yesProfileBtn:hover,
+.noProfileBtn:hover,
+.btn-join:hover,
+.btn-join-modal:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
+.modalPass {
+    width: 400px;
+    height: 250px;
+    padding: 25px;
+    position: fixed;
+    background-color: #8f8f8f;
+
+}
+
+.modalDelete {
+    width: 400px;
+    height: 250px;
+    padding: 25px;
+    position: fixed;
+    background-color: #8f8f8f;
+}
+
+.profileDeleteButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.yesProfileBtn, .noProfileBtn {
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+/* Footer Styling */
+
+.footer{
+    padding: 100px 0;
+    background-color: #000000;
+    display: block;
+  }
+  
+  .footer-content{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  
+  .contenedor-de-redes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 30px;
+  }
+  
+  .contenedor-de-redes a h3{
+    color: white;
+  }
+  
+  .creditos h3{
+    font-size: 18px;
+    color: #F9FAFC;
+    margin-bottom: 5px;
+  }
+  
+  .creditos p{
+    color: #F9FAFC;
+    margin-bottom: 5px;
+  }
+  
+  .redes{
+    width: 50px;
+    color: white;
+    display: block;
+    box-sizing: border-box;
+    width: 20%;
+    text-align: center;
+  }
+  
+  #contenedor-redes{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+  }
+  
+  .enlace{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+  }
+  
+  .redes a img{
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin: 2px;
+  }
+  
+  .creditos{
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+/* extras */
+
+.textShadow {
+    text-shadow:
+                -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;
+}
+
+/* css para los mensajes de flash */
+.flashes {
+    list-style: none;
+    padding: 0;
+}
+
+.flashes li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flashes .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flashes .danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}

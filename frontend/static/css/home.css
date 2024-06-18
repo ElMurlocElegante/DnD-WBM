@@ -1,0 +1,136 @@
+/* Home Styling */
+
+.learnGame {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/static/images/battle.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.homeNavigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100vh;
+    background-image: url('/static/images/dragonvsdragon.webp');
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 200%;
+} 
+
+.base {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 45%;
+    gap: 10px;
+}
+
+.createCharacter, .findRoom {
+    display: flex;
+    box-sizing: border-box;
+    width: 40%;
+    height: 100%;
+    justify-content: start;
+    align-items: end;
+}
+
+.createCharacter {
+    background-image: url('/static/images/create-character.webp');
+}
+
+.findRoom {
+    background-image: url('/static/images/find-room.webp');
+}
+
+.createRoom {
+    background-image: url('/static/images/create-room.webp');
+}
+
+.createCharacter, .findRoom, .createRoom {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.findRoom, .createRoom {
+    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
+    background-size: 120%;
+}
+
+.createCharacter {
+    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
+    background-size: 150%;
+}
+
+.createCharacter .content {
+    margin-bottom: 40px;
+    margin-left: 10px;
+}
+
+.findRoom .content {
+    margin-bottom: 300px;
+    margin-left: 10px;
+}
+
+
+.content {
+    text-align: center;
+}
+
+.createCharacter:hover {
+    background-size: 160%;
+    background-position: center;
+}
+
+.findRoom:hover, .createRoom:hover {
+    background-size: 130%;
+    background-position: center;
+}
+
+.createRoom {
+    box-sizing: border-box;
+    width: 40%;
+    height: 45%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.createRoom .content {
+    margin-bottom: 20px;
+}
+
+.createCharacter button, .findRoom button, .createRoom button {
+    margin: auto;
+}
+
+.button {
+    width: 150px;
+    display: inline-block;
+    padding: 15px 30px;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.button:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+

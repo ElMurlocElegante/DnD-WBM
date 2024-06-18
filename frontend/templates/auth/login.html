@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+{% block body %}
+<div class="bodyLogin">
+    <div class="login-container">
+        <div class="login-form">
+            <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="Logo" class="logo">
+            <h2>Iniciar sesión</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                </div>
+                <div class="btnContainer">
+                    <button class="loginBtn" type="submit">Iniciar sesión</button>
+                </div>
+            </form>
+            <p class="firstTime">¿Primera vez en nuestro sitio? <a href="{{ url_for('register') }}">Regístrate gratis aquí</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

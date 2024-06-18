@@ -1,0 +1,368 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+    color: #f0f0f0;
+    font-size: 16px;   
+}
+/* Headings */
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
+/* contenedor general */
+.contenedorGeneral {
+    height: 200vh;
+    box-sizing: border-box;
+    background-image: url('/static/images/tabern.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+/* Main Container */
+
+.form-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 0.7);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    line-height: 1.5;
+}
+
+/* Full info box */
+
+.full-info {
+    display: flex;
+    flex-direction: row;
+    height: 80%;
+    gap: 20px;
+}
+
+/* Form Styling */
+#characterForm {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: white;
+}
+/* Box Info Principal */
+.info-principal {
+    display: flex;
+    flex-direction:column;
+    width: 32%;
+    margin: 0px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color:  rgba(43, 43, 43, 0.4);
+    border: 1px solid #555;
+}
+.info-principal fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 8px;
+    
+}
+
+.hpCalc {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contenedorBotonesRoll {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.buttonRoll {
+    width: 25%;
+    height: 25%;
+    font-size: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.buttonRoll:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
+/* Box Info Atributos */
+.info-atributos{
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items:center;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 0.4);
+    border: 1px solid #555;
+    border-radius: 8px;
+    width: 32%;    
+}
+
+
+/* Error Fieldset hay que FIX
+.info-atributos fieldset {
+    
+    width: 100%; 
+    border: 1px solid #555;
+    padding: 20px;
+    border-radius: 8px;
+    
+} */
+
+#attributes {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;  
+}
+
+.all-attributes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.attribute-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    text-align: auto;
+    margin-right: 10px;
+    gap: 10px;
+}
+
+.attribute-row label {
+    flex: 1;
+    margin-right: 10px;
+    width: 60px;
+    text-align: right;
+}
+
+.attribute-row #xp {
+    width: 100px;
+}
+
+.attribute-row input[type="number"],
+.attribute-row input[type="text"] {
+    width: 50px;
+    text-align: center;
+}
+
+.attribute-row div {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    margin-left: 5px;
+}
+
+.mod-input,
+.total-input {
+    width: 60px;
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 4px;
+    text-align: center;
+    color: #f0f0f0;
+}
+
+.header-row {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    justify-content: space-around;  
+    align-items: center;  
+}
+
+.restoTitulos {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.header-row .base {
+    width: 15%;
+    text-align: center;
+}
+
+.race-header {
+    display: flex;
+    width: 50%; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.race-header .seleccionExtra {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+/* Box Info Profesiones */
+.info-profesiones{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: rgba(43, 43, 43, 0.4);
+    border: 1px solid #555;
+    border-radius: 8px;
+    width: 32%;
+}
+.info-profesiones fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+#allSkills {
+    margin-top: 20px;   
+}
+
+#allSkills input[type="checkbox"] {
+    margin-top: 10px;
+    
+}
+
+.checkbox-container {
+    display: inline-block;
+    margin-right: 10px; /* Opcional: espacio entre los elementos */
+}
+
+.lore {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #555;
+    border-radius: 8px;
+}
+
+.lore fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+/* equipment box */
+
+.equipmentBox {
+    width: 100%;
+}
+
+.equipment {
+    border: 1px solid #555;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+/* Textareas */
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+/* Fieldsets and Legends */
+
+ /* fieldset {
+    border: 1px solid #555;
+    padding: 15px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+}  */
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Submit Button */
+
+.buttonContainer {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formButton {
+    width: 25%;
+    height: 25%;
+    font-size: 35px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
+}
+
+.formButton:hover {
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
+}
+
