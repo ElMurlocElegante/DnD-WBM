@@ -217,7 +217,7 @@ def getBackgroundsData():
 
 
 @app.route("/api/skills_data", methods=['GET'])
-def getCreateCharacterData():
+def getSkillData():
     skills_route = os.path.join(app.root_path, 'data', 'skills.json')
     if not os.path.exists(skills_route):
         return jsonify({"error": "File Not Found, skills"})
@@ -298,6 +298,46 @@ def deleteAccount(username):
     if result_characters and result_user:
         return jsonify({"message": "user deletes successfully"}), 200
     return jsonify({"message": "user not found"}), 404
+
+#profile
+
+@app.route("/api/userData", methods = ['GET'])
+def getUserData():
+    data = request.args.get('username')
+    query = "SELECT email FROM users WHERE username = :username"
+    result = queryRead(query, {'username': data})
+    if result:
+        for row in result:
+            email = row.email
+        return jsonify({'email': email}), 200
+    return jsonify({"message": "user not found"}), 404
+
+@app.route("/api/profile/checkPassword", methods = ['POST'])
+def checkPassword():
+    data = request.get_json()
+    password = data['password']
+    username = data['user']
+    query = "SELECT password FROM users WHERE username = :username"
+    result = queryRead(query, {'username': username})
+    if result:
+        for row in result:
+            originalPassword = row.password
+        if originalPassword == password:
+            return jsonify({"message": "success"}), 200
+        return jsonify({"message": "passwords do not match"}), 401
+    return jsonify({"message": "denied"}), 400
+
+@app.route("/api/profile/changePassword", methods = ['PATCH'])
+def changePassword():
+    data = request.get_json()
+    username = data['username']
+    password = data['newPassword']
+    query = "UPDATE users SET password = :password WHERE username = :username"
+    result = queryCUD(query, {"password": password,
+                              "username": username})
+    if result:
+        return jsonify({"message": "password changed correctly"}), 200
+    return jsonify({"message": "denied"}), 400
 
 #socket io
 

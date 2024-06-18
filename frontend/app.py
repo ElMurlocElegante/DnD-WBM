@@ -107,9 +107,44 @@ def addCharacter():
         response = requests.post("http://localhost:5001/api/data/character/add", json=character_data)
         if response.status_code == 200:
             return jsonify({"message": "success"}), 200
-        return jsonify({"message": "erro creating character"}), 400
+        return jsonify({"message": "error creating character"}), 400
     return jsonify({"message": "not logged in"}), 401
-    
+
+#profile
+
+@app.route("/profile")
+def profile():
+    if check_login()[1] == 200:
+        username = session['username']
+        response = requests.get("http://localhost:5001/api/userData", params={'username': username})
+        data = response.json()
+        email = data['email']
+        userData = {
+            "username": username,
+            "email": email
+        }
+        return render_template("profile.html", data=userData)
+    return redirect(url_for('home'))
+
+@app.route("/change_password", methods = ['POST'])
+def changePassword():
+    currentPass = request.form['currentPassword']
+    mainData = {"password": currentPass,
+                "user": session['username']}
+    response = requests.post("http://localhost:5001/api/profile/checkPassword", json=mainData)
+    if response.status_code == 200:
+        newPassword = request.form['newPassword']
+        newData = {"newPassword": newPassword,
+                   "username": session['username']}
+        newResponse = requests.patch("http://localhost:5001/api/profile/changePassword", json=newData)
+        if newResponse.status_code == 200:
+            flash(newResponse.json()['message'], 'success')
+            return redirect(url_for("profile"))
+        flash(newResponse.json()['message'], 'danger')
+        return redirect(url_for('profile'))
+    flash(response.json()['message'], 'danger')
+    return redirect(url_for('profile'))
+
 
 
 #login
