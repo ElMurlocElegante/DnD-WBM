@@ -127,28 +127,38 @@
 button {
     padding: 10px 20px;
     margin: 10px;
-    background: #e50914;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
 }
 
 /* Botones de acción */
 form .btn {
     padding: 10px 20px;
-    background-color: #dc3545; /* Color rojo */
-    color: white;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: background-color 0.3s ease;
+    clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
     font-size: 16px;
 }
 
 form .btn:hover {
-    background-color: #c82333;
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
 
 form select {
@@ -157,7 +167,7 @@ form select {
 }
 
 button:hover {
-    background: #f40612;
+    background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
 /* boton especificado de pcreacion de persnaje */
 .account-actions {

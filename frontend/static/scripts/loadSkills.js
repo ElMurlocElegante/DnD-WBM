@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     function fetchSkillNames() {
-        return fetch('../../data/skills.json')
+        return fetch('http://localhost:5001/api/data/skills.json')
         .then(response => response.json())
         .then(data => {
             var skillNames = data.skill.map(skill => skill.name.toLowerCase());
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else  {
             var selectedBackground = event.target.value
         }
-        fetch('../../data/backgrounds.json')
+        fetch('http://localhost:5001/api/data/backgrounds.json')
             .then(response => response.json())
             .then(data => {
                 var backgroundData = data.background.find(function(bg) {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var selectedClass = event.target.value
         }
         
-        fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
+        fetch(`http://localhost:5001/api/data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
             .then(data => {
                 var classData = data.class[0].startingProficiencies.skills[0];
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         var [raceName, raceSource] = selectedRace.split('|');
 
-        fetch('../../data/races.json')
+        fetch('http://localhost:5001/api/data/races.json')
             .then(response => response.json())
             .then(data => {
                 var raceData = data.race.find(function(rc) {

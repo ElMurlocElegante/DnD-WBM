@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function(){
         } else  {
             var selectedClass = event.value
         }
-        fetch(`../../data/class/class-${selectedClass.toLowerCase()}.json`)
+        fetch(`http://localhost:5001/api/data/class/class-${selectedClass.toLowerCase()}.json`)
             .then(response => response.json())
             .then(data => {
                 const classData = data.class[0].hd.faces;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
         hp.value = die + conMod;
         if (level - 1 > 0){
-            fetch(`roll_dice/${level - 1}d${die}`)
+            fetch(`http://localhost:5001/api/roll_dice/${level - 1}d${die}`)
                 .then(response => response.json())
                 .then(data => {
                         const result = data.total;
