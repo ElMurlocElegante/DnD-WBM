@@ -639,7 +639,10 @@ h2 {
     flex-direction: column;
     flex-wrap: wrap;
     height: 100vh;
-    background-color: grey;
+    background-image: url('/static/images/about.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .member{
@@ -661,7 +664,7 @@ h2 {
     text-align: left;
 }
 
-.profile {
+.profileAbout {
     height: 75%;
     width: 65%;
     border-radius: 10px;
