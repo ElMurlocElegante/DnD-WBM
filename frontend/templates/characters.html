@@ -37,10 +37,9 @@
                     <p><strong>WIS:</strong> {{ character.wisdom }}</p>
                     <p><strong>CHA:</strong> {{ character.charisma }}</p>
                 </section>
-                <form method="POST" action="{{ url_for('delete_character') }}" class="delete-character" onsubmit="return confirmDelete()">
-                    <input type="hidden" name="character_id" value="{{ character.id }}" id="">
+                <form method="POST" class="delete-character" onsubmit="openModal(event, '{{ character.id }}')">
                     <button type="submit" class="btn btn-red">Delete Character</button>
-                    </form>
+                </form>
             </div>
             {% endfor %}
         </section>
@@ -68,5 +67,31 @@
         </div>
     </div>
 </div>
+
+<dialog class="modalDelete" id="modalDelete">
+    <div class="modalHeader">
+        <button class="closeBtn closeBtnDelete">&times;</button>
+    </div>
+    <div class="modalBodyDelete">
+        <form action="{{ url_for('delete_character') }}" method="POST" class="deleteForm" id="deleteForm">
+            <h4>Are you sure?</h4>
+            <p><span class="textWeight">this process is irreversible</span></p>
+            <input type="hidden" name="character_id" id="character_id">
+            <div class="profileDeleteButtons">
+                <div class="joinBtn">
+                    <button type="submit" class="btn-join-modal yesProfileBtn">yes</button>
+                </div>
+                <div class="joinBtn">
+                    <button type="button" class="btn-join-modal closeBtnDelete noProfileBtn">no</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<script>
+
+</script>
+
 <script src="{{ url_for('static', filename='scripts/characterDataProcess.js') }}"></script>
 {% endblock %}

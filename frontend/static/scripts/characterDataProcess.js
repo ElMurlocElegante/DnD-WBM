@@ -1,6 +1,22 @@
-function confirmDelete() {
-    return confirm('¿Estás seguro de que deseas eliminar este personaje?');
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const modalDelete = document.getElementById('modalDelete');
+    const closeBtnDelete = document.querySelectorAll('.closeBtnDelete');
+    const characterIdInput = document.getElementById('character_id');
+
+    
+    window.openModal = function(event, characterId) {
+        event.preventDefault();
+        characterIdInput.value = characterId;
+        modalDelete.showModal();
+    };
+
+    
+    closeBtnDelete.forEach(button => {
+        button.addEventListener('click', () => {
+            modalDelete.close();
+        });
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     function characterLevel(character) {

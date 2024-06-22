@@ -330,69 +330,6 @@ h2 {
     font-size: 20px;
 }
 
-/* About page Styling */
-.members {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 100vh;
-    background-image: url('/static/images/about.webp');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.member{
-    height: calc(100% /2);
-}
-
-.personalData {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-    margin-left: 10px;
-}
-
-.name {
-    height: 5%;
-    width: 100%;
-    text-align: left;
-}
-
-.profileAbout {
-    height: 75%;
-    width: 65%;
-    border-radius: 10px;
-}
-
-.aboutMedia{
-   display: flex;
-   flex-direction: row;
-   height: 10%;
-   gap: 5px;
-   margin-left: 10px;
-}
-  
-#media-container{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-  
-.media-link{
-    display: flex;
-    background-color: white;
-    border-radius: 10px;
-}
-  
-.aboutMedia a img{
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    margin: 2px;
-}
 
 /* Profile Styling */
 
