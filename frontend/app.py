@@ -250,6 +250,17 @@ def github_redirect(profile, repo=None):
 def instagram_redirect(profile):
     return redirect (f"https://www.instagram.com/{profile}/")
 
+@app.route("/5e/phb")
+def phb_redirect():
+    return redirect ("https://5e.tools/book.html#phb")
+
+@app.route("/awesome-css")
+def awesome_redirect():
+    return redirect("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css")
+
+@app.route("/socketio")
+def socketio_redirect():
+    return redirect("https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js")
 #main
 
 if __name__ == "__main__":

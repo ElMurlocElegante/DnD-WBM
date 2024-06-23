@@ -3,7 +3,7 @@
 {% block body %}
 <main>
     <div class="roomCreationContainer">
-        <form action="/roomCreated" method="POST" class="roomCreationForm">
+        <form action="{{ url_for('roomCreated') }}" method="POST" class="roomCreationForm">
             <h2>Create Room</h2>
             <div class="formContentRooms">
                 <label for="roomName">Room Name</label>
