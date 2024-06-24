@@ -5,6 +5,12 @@
     <div class="roomCreationContainer">
         <form action="{{ url_for('roomCreated') }}" method="POST" class="roomCreationForm">
             <h2>Create Room</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
             <div class="formContentRooms">
                 <label for="roomName">Room Name</label>
                 <input type="text" id="roomName" name="roomName" placeholder="room name" required>

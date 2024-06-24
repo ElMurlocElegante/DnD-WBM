@@ -2,10 +2,31 @@
 {% block title %} DnD-WBM {% endblock %}
 {% block body %}
 <main>
+    <style>
+        .flashes {
+          list-style-type: none;
+          padding: 0;
+        }
+        .flashes .danger {
+          color: red;
+        }
+        .flashes .success {
+          color: green;
+        }
+      </style>
     <section class="profileContainer">
         <article class="profile">
             <img src="{{ url_for('static', filename='images/profile.webp') }}" alt="profile">
             <div class="profileData">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
                 <h2 class="textShadow">USERNAME: {{data['username']}}</h2>
                 <h3 class="textShadow">EMAIL: {{data['email']}}</h3>
                 <div class="profileButtons">

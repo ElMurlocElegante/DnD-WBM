@@ -21,6 +21,12 @@
         <section class="roomCreation">
             <div class="roomCreationContent">
                 <h3 class="textShadow">Didn't Find your Room? Create it!</h3>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
                 <a href="{{ url_for('roomCreation') }}" class="button">Create Room</a>
             </div>
         </section>
