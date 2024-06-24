@@ -1,3 +1,23 @@
+// async function updateCharacter(characterId, characterData) {
+//     try {
+//         const response = await fetch(`/api/characters/${characterId}`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(characterData)
+//         });
+
+//         const result = await response.json();
+//         if (response.ok) {
+//             console.log('Character updated successfully:', result);
+//         } else {
+//             console.error('Failed to update character:', result.message);
+//         }
+//     } catch (error) {
+//         console.error('Error updating character:', error);
+//     }
+// }
 document.addEventListener('DOMContentLoaded', function() {
     const modalDelete = document.getElementById('modalDelete');
     const closeBtnDelete = document.querySelectorAll('.closeBtnDelete');

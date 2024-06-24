@@ -37,6 +37,10 @@
                     <p><strong>WIS:</strong> {{ character.wisdom }}</p>
                     <p><strong>CHA:</strong> {{ character.charisma }}</p>
                 </section>
+                <form method="POST" action="{{ url_for('edit_character') }}">
+                    <input type="hidden" name="character_id" value="{{ character.id }}">
+                    <button type="submit" class="btn btn-red">Edit Character</button>
+                </form>
                 <form method="POST" class="delete-character" onsubmit="openModal(event, '{{ character.id }}')">
                     <button type="submit" class="btn btn-red">Delete Character</button>
                 </form>

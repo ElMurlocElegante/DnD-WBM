@@ -65,6 +65,55 @@ def roomCreated():
         return redirect(url_for('roomCreation'))
     return redirect(url_for('home'))
 
+#Characters Edit
+@app.route('/edit_character', methods=['GET', 'POST'])
+def edit_character():
+    if request.method == 'POST':
+        # Handling the form submission to update the character
+        character_id = request.form.get('character_id')
+        character_data = {
+            "character_name": request.form.get('character_name'),
+            "race": request.form.get('race'),
+            "class": request.form.get('class'),
+            "subclass": request.form.get('subclass'),
+            "level": request.form.get('level'),
+            "alignment": request.form.get('alignment'),
+            "xp": request.form.get('xp'),
+            "pb": request.form.get('pb'),
+            "background": request.form.get('background'),
+            "strength": request.form.get('strength'),
+            "dexterity": request.form.get('dexterity'),
+            "constitution": request.form.get('constitution'),
+            "intelligence": request.form.get('intelligence'),
+            "wisdom": request.form.get('wisdom'),
+            "charisma": request.form.get('charisma'),
+        }
+        response = requests.put(f'http://localhost:5001/api/characters/{character_id}', json=character_data)
+        if response.status_code == 200:
+            flash('Character updated successfully!', 'success')
+            return redirect(url_for('characters'))
+        else:
+            flash('Failed to update character.', 'danger')
+            return redirect(url_for('edit_character', character_id=character_id))
+    else:
+        # Handling the form display to edit the character
+        character_id = request.args.get('character_id')
+        if not character_id:
+            flash('Character ID is required.', 'danger')
+            return redirect(url_for('characters'))
+        response = requests.get(f'http://localhost:5001/api/characters/{character_id}')
+        if response.status_code == 200:
+            character = response.json()
+            classes = requests.get('http://localhost:5001/api/index_data').json()
+            races = requests.get('http://localhost:5001/api/races_data').json()
+            backgrounds = requests.get('http://localhost:5001/api/backgrounds_data').json()
+            skills = requests.get('http://localhost:5001/api/skills_data').json()
+            return render_template("edit-character.html", character=character, classes=classes, races=races, backgrounds=backgrounds, skills=skills)
+        else:
+            flash('Character not found.', 'danger')
+            return redirect(url_for('characters'))
+
+
 #Characters
 
 @app.route("/characters")

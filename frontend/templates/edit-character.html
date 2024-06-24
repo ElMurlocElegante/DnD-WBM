@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% block title %} Edit Character {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_create-character.css') }}">
+{% endblock %}
+{% block body %}
+<div class="contenedorGeneral">
+    <div class="character-edit-container">
+        <h2>Edit Character</h2>
+        <form method="POST" action="{{ url_for('edit_character') }}">
+            <input type="hidden" name="character_id" value="{{ character.id }}">
+            
+            <div class="full-info">
+                <!--Box Info Principal-->
+                <div class="info-principal">
+                    <!--Box info-->
+                    <div class="info">
+                        <label for="character_name">Character Name</label><br>
+                        <input type="text" id="character_name" name="character_name" required><br>
+                        
+                        <section class="attribute-row" id="xpContainer">
+                                <label for="xp">XP</label> <br>
+                                <input type="number" name="xp" id="xp" min="0" value="0" max="355000">
+                                <label for="level">Level: </label>
+                                <input type="text" id="level" readonly class="total-input" value="1">
+
+                                <label for="pb">PB: </label>
+                                <input type="text" id="pb" readonly class="total-input" value="2">
+                        </section>
+                        
+                        <section id="classContainer">
+                            <label for="class">Class</label>
+                            <select name="class" id="class">
+                                {% for class_name in classes %}
+                                    <option value="{{ class_name }}">{{ class_name|upper }}</option>
+                                {% endfor %}
+                            </select> <br>
+                            <section id="subclassContainer">
+                                <label for="subclass"></label>
+                                <select name="subclass" id="subclass">
+                                    <option value=""></option>
+                                </select>
+                            </section>
+                        </section>
+
+                        <fieldset>
+                            <legend>Hit Points</legend>
+                            <section id="hpCalc" class="hpCalc">
+                                <div class="contenedorBotonesRoll">
+                                    <button type="button" class="buttonRoll" id="hpRoll">Roll !</button>
+                                    <button type="button" class="buttonRoll" id="hpMax">Maximum</button>
+                                    <button type="button" class="buttonRoll" id="hpAvg">Average</button>
+                                </div>
+                                <input type="number" name="hp" id="hp" min="0">
+                            </section>
+
+                        </fieldset>
+
+                        <label for="alignment">Alignment</label>
+                        <select name="alignment" id="alignment">
+                            <option value="Lawful Good">Lawful Good</option>
+                            <option value="Lawful Neutral">Lawful Neutral</option>
+                            <option value="Lawful Evil">Lawful Evil</option>
+                            <option value="Neutral Good">Neutral Good</option>
+                            <option value="Neutral"> Neutral</option>
+                            <option value="Neutral Evil">Neutral Evil</option>
+                            <option value="Chaotic Good">Chaotic Good</option>
+                            <option value="Chaotic Neutral">Chaotic Neutral</option>
+                            <option value="Chaotil Evil">Chaotic Evil</option>
+                        </select> <br>
+
+                        <label for="background">Background</label>
+                        <select name="background" id="background">
+                            {%for background in backgrounds %}
+                                <option value="{{ background.name }}">{{ background.name }}</option>
+                            {% endfor %}
+                        </select> <br>
+                        <label for="race">Race</label>
+                        <select name="race" id="race">
+                            {% for race_data in races %}
+                                <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
+                            {% endfor %}
+                        </select> <br>
+                        <label for="ac">AC:</label><br>
+                        <input type="number" name="ac" id="ac" min="0" value="0">
+                    </div>
+
+                    <!--Box Info Lore-->
+                    <div class="lore">
+                        <fieldset>
+                            <legend>Personality Traits</legend>
+                            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Ideals</legend>
+                            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Bonds</legend>
+                            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Flaws</legend>
+                            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <!--Box Info Atributos-->
+                <div class="info-atributos">
+                    <div class="repartir-atributos">
+                        <legend>Attributes</legend>
+                        <section id="attributes">
+                            <div class="attribute-row">
+                                <label for="availablePoints">Points</label>
+                                <input type="text" id="availablePoints" readonly class="total-input" value="27">
+                            </div>
+                            <div class="all-attributes">
+                                <div class="header-row">
+                                    <h4 class="base">Base</h4>
+                                    <div class="restoTitulos">
+                                        <div class="race-header">
+                                            <h3>Race</h3>
+                                            <div class="seleccionExtra">
+                                                <h4>+2</h4>
+                                                <h4>+1</h4>
+                                            </div>
+                                        </div>
+                                        <h4>Mod.</h4>
+                                        <h4>Total</h4>
+                                    </div>
+                                </div>
+                                <div class="attribute-row" id="strengthContainer">
+                                    <label for="strength">STR:</label>
+                                    <input type="number" id="strength" name="strength" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-str2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-str1" value="1">
+                                    </div>
+                                    <input type="text" name="modStrength" readonly class="mod-input">
+                                    <input type="text" name="totalStrength" readonly class="total-input">
+                                </div>
+                                <div class="attribute-row" id="dexterityContainer">
+                                    <label for="dexterity">DEX:</label>
+                                    <input type="number" id="dexterity" name="dexterity" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-dex2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-dex1" value="1">
+                                    </div>
+                                    <input type="text" name="modDexterity" readonly class="mod-input">
+                                    <input type="text" name="totalDexterity" readonly class="total-input">
+                                </div>
+                                <div class="attribute-row" id="constitutionContainer">
+                                    <label for="constitution">CON:</label>
+                                    <input type="number" id="constitution" name="constitution" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-con2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-con1" value="1">
+                                    </div>
+                                    <input type="text" name="modConstitution" readonly class="mod-input">
+                                    <input type="text" name="totalConstitution" readonly class="total-input">
+                                </div>
+                                <div class="attribute-row" id="intelligenceContainer">
+                                    <label for="intelligence">INT:</label>
+                                    <input type="number" id="intelligence" name="intelligence" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-int2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-int1" value="1">
+                                    </div>
+                                    <input type="text" name="modIntelligence" readonly class="mod-input">
+                                    <input type="text" name="totalIntelligence" readonly class="total-input">
+                                </div>
+                                <div class="attribute-row" id="wisdomContainer">
+                                    <label for="wisdom">WIS:</label>
+                                    <input type="number" id="wisdom" name="wisdom" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-wis2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-wis1" value="1">
+                                    </div>
+                                    <input type="text" name="modWisdom" readonly class="mod-input">
+                                    <input type="text" name="totalWisdom" readonly class="total-input">
+                                </div>
+                                <div class="attribute-row" id="charismaContainer">
+                                    <label for="charisma">CHA:</label>
+                                    <input type="number" id="charisma" name="charisma" min="8" value="8" max="15">
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-cha2" value="2">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="raceBonus" id="raceBonus-cha1" value="1">
+                                    </div>
+                                    <input type="text" name="modCharisma" readonly class="mod-input">
+                                    <input type="text" name="totalCharisma" readonly class="total-input">
+                                </div>
+                            </div>
+                        </section> 
+                    </div>
+                    <div class="in-info-atributos">
+                        <section id="abilityScoreImprovements">
+                            <div class="attribute-row">
+                                <label for="availableAbilityImprovements">Ability Score Improvements</label>
+                                <input type="text" id="availableAbilityImprovements" readonly class="total-input" value="0">
+                            </div>
+                            <div class="header-row">
+                                <span>STR</span><span>DEX</span><span>CON</span><span>INT</span><span>WIS</span><span>CHA</span>
+                            </div>
+                            <div class="attribute-row" id="abilityScoreImprovementsInputs">
+                                <input type="number" id="strengthImprovement" name="strength" min="0">
+                                <input type="number" id="dexterityImprovement" name="dexterity" min="0">
+                                <input type="number" id="constitutionImprovement" name="constitution" min="0">
+                                <input type="number" id="intelligenceImprovement" name="intelligence" min="0">
+                                <input type="number" id="wisdomImprovement" name="wisdom" min="0">
+                                <input type="number" id="charismaImprovement" name="charisma" min="0">
+                            </div>
+                        </section>
+                    </div>
+                    <div class="equipmentBox">
+                        <fieldset class="equipment">
+                            <legend>Equipment</legend>
+                            <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <!--Box Info Other Proficiencies
+                <fieldset>
+                    <legend>Other Proficiencies</legend>
+                    <fieldset id="language">
+                        <legend>Languages</legend>
+                        <section id="languageProfList">
+                            <section id="languageProfBackground"></section>
+                            <section id="languageProfClass"></section>
+                            <section id="languageProfRace"></section>
+                        </section>
+                    </fieldset>
+                    <fieldset id="items">
+                        <legend>Items and Tools</legend>
+                        <section id="itemProfList">
+                            <section></section>
+                        </section>
+                </fieldset>-->
+                
+
+                <!--Box Info Profesiones-->
+                <div class="info-profesiones">
+                    <fieldset class="sideInfo">    
+                    <legend>Choose your Proficiencies</legend>    
+                    <fieldset class="sideInfo">
+                        <legend>Class Proficiencies</legend>
+                        <p id="classRemainingSkills"></p>
+                        <div id="classSkills"></div>
+                    </fieldset>
+                    <fieldset class="sideInfo">
+                        <legend>Background Proficiencies</legend>
+                        <p id="backgroundRemainingSkills"></p>
+                        <div id="backgroundSkills"></div>
+                    </fieldset>
+                    <fieldset class="sideInfo">
+                        <legend>Race Proficiencies</legend>
+                        <p id="raceRemainingSkills"></p>
+                        <div id="raceSkills"></div>
+                    </fieldset>
+                    </fieldset> 
+                    <fieldset id="allSkills">
+                        <legend>Proficiencies</legend>
+                        {% for skill in skills %}
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
+                            <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
+                        </div>
+                        {% endfor %}
+                    </fieldset> <br>
+                </div>
+            </div>
+            <div class="buttonContainer">
+                <button type="submit" class="btn btn-green">Save Changes</button>
+            </div>           
+        </form>
+    </div>
+</div>
+{% endblock %}
