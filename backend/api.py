@@ -113,7 +113,7 @@ def joinRoom():
     players['maxplayers'] = row[1]
     if (players['maxplayers'] > players['ingame']):
         return jsonify({"message": f'joining room with code: {code}'}), 200
-    return jsonify({"message": "room full"}), 400
+    return jsonify({"message": "Room full"}), 400
 
     
 @app.route('/api/roomConnection', methods = ['GET'])
@@ -125,8 +125,8 @@ def roomConnection():
     for row in result:
         rooms.append(row.code)
     if room not in rooms:
-        return jsonify({"message": "error"}), 400
-    return jsonify({"message": "success", "code": room}), 200
+        return jsonify({"message": "Error"}), 400
+    return jsonify({"message": "Success", "code": room}), 200
 
 @app.route('/api/rooms/create', methods=['POST'])
 def roomCreation():
@@ -142,8 +142,8 @@ def roomCreation():
                     'code': code
                 })
     if result:
-        return jsonify({"message": "room created successfully", "code": code}), 200
-    return jsonify({"message": "error creating room"}), 400
+        return jsonify({"message": "Room created successfully", "code": code}), 200
+    return jsonify({"message": "Error creating room"}), 400
     
 
 #login
@@ -156,8 +156,8 @@ def login():
     query = "SELECT * FROM users WHERE username = :username AND password = :password;"
     result = queryRead(query,{"username": username, "password": password}).fetchone()
     if result:
-        return jsonify({"message": "login succesfull"}), 200
-    return jsonify({"message": "login failed"}), 401
+        return jsonify({"message": "Login succesfull"}), 200
+    return jsonify({"message": "Login failed"}), 401
 
 #register
 
@@ -172,12 +172,12 @@ def register():
     result_email = queryRead(query_email,{"email": email}).fetchone()
     result_username = queryRead(query_username, {"username": username}).fetchone()
     if result_email:
-        return jsonify({"message": "email in use"}), 409
+        return jsonify({"message": "Email in use"}), 409
     if result_username:
-        return jsonify({"message": "username already in use"}), 409
+        return jsonify({"message": "Username already in use"}), 409
     query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
     queryCUD(query, {"username": username, "email": email, "password": password})
-    return jsonify({"message": "user registered"}), 200
+    return jsonify({"message": "User registered"}), 200
 
 #Edit CHARACTER
 @app.route('/api/characters/<int:character_id>', methods=['PUT'])
@@ -282,7 +282,7 @@ def deleteCharacter(username, character_id):
     query = "DELETE FROM characters WHERE username = :username AND id = :id"
     result = queryCUD(query, {"username": username, "id": character_id})
     if result:
-        return jsonify({"message": "character deleted successfully"}), 200
+        return jsonify({"message": "Character deleted successfully"}), 200
     return jsonify({"message": "character not found"}), 404
 
 @app.route("/api/data/<string:jsonFile>", methods = ['GET'])
@@ -335,8 +335,8 @@ def addCharacter():
         }
     result = queryCUD(query, params)
     if result:
-        return jsonify({"message": "character created correctly"}), 200
-    return jsonify({"message": "error creating character"}), 400
+        return jsonify({"message": "Character created correctly"}), 200
+    return jsonify({"message": "Error creating character"}), 400
 
 
 #delete account
@@ -348,8 +348,8 @@ def deleteAccount(username):
     result_characters = queryCUD(query_delete_characters, {"username": username})
     result_user = queryCUD(query_delete_user, {"username": username})
     if result_characters and result_user:
-        return jsonify({"message": "user deletes successfully"}), 200
-    return jsonify({"message": "user not found"}), 404
+        return jsonify({"message": "User deletes successfully"}), 200
+    return jsonify({"message": "User not found"}), 404
 
 #profile
 
@@ -362,7 +362,7 @@ def getUserData():
         for row in result:
             email = row.email
         return jsonify({'email': email}), 200
-    return jsonify({"message": "user not found"}), 404
+    return jsonify({"message": "User not found"}), 404
 
 @app.route("/api/profile/checkPassword", methods = ['POST'])
 def checkPassword():
@@ -375,9 +375,9 @@ def checkPassword():
         for row in result:
             originalPassword = row.password
         if originalPassword == password:
-            return jsonify({"message": "success"}), 200
-        return jsonify({"message": "passwords do not match"}), 401
-    return jsonify({"message": "denied"}), 400
+            return jsonify({"message": "Success"}), 200
+        return jsonify({"message": "Passwords do not match"}), 401
+    return jsonify({"message": "Denied"}), 400
 
 @app.route("/api/profile/changePassword", methods = ['PATCH'])
 def changePassword():
@@ -388,8 +388,8 @@ def changePassword():
     result = queryCUD(query, {"password": password,
                               "username": username})
     if result:
-        return jsonify({"message": "password changed correctly"}), 200
-    return jsonify({"message": "denied"}), 400
+        return jsonify({"message": "Password changed correctly"}), 200
+    return jsonify({"message": "Denied"}), 400
 
 #socket io
 
@@ -415,7 +415,7 @@ def connect():
         leave_room(room)
         return
     join_room(room)
-    send({"name": name, "message": "has entered the room"}, to=room)
+    send({"name": name, "message": "Has entered the room"}, to=room)
 
     query = "UPDATE rooms SET ingame = ingame + 1 WHERE code = :code"
     result = queryCUD(query, {"code": room})
@@ -454,7 +454,7 @@ def disconnect():
             result = queryCUD(query, {"code": room})
 
     
-    send({"name": name, "message": "has left the room"}, to=room)
+    send({"name": name, "message": "Has left the room"}, to=room)
     print(f"{name} left room {room}")
 
 @socketio.on("message")

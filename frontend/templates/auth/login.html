@@ -8,7 +8,7 @@
     <div class="login-container">
         <div class="login-form">
             <img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="Logo" class="logo">
-            <h2>Iniciar sesión</h2>
+            <h2>Log in</h2>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               <ul class="flashes">
@@ -20,16 +20,16 @@
           {% endwith %}
             <form method="POST" action="{{ url_for('login') }}">
                 <div class="form-group">
-                    <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                 </div>
                 <div class="btnContainer">
-                    <button class="loginBtn" type="submit">Iniciar sesión</button>
+                    <button class="loginBtn" type="submit">Log in</button>
                 </div>
             </form>
-            <p class="firstTime">¿Primera vez en nuestro sitio? <a href="{{ url_for('register') }}">Regístrate gratis aquí</a></p>
+            <p class="firstTime">First time on our website? <a href="{{ url_for('register') }}">Sign up for free here</a></p>
         </div>
     </div>
 </div>
