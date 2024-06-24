@@ -13,7 +13,7 @@ def home():
 
 @app.route("/gameRooms")
 def gameRooms(): #Get rooms API
-    rooms = requests.get('http://localhost:5001/api/rooms').json()
+    rooms = requests.get('https://dndapi.pythonanywhere.com/api/rooms').json()
 
     return render_template("rooms.html", rooms = rooms)
 
@@ -22,7 +22,7 @@ def joinRoom():
     if request.method == 'POST':
         code = request.form['code']
         session["room"] = code
-        url = f'http://localhost:5001/api/join?code={code}'
+        url = f'https://dndapi.pythonanywhere.com/api/join?code={code}'
         response = requests.get(url)
         if response.status_code == 200:
             return redirect(url_for('room'))
@@ -31,7 +31,7 @@ def joinRoom():
 @app.route("/room")
 def room():
     room = session.get("room")
-    url = f'http://localhost:5001/api/roomConnection?room={room}'
+    url = f'https://dndapi.pythonanywhere.com/api/roomConnection?room={room}'
     response = requests.get(url)
     if response.status_code != 200 or room is None or session.get("username") is None:
         return redirect(url_for('home'))
@@ -56,7 +56,7 @@ def roomCreated():
             "creatorName": creatorName,
             "maxPlayers": maxPlayers
         }
-        response = requests.post('http://localhost:5001/api/rooms/create', json=data)
+        response = requests.post('https://dndapi.pythonanywhere.com/api/rooms/create', json=data)
         if response.status_code == 200:
             data = response.json()
             session['room'] = data.get('code')
@@ -71,17 +71,17 @@ def roomCreated():
 def characters():
     if check_login()[1] == 200:
             username = session['username']
-            url = f'http://localhost:5001/api/characters?user={username}'
+            url = f'https://dndapi.pythonanywhere.com/api/characters?user={username}'
             characters = requests.get(url).json()         
             return render_template("characters.html", data=characters)
     return redirect(url_for('login'))
 
 @app.route("/create_character", methods=['GET'])
 def createCharacter():
-    classes = requests.get('http://localhost:5001/api/index_data').json()
-    race_details = requests.get('http://localhost:5001/api/races_data').json()
-    background_details = requests.get('http://localhost:5001/api/backgrounds_data').json()
-    skills_details = requests.get('http://localhost:5001/api/skills_data').json()
+    classes = requests.get('hhttps://dndapi.pythonanywhere.com/api/index_data').json()
+    race_details = requests.get('https://dndapi.pythonanywhere.com/api/races_data').json()
+    background_details = requests.get('https://dndapi.pythonanywhere.com/api/backgrounds_data').json()
+    skills_details = requests.get('https://dndapi.pythonanywhere.com/api/skills_data').json()
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
 @app.route('/delete_character', methods=['POST'])
@@ -91,7 +91,7 @@ def delete_character():
     if not character_id:
         flash('Character ID is required.', 'danger')
         return redirect(url_for('characters'))
-    url = f"http://localhost:5001/api/delete_character/{username}/{character_id}"
+    url = f"https://dndapi.pythonanywhere.com/api/delete_character/{username}/{character_id}"
     response = requests.delete(url)
     if response.status_code == 200:
         flash(response.json()['message'], 'success')
@@ -104,7 +104,7 @@ def addCharacter():
     if check_login()[1] == 200:
         character_data = request.get_json()
         character_data["username"] = session['username']
-        response = requests.post("http://localhost:5001/api/data/character/add", json=character_data)
+        response = requests.post("https://dndapi.pythonanywhere.com/api/data/character/add", json=character_data)
         if response.status_code == 200:
             return jsonify({"message": "success"}), 200
         return jsonify({"message": "error creating character"}), 400
@@ -116,7 +116,7 @@ def addCharacter():
 def profile():
     if check_login()[1] == 200:
         username = session['username']
-        response = requests.get("http://localhost:5001/api/userData", params={'username': username})
+        response = requests.get("https://dndapi.pythonanywhere.com/api/userData", params={'username': username})
         data = response.json()
         email = data['email']
         userData = {
@@ -131,12 +131,12 @@ def changePassword():
     currentPass = request.form['currentPassword']
     mainData = {"password": currentPass,
                 "user": session['username']}
-    response = requests.post("http://localhost:5001/api/profile/checkPassword", json=mainData)
+    response = requests.post("https://dndapi.pythonanywhere.com/api/profile/checkPassword", json=mainData)
     if response.status_code == 200:
         newPassword = request.form['newPassword']
         newData = {"newPassword": newPassword,
                    "username": session['username']}
-        newResponse = requests.patch("http://localhost:5001/api/profile/changePassword", json=newData)
+        newResponse = requests.patch("https://dndapi.pythonanywhere.com/api/profile/changePassword", json=newData)
         if newResponse.status_code == 200:
             flash(newResponse.json()['message'], 'success')
             return redirect(url_for("profile"))
@@ -165,7 +165,7 @@ def login():
             "user": username,
             "password": password
         }
-        response = requests.post('http://localhost:5001/api/login', json=data)
+        response = requests.post('https://dndapi.pythonanywhere.com/api/login', json=data)
         if response.status_code == 200:
             data = response.json()
             session['username'] = username
@@ -189,7 +189,7 @@ def register():
             "password": password,
             "email": email
         }
-        response = requests.post('http://localhost:5001/api/register', json=data)
+        response = requests.post('https://dndapi.pythonanywhere.com/api/register', json=data)
         if response.status_code == 200:
             flash(response.json()['message'], 'success')
             return redirect(url_for('login'))
@@ -212,7 +212,7 @@ def logout():
 def delete_account():
     if check_login()[1] == 200:
         username = session['username']
-        url = f"http://localhost:5001/api/delete_account/{username}"
+        url = f"https://dndapi.pythonanywhere.com/api/delete_account/{username}"
         response = requests.delete(url)
         if response.status_code == 200:
             session.clear()

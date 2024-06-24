@@ -12,7 +12,7 @@ from string import ascii_uppercase
 
 app = Flask(__name__)
 
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://DNDAPI:Matias123@DNDAPI.mysql.pythonanywhere-services.com/DNDAPI$default")
 CORS(app, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 '''
