@@ -44,7 +44,7 @@
                         </section>
 
                         <fieldset>
-                            <legend>Hit Points</legend>
+                            <legend>Defenses</legend>
                             <section id="hpCalc" class="hpCalc">
                                 <div class="contenedorBotonesRoll">
                                     <button type="button" class="buttonRoll" id="hpRoll">Roll !</button>
@@ -52,6 +52,8 @@
                                     <button type="button" class="buttonRoll" id="hpAvg">Average</button>
                                 </div>
                                 <input type="number" name="hp" id="hp" min="0">
+                                <label for="ac">AC:</label>
+                                <input type="number" name="ac" id="ac" min="0" value="0">
                             </section>
 
                         </fieldset>
@@ -81,8 +83,6 @@
                                 <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
                             {% endfor %}
                         </select> <br>
-                        <label for="ac">AC:</label><br>
-                        <input type="number" name="ac" id="ac" min="0" value="0">
                     </div>
 
                     <!--Box Info Lore-->
