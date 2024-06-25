@@ -5,7 +5,7 @@
 {% endblock %}
 {% block body %}
 <div class="contenedorGeneral">
-    <div class="character-edit-container">
+    <div class="form-container">
         <h2>Edit Character</h2>
         <form method="POST" action="{{ url_for('edit_character') }}">
             <input type="hidden" name="character_id" value="{{ character.id }}">
@@ -286,7 +286,7 @@
                 </div>
             </div>
             <div class="buttonContainer">
-                <button type="submit" class="btn btn-green">Save Changes</button>
+                <button type="submit" class="formButton">Save Changes</button>
             </div>           
         </form>
     </div>
