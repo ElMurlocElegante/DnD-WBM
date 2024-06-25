@@ -470,7 +470,7 @@ h2 {
 /* Footer Styling */
 
 .footer{
-    padding: 100px 0;
+    padding: 30px 0;
     background-color: #000000;
     display: block;
   }
@@ -485,8 +485,8 @@ h2 {
   .contenedor-de-redes{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: 30px;
+    justify-content: center;
+    margin: 25px;
   }
   
   .contenedor-de-redes a h3{
