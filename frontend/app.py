@@ -78,7 +78,7 @@ def characters():
 
 @app.route("/create_character", methods=['GET'])
 def createCharacter():
-    classes = requests.get('hhttps://dndapi.pythonanywhere.com/api/index_data').json()
+    classes = requests.get('https://dndapi.pythonanywhere.com/api/index_data').json()
     race_details = requests.get('https://dndapi.pythonanywhere.com/api/races_data').json()
     background_details = requests.get('https://dndapi.pythonanywhere.com/api/backgrounds_data').json()
     skills_details = requests.get('https://dndapi.pythonanywhere.com/api/skills_data').json()

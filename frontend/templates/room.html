@@ -19,7 +19,7 @@
         fetch('/session')
             .then(response => response.json())
             .then(sessionData => {
-                var socketio = io('http://127.0.0.1:5001', {
+                var socketio = io('https://dndapi.pythonanywhere.com', {
                     query: { session: JSON.stringify(sessionData) }
                 });
 
