@@ -65,7 +65,7 @@ def roomCreated():
         return redirect(url_for('roomCreation'))
     return redirect(url_for('home'))
 
-#Characters Edit
+#EDIT CHRARACTERS
 @app.route('/edit_character', methods=['GET', 'POST'])
 def edit_character():
     if request.method == 'POST':

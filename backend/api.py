@@ -179,57 +179,65 @@ def register():
     queryCUD(query, {"username": username, "email": email, "password": password})
     return jsonify({"message": "User registered"}), 200
 
-#Edit CHARACTER
+#EDIT CHARACTERS
+# Get character details by ID
+@app.route('/api/characters/<int:character_id>', methods=['GET'])
+def get_character(character_id):
+    query = "SELECT * FROM characters WHERE id = :character_id"
+    result = queryRead(query, {"character_id": character_id}).fetchone()
+    if result:
+        return jsonify(dict(result._mapping)), 200
+    return jsonify({"message": "Character not found"}), 404
+
+# Update character details
 @app.route('/api/characters/<int:character_id>', methods=['PUT'])
 def update_character(character_id):
     character_data = request.get_json()
-    
-    # Check if the character exists
     query_check = "SELECT * FROM characters WHERE id = :character_id"
     result_check = queryRead(query_check, {"character_id": character_id}).fetchone()
     if not result_check:
         return jsonify({"message": "Character not found"}), 404
     
-    # Update character details
     query_update = """
         UPDATE characters 
         SET character_name = :character_name, class = :class, subclass = :subclass, background = :background, 
-            race = :race, alignment = :alignment, xp = :xp, hp = :hp, strength = :strength, 
+            race = :race, alignment = :alignment, xp = :xp, strength = :strength, 
             dexterity = :dexterity, constitution = :constitution, intelligence = :intelligence, 
-            wisdom = :wisdom, charisma = :charisma, proficiency_skills = :proficiency_skills, 
-            proficiency_n_language = :proficiency_n_language, equipment = :equipment, lore = :lore
+            wisdom = :wisdom, charisma = :charisma
         WHERE id = :character_id
     """
-    
     params = {
         "character_id": character_id,
-        "character_name": character_data.get("characterName"),
-        "class": character_data.get("className"),
-        "subclass": character_data.get("subclassName"),
+        "character_name": character_data.get("character_name"),
+        "class": character_data.get("class"),
+        "subclass": character_data.get("subclass"),
         "background": character_data.get("background"),
         "race": character_data.get("race"),
         "alignment": character_data.get("alignment"),
         "xp": character_data.get("xp"),
-        "hp": character_data.get("hp"),
         "strength": character_data.get("strength"),
         "dexterity": character_data.get("dexterity"),
         "constitution": character_data.get("constitution"),
         "intelligence": character_data.get("intelligence"),
         "wisdom": character_data.get("wisdom"),
-        "charisma": character_data.get("charisma"),
-        "proficiency_skills": ','.join(character_data.get("skillProficiencies", [])),
-        "proficiency_n_language": character_data.get("proficienciesLanguages"),
-        "equipment": character_data.get("equipment"),
-        "lore": character_data.get("lore")
+        "charisma": character_data.get("charisma")
     }
     
     try:
         result_update = queryCUD(query_update, params)
-        if result_update:
+        if result_update.rowcount:
             return jsonify({"message": "Character updated successfully"}), 200
         return jsonify({"message": "Failed to update character"}), 400
     except SQLAlchemyError as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+    
+# @app.route('/api/characters', methods = ['GET'])
+# def get_characters():
+#     username = request.args.get('user')
+#     query = "SELECT * FROM characters WHERE username = :username"
+#     result = queryRead(query, {"username": username})
+#     characters = [dict(row._mapping) for row in result.fetchall()]
+#     return jsonify(characters), 200
 
 # characters 
 @app.route('/api/characters', methods = ['GET'])
