@@ -171,7 +171,7 @@ def login():
             session['username'] = username
             return redirect(url_for('characters'))
         else:
-            flash('Usuario o contraseña incorrecta', 'danger')
+            flash('Incorrect user or password', 'danger')
             return render_template('auth/login.html')
     else:
         return render_template('auth/login.html')
