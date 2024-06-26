@@ -178,18 +178,13 @@ def profile():
 @app.route("/change_password", methods = ['POST'])
 def changePassword():
     currentPass = request.form['currentPassword']
+    newPass = request.form['newPassword']
     mainData = {"password": currentPass,
-                "user": session['username']}
-    response = requests.post("http://localhost:5001/api/profile/checkPassword", json=mainData)
+                "user": session['username'],
+                "newPassword": newPass}
+    response = requests.post("http://localhost:5001/api/profile/changePassword", json=mainData)
     if response.status_code == 200:
-        newPassword = request.form['newPassword']
-        newData = {"newPassword": newPassword,
-                   "username": session['username']}
-        newResponse = requests.patch("http://localhost:5001/api/profile/changePassword", json=newData)
-        if newResponse.status_code == 200:
-            flash(newResponse.json()['message'], 'success')
-            return redirect(url_for("profile"))
-        flash(newResponse.json()['message'], 'danger')
+        flash(response.json()['message'], 'success')
         return redirect(url_for('profile'))
     flash(response.json()['message'], 'danger')
     return redirect(url_for('profile'))

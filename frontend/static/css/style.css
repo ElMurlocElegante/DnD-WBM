@@ -1,5 +1,5 @@
 /* Nav Bar */
-*{
+* {
     box-sizing: border-box;
     padding: 0;
 }
@@ -16,9 +16,15 @@
 .logo {
     width: 5%;
 }
-.logo img {width: 95px;}
-.menu {display: flex;}
-.menu li {padding-left: 55px;}
+.logo img {
+    width: 95px;
+}
+.menu {
+    display: flex;
+}
+.menu li {
+    padding-left: 55px;
+}
 .menu li a {
     display: inline-block;
     text-decoration: none;
@@ -38,8 +44,14 @@
     background-color: var(--color1);
     transition: 0.15s ease-in-out;
 }
-.menu li a:hover:after {width: 100%;}
-.open-menu , .close-menu {
+.menu li a:hover {
+    color: rgba(255,27,34,255);
+}
+.menu li a:hover::after {
+    width: 100%;
+    background-color: rgba(255,27,34,255);
+}
+.open-menu, .close-menu {
     position: absolute;
     color: var(--color1);
     cursor: pointer;
@@ -55,8 +67,10 @@
     top: 20px;
     right: 20px;
 }
-#check {display: none;}
-@media(max-width: 610px){
+#check {
+    display: none;
+}
+@media (max-width: 610px) {
     .menu {
         flex-direction: column;
         align-items: center;
@@ -70,12 +84,21 @@
         background-color: var(--color2);
         transition: all 0.2s ease-in-out;
     }
-    .menu li {margin-top: 40px;}
-    .menu li a {padding: 10px;}
-    .open-menu , .close-menu {display: block;}
-    #check:checked ~ .menu {right: 0;}
+    .menu li {
+        margin-top: 40px;
+    }
+    .menu li a {
+        padding: 10px;
+    }
+    .open-menu, .close-menu {
+        display: block;
+    }
+    #check:checked ~ .menu {
+        right: 0;
+    }
 }
-/* Nav bar end */ 
+/* Nav bar end */
+
 
 /* Main Container Styling */
 body {
@@ -469,7 +492,7 @@ h2 {
 /* Footer Styling */
 
 .footer{
-    padding: 55px 0;
+    padding: 45px 0;
     background-color: #000000;
     display: block;
   }

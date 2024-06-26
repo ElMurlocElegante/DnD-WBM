@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav>
-        <ul class='nav-bar'>
+            <ul class='nav-bar'>
                 <li class='logo'><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo"></a></li>
                 <input type='checkbox' id='check' />
                 <span class="menu">
@@ -24,10 +24,11 @@
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
                 </span>
-                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>  
-        </ul>
-        </nav>  
+                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+            </ul>
+        </nav>
     </header>
+    
     {% block body %} {% endblock %}
     <footer class="footer">    
         <div class="footer-content">
