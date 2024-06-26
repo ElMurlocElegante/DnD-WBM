@@ -1,5 +1,6 @@
 /* Home Styling */
 
+
 .learnGame {
     display: flex;
     flex-direction: column;
@@ -7,23 +8,12 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('/static/images/battle.webp');
+    
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
-.homeNavigation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 100vh;
-    background-image: url('/static/images/dragonvsdragon.webp');
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: 200%;
-} 
+
 
 .base {
     display: flex;
@@ -134,3 +124,70 @@
     background-image: linear-gradient(90deg, #ce1016, #9e0b0f);
 }
 
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    height: 100vh; 
+    background-image: url('/static/images/battle.webp');
+    position: relative;
+    z-index: 1;
+    
+    
+}
+
+.box {
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.5s;
+}
+
+.box-create-character {
+    background-image: url('https://cdna.artstation.com/p/assets/images/images/036/874/176/4k/martin-sobr-matt-s-group.jpg?1618864342');
+}
+
+.box-create-room {
+    background-image: url('https://i.pinimg.com/originals/ae/5f/ef/ae5fefdd4de06431539288cef571752f.jpg');
+}
+
+.box-find-room {
+    background-image: url('https://cdna.artstation.com/p/assets/images/images/006/914/858/large/javier-charro-portada36-sn-cut.jpg?1502218705');
+}
+
+.box-new-to-dnd {
+    background-image: url('https://i.pinimg.com/originals/54/e8/c5/54e8c5090cfafa4ef9c0a589d8590888.jpg');
+}
+
+.box > h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.box > p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.box > .button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.box > .button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
