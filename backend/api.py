@@ -372,31 +372,23 @@ def getUserData():
         return jsonify({'email': email}), 200
     return jsonify({"message": "User not found"}), 404
 
-@app.route("/api/profile/checkPassword", methods = ['POST'])
+@app.route("/api/profile/changePassword", methods = ['POST'])
 def checkPassword():
     data = request.get_json()
     password = data['password']
     username = data['user']
+    newPassword = data['newPassword']
     query = "SELECT password FROM users WHERE username = :username"
     result = queryRead(query, {'username': username})
     if result:
         for row in result:
             originalPassword = row.password
         if originalPassword == password:
-            return jsonify({"message": "Success"}), 200
+            query = "UPDATE users SET password = :password WHERE username = :username"
+            queryCUD(query, {"password": newPassword,
+                             "username": username})
+            return jsonify({"message": "password changed correctly"}), 200
         return jsonify({"message": "Passwords do not match"}), 401
-    return jsonify({"message": "Denied"}), 400
-
-@app.route("/api/profile/changePassword", methods = ['PATCH'])
-def changePassword():
-    data = request.get_json()
-    username = data['username']
-    password = data['newPassword']
-    query = "UPDATE users SET password = :password WHERE username = :username"
-    result = queryCUD(query, {"password": password,
-                              "username": username})
-    if result:
-        return jsonify({"message": "Password changed correctly"}), 200
     return jsonify({"message": "Denied"}), 400
 
 #socket io
