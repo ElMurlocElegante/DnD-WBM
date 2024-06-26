@@ -1,3 +1,5 @@
+<!-- ORIGINAL HTML EDIT CHARACTERS -->
+
 {% extends "base.html" %}
 {% block title %} DnD-WBM {% endblock %}
 {% block style %}
@@ -10,27 +12,29 @@
         <form method="POST" action="{{ url_for('edit_character') }}">
             <input type="hidden" name="character_id" value="{{ character.id }}">
             
-            <!-- Box Info Principal -->
             <div class="full-info">
+                <!--Box Info Principal-->
                 <div class="info-principal">
+                    <!--Box info-->
                     <div class="info">
                         <label for="character_name">Character Name</label><br>
-                        <input type="text" id="character_name" name="character_name" required value="{{ character.character_name }}">
+                        <input type="text" id="character_name" name="character_name" required><br>
                         
                         <section class="attribute-row" id="xpContainer">
-                            <label for="xp">XP</label> <br>
-                            <input type="number" name="xp" id="xp" min="0" value="{{ character.xp }}" max="355000">
-                            <label for="level">Level:</label>
-                            <input type="text" id="level" readonly class="total-input" value="{{ character.level }}">
-                            <label for="pb">PB:</label>
-                            <input type="text" id="pb" readonly class="total-input" value="{{ character.pb }}">
+                                <label for="xp">XP</label> <br>
+                                <input type="number" name="xp" id="xp" min="0" value="0" max="355000">
+                                <label for="level">Level: </label>
+                                <input type="text" id="level" readonly class="total-input" value="1">
+
+                                <label for="pb">PB: </label>
+                                <input type="text" id="pb" readonly class="total-input" value="2">
                         </section>
                         
                         <section id="classContainer">
                             <label for="class">Class</label>
                             <select name="class" id="class">
                                 {% for class_name in classes %}
-                                    <option value="{{ class_name }}" {% if character.class == class_name %} selected {% endif %}>{{ class_name|upper }}</option>
+                                    <option value="{{ class_name }}">{{ class_name|upper }}</option>
                                 {% endfor %}
                             </select> <br>
                             <section id="subclassContainer">
@@ -49,64 +53,65 @@
                                     <button type="button" class="buttonRoll" id="hpMax">Maximum</button>
                                     <button type="button" class="buttonRoll" id="hpAvg">Average</button>
                                 </div>
-                                <input type="number" name="hp" id="hp" min="0" value="{{ character.hp }}">
+                                <input type="number" name="hp" id="hp" min="0">
                                 <label for="ac">AC:</label>
-                                <input type="number" name="ac" id="ac" min="0" value="{{ character.ac }}">
+                                <input type="number" name="ac" id="ac" min="0" value="0">
                             </section>
+
                         </fieldset>
 
                         <label for="alignment">Alignment</label>
                         <select name="alignment" id="alignment">
-                            <option value="Lawful Good" {% if character.alignment == "Lawful Good" %} selected {% endif %}>Lawful Good</option>
-                            <option value="Lawful Neutral" {% if character.alignment == "Lawful Neutral" %} selected {% endif %}>Lawful Neutral</option>
-                            <option value="Lawful Evil" {% if character.alignment == "Lawful Evil" %} selected {% endif %}>Lawful Evil</option>
-                            <option value="Neutral Good" {% if character.alignment == "Neutral Good" %} selected {% endif %}>Neutral Good</option>
-                            <option value="Neutral" {% if character.alignment == "Neutral" %} selected {% endif %}>Neutral</option>
-                            <option value="Neutral Evil" {% if character.alignment == "Neutral Evil" %} selected {% endif %}>Neutral Evil</option>
-                            <option value="Chaotic Good" {% if character.alignment == "Chaotic Good" %} selected {% endif %}>Chaotic Good</option>
-                            <option value="Chaotic Neutral" {% if character.alignment == "Chaotic Neutral" %} selected {% endif %}>Chaotic Neutral</option>
-                            <option value="Chaotic Evil" {% if character.alignment == "Chaotic Evil" %} selected {% endif %}>Chaotic Evil</option>
+                            <option value="Lawful Good">Lawful Good</option>
+                            <option value="Lawful Neutral">Lawful Neutral</option>
+                            <option value="Lawful Evil">Lawful Evil</option>
+                            <option value="Neutral Good">Neutral Good</option>
+                            <option value="Neutral"> Neutral</option>
+                            <option value="Neutral Evil">Neutral Evil</option>
+                            <option value="Chaotic Good">Chaotic Good</option>
+                            <option value="Chaotic Neutral">Chaotic Neutral</option>
+                            <option value="Chaotil Evil">Chaotic Evil</option>
                         </select> <br>
 
                         <label for="background">Background</label>
                         <select name="background" id="background">
-                            {% for background in backgrounds %}
-                                <option value="{{ background.name }}" {% if character.background == background.name %} selected {% endif %}>{{ background.name }}</option>
+                            {%for background in backgrounds %}
+                                <option value="{{ background.name }}">{{ background.name }}</option>
                             {% endfor %}
                         </select> <br>
-
                         <label for="race">Race</label>
                         <select name="race" id="race">
                             {% for race_data in races %}
-                                <option value="{{ race_data.name }}|{{ race_data.source }}" {% if character.race == race_data.name and character.race_source == race_data.source %} selected {% endif %}>{{ race_data.name }} | {{ race_data.source }}</option>
+                                <option value="{{ race_data.name }}|{{ race_data.source }}">{{ race_data.name }} | {{ race_data.source }}</option>
                             {% endfor %}
                         </select> <br>
                     </div>
 
+                    <!--Box Info Lore-->
                     <div class="lore">
                         <fieldset>
                             <legend>Personality Traits</legend>
-                            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33">{{ character.personality_traits }}</textarea>
+                            <textarea type="text" name="personality_traits" id="personality_traits" rows="5" cols="33"></textarea>
                         </fieldset>
 
                         <fieldset>
                             <legend>Ideals</legend>
-                            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33">{{ character.ideals }}</textarea>
+                            <textarea type="text" name="ideals" id="ideals" rows="5" cols="33"></textarea>
                         </fieldset>
 
                         <fieldset>
                             <legend>Bonds</legend>
-                            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33">{{ character.bonds }}</textarea>
+                            <textarea type="text" name="bonds" id="bonds" rows="5" cols="33"></textarea>
                         </fieldset>
 
                         <fieldset>
                             <legend>Flaws</legend>
-                            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33">{{ character.flaws }}</textarea>
+                            <textarea type="text" name="flaws" id="flaws" rows="5" cols="33"></textarea>
                         </fieldset>
                     </div>
                 </div>
 
-                <!-- Info Atributos -->
+                <!--Box Info Atributos-->
                 <div class="info-atributos">
                     <div class="repartir-atributos">
                         <legend>Attributes</legend>
@@ -132,7 +137,7 @@
                                 </div>
                                 <div class="attribute-row" id="strengthContainer">
                                     <label for="strength">STR:</label>
-                                    <input type="number" id="strength" name="strength" min="8" value="{{ character.strength }}" max="15">
+                                    <input type="number" id="strength" name="strength" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-str2" value="2">
                                     </div>
@@ -144,7 +149,7 @@
                                 </div>
                                 <div class="attribute-row" id="dexterityContainer">
                                     <label for="dexterity">DEX:</label>
-                                    <input type="number" id="dexterity" name="dexterity" min="8" value="{{ character.dexterity }}" max="15">
+                                    <input type="number" id="dexterity" name="dexterity" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-dex2" value="2">
                                     </div>
@@ -156,7 +161,7 @@
                                 </div>
                                 <div class="attribute-row" id="constitutionContainer">
                                     <label for="constitution">CON:</label>
-                                    <input type="number" id="constitution" name="constitution" min="8" value="{{ character.constitution }}" max="15">
+                                    <input type="number" id="constitution" name="constitution" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-con2" value="2">
                                     </div>
@@ -168,7 +173,7 @@
                                 </div>
                                 <div class="attribute-row" id="intelligenceContainer">
                                     <label for="intelligence">INT:</label>
-                                    <input type="number" id="intelligence" name="intelligence" min="8" value="{{ character.intelligence }}" max="15">
+                                    <input type="number" id="intelligence" name="intelligence" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-int2" value="2">
                                     </div>
@@ -180,7 +185,7 @@
                                 </div>
                                 <div class="attribute-row" id="wisdomContainer">
                                     <label for="wisdom">WIS:</label>
-                                    <input type="number" id="wisdom" name="wisdom" min="8" value="{{ character.wisdom }}" max="15">
+                                    <input type="number" id="wisdom" name="wisdom" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-wis2" value="2">
                                     </div>
@@ -192,7 +197,7 @@
                                 </div>
                                 <div class="attribute-row" id="charismaContainer">
                                     <label for="charisma">CHA:</label>
-                                    <input type="number" id="charisma" name="charisma" min="8" value="{{ character.charisma }}" max="15">
+                                    <input type="number" id="charisma" name="charisma" min="8" value="8" max="15">
                                     <div>
                                         <input type="checkbox" name="raceBonus" id="raceBonus-cha2" value="2">
                                     </div>
@@ -205,7 +210,6 @@
                             </div>
                         </section> 
                     </div>
-
                     <div class="in-info-atributos">
                         <section id="abilityScoreImprovements">
                             <div class="attribute-row">
@@ -216,67 +220,83 @@
                                 <span>STR</span><span>DEX</span><span>CON</span><span>INT</span><span>WIS</span><span>CHA</span>
                             </div>
                             <div class="attribute-row" id="abilityScoreImprovementsInputs">
-                                <input type="number" id="strengthImprovement" name="strength" min="0" value="0">
-                                <input type="number" id="dexterityImprovement" name="dexterity" min="0" value="0">
-                                <input type="number" id="constitutionImprovement" name="constitution" min="0" value="0">
-                                <input type="number" id="intelligenceImprovement" name="intelligence" min="0" value="0">
-                                <input type="number" id="wisdomImprovement" name="wisdom" min="0" value="0">
-                                <input type="number" id="charismaImprovement" name="charisma" min="0" value="0">
+                                <input type="number" id="strengthImprovement" name="strength" min="0">
+                                <input type="number" id="dexterityImprovement" name="dexterity" min="0">
+                                <input type="number" id="constitutionImprovement" name="constitution" min="0">
+                                <input type="number" id="intelligenceImprovement" name="intelligence" min="0">
+                                <input type="number" id="wisdomImprovement" name="wisdom" min="0">
+                                <input type="number" id="charismaImprovement" name="charisma" min="0">
                             </div>
                         </section>
                     </div>
-
                     <div class="equipmentBox">
                         <fieldset class="equipment">
                             <legend>Equipment</legend>
-                            <textarea type="text" name="equipment" id="equipment" rows="5" cols="33">{{ character.equipment }}</textarea>
+                            <textarea type="text" name="equipment" id="equipment" rows="5" cols="33"></textarea>
                         </fieldset>
                     </div>
                 </div>
 
-                <!-- Info Profesiones -->
+                <!--Box Info Other Proficiencies
+                <fieldset>
+                    <legend>Other Proficiencies</legend>
+                    <fieldset id="language">
+                        <legend>Languages</legend>
+                        <section id="languageProfList">
+                            <section id="languageProfBackground"></section>
+                            <section id="languageProfClass"></section>
+                            <section id="languageProfRace"></section>
+                        </section>
+                    </fieldset>
+                    <fieldset id="items">
+                        <legend>Items and Tools</legend>
+                        <section id="itemProfList">
+                            <section></section>
+                        </section>
+                </fieldset>-->
+                
+
+                <!--Box Info Profesiones-->
                 <div class="info-profesiones">
                     <fieldset class="sideInfo">    
-                        <legend>Choose your Proficiencies</legend>    
-                        <fieldset class="sideInfo">
-                            <legend>Class Proficiencies</legend>
-                            <p id="classRemainingSkills"></p>
-                            <div id="classSkills"></div>
-                        </fieldset>
-                        <fieldset class="sideInfo">
-                            <legend>Background Proficiencies</legend>
-                            <p id="backgroundRemainingSkills"></p>
-                            <div id="backgroundSkills"></div>
-                        </fieldset>
-                        <fieldset class="sideInfo">
-                            <legend>Race Proficiencies</legend>
-                            <p id="raceRemainingSkills"></p>
-                            <div id="raceSkills"></div>
-                        </fieldset>
+                    <legend>Choose your Proficiencies</legend>    
+                    <fieldset class="sideInfo">
+                        <legend>Class Proficiencies</legend>
+                        <p id="classRemainingSkills"></p>
+                        <div id="classSkills"></div>
+                    </fieldset>
+                    <fieldset class="sideInfo">
+                        <legend>Background Proficiencies</legend>
+                        <p id="backgroundRemainingSkills"></p>
+                        <div id="backgroundSkills"></div>
+                    </fieldset>
+                    <fieldset class="sideInfo">
+                        <legend>Race Proficiencies</legend>
+                        <p id="raceRemainingSkills"></p>
+                        <div id="raceSkills"></div>
+                    </fieldset>
                     </fieldset> 
                     <fieldset id="allSkills">
                         <legend>Proficiencies</legend>
                         {% for skill in skills %}
-                            <div class="checkbox-container">
-                                <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
-                                <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
-                            </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="{{ skill.name|lower }}" id="{{ skill.name|lower }}" value="{{ skill.name|lower }}">
+                            <label for="{{ skill.name|lower }}">{{ skill.name }}</label>
+                        </div>
                         {% endfor %}
-                    </fieldset>
+                    </fieldset> <br>
                 </div>
             </div>
-            <br><br><br>
+            <br><br><br><br>
             <div class="buttonContainer">
                 <button type="submit" class="formButton">Save Changes</button>
-            </div>
+            </div>           
         </form>
     </div>
 </div>
-
 <script src="{{ url_for('static', filename='scripts/characterLevel.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/attributeLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/sendNewCharacterData.js') }}"></script>
 {% endblock %}
