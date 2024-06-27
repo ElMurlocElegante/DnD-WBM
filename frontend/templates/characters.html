@@ -22,6 +22,10 @@
                     </p>
                     <p><strong>Level:</strong> <span name="level">{{ character.level }}</span></p>
                 </div>
+                <p class="pc-hp-ac">
+                    <span><strong>HP:</strong> <span name="hp">{{ character.hp }}</span></span>
+                    <span><strong>AC: </strong> <span name="ac">{{ character.ac }}</span></span>
+                </p>
                 <p><strong>Alignment:</strong> <span name="alignment">{{ character.alignment }}</span></p>
                 <p class="pc-xp-pb">
                     <span class="xp"><strong>XP:</strong> <span name="xp">{{ character.xp }}</span></span>
@@ -29,13 +33,26 @@
                 </p>
 
                 <p><strong>Background:</strong> {{ character.background }}</p>
-                <section id="character-attributes">
-                    <p><strong>STR:</strong> {{ character.strength }}</p>
-                    <p><strong>DEX:</strong> {{ character.dexterity }}</p>
-                    <p><strong>CON:</strong> {{ character.constitution }}</p>
-                    <p><strong>INT:</strong> {{ character.intelligence }}</p>
-                    <p><strong>WIS:</strong> {{ character.wisdom }}</p>
-                    <p><strong>CHA:</strong> {{ character.charisma }}</p>
+                <section class="character-attributes">
+                    <p><strong>STR:</strong> <span name="strength">{{ character.strength }}</span></p>
+                    <p><strong>DEX:</strong> <span name="dexterity">{{ character.dexterity }}</span></p>
+                    <p><strong>CON:</strong> <span name="constitution">{{ character.constitution }}</span></p>
+                    <p><strong>INT:</strong> <span name="intelligence">{{ character.intelligence }}</span></p>
+                    <p><strong>WIS:</strong> <span name="wisdom">{{ character.wisdom }}</span></p>
+                    <p><strong>CHA:</strong> <span name="charisma">{{ character.charisma }}</span></p>
+                </section>
+                <section class="character-skills">
+                    <div class="skills-header">
+                        <h2>Skills</h2>
+                    </div>
+                    <div class="skills-container">
+                        <p hidden class="proficiencies">{{ character.proficiency_skills }}</p>
+                        {% for skill in skills %}
+                        <div class="character-skill {% if skill.name|lower in character.proficiency_skills %}proficient{% endif %}" name="{{ skill.name|lower }}">
+                            <p><strong>{{ skill.name }}</strong>: <span name="value"></span></p>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </section>
                 <form method="GET" action="{{ url_for('edit_character') }}">
                     <input type="hidden" name="character_id" value="{{ character.id }}">

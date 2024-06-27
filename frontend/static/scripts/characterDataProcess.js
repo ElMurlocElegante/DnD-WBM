@@ -86,10 +86,51 @@ document.addEventListener('DOMContentLoaded', function() {
         const alignment = character.querySelector('[name="alignment"]')
         alignment.innerText = ` ${alignment.innerText.match(/[A-Z]/g).join('')}`
     }
+
+    function calculateModifier(attributeValue) {
+        return Math.floor((attributeValue - 10) / 2);
+    }
+
+    function characterSkills(character) {
+        const skills = character.querySelectorAll('.character-skill');
+        const skillToAttribute = {
+            'acrobatics': 'dexterity',
+            'animal handling': 'wisdom',
+            'arcana': 'intelligence',
+            'athletics': 'strength',
+            'deception': 'charisma',
+            'history': 'intelligence',
+            'insight': 'wisdom',
+            'intimidation': 'charisma',
+            'investigation': 'intelligence',
+            'medicine': 'wisdom',
+            'nature': 'intelligence',
+            'perception': 'wisdom',
+            'performance': 'charisma',
+            'persuasion': 'charisma',
+            'religion': 'intelligence',
+            'sleight of hand': 'dexterity',
+            'stealth': 'dexterity',
+            'survival': 'wisdom'
+        };
+        const skillProficiencies = character.querySelector('.proficiencies').innerText.split(',')
+        console.log(skillProficiencies)
+        skills.forEach(function(skill){
+                var skillName = skill.getAttribute('name')
+                var skillAttribute = skillToAttribute[skill.getAttribute('name')]
+                var attribute = character.querySelector(`.character-attributes [name="${skillAttribute}"]`).innerText
+                var mod = calculateModifier(attribute)
+                if (skillProficiencies.includes(skillName)) {
+                    mod += parseInt(character.querySelector('[name="pb"]').innerText);
+                }
+                skill.querySelector('[name="value"]').innerText = mod
+        })
+    }
     const characters = document.querySelectorAll('.pc');
     characters.forEach(function(character) {
         characterLevel(character);
-        alignmentFormat(character)
+        alignmentFormat(character);
+        characterSkills(character);
     });
 
 });

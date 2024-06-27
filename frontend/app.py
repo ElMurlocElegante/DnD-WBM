@@ -114,7 +114,8 @@ def characters():
             username = session['username']
             url = f'http://localhost:5001/api/characters?user={username}'
             characters = requests.get(url).json()         
-            return render_template("characters.html", data=characters)
+            skills = requests.get('http://localhost:5001/api/skills_data').json()
+            return render_template("characters.html", data=characters, skills = skills)
     return redirect(url_for('login'))
 
 @app.route("/character/create", methods=['GET'])
