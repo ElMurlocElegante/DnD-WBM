@@ -24,8 +24,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `characters` (
   `username` varchar(40) NOT NULL,
   `character_name` varchar(40) NOT NULL,
-  `class` varchar(9) NOT NULL,
-  `subclass` varchar(16) DEFAULT NULL,
+  `class` varchar(15) NOT NULL,
+  `subclass` varchar(32) DEFAULT NULL,
   `background` varchar(20) NOT NULL,
   `race` varchar(16) NOT NULL,
   `alignment` varchar(16) NOT NULL,
