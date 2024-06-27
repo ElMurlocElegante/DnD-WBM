@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
-import requests
+import requests, json
 
 app = Flask(__name__)
 
@@ -26,7 +26,8 @@ def joinRoom():
         response = requests.get(url)
         if response.status_code == 200:
             return redirect(url_for('room'))
-    return redirect(url_for('gameRooms', ))
+        flash(response.json()['message'], 'danger')
+        return redirect(url_for('gameRooms', ))
     
 @app.route("/room")
 def room():
@@ -65,6 +66,47 @@ def roomCreated():
         return redirect(url_for('roomCreation'))
     return redirect(url_for('home'))
 
+#EDIT CHRARACTERS
+@app.route('/character/edit', methods=['GET', 'PATCH'])
+def edit_character():
+    if request.method == 'PATCH':
+        # Handling the form submission to update the character
+        character_data = request.get_json()
+        response = requests.patch(f'http://localhost:5001/api/character/edit', json=character_data)
+        if response.status_code == 200:
+            flash('Character updated successfully!', 'success')
+            return jsonify({"message": "success"}), 200
+        else:
+            flash('Failed to update character.', 'danger')
+            return jsonify({"message": "error updating character"}), 400
+    else:
+        # Handling the form display to edit the character
+        character_id = request.args.get('character_id')
+        if not character_id:
+            flash('Character ID is required.', 'danger')
+            return redirect(url_for('characters'))
+        response = requests.get(f'http://localhost:5001/api/character/{character_id}')
+        if response.status_code == 200:
+            character = response.json()
+            equipment_str = character['equipment']
+            equipment_json = json.loads(equipment_str)
+            character['equipment'] = equipment_json
+            lore_str = character['lore']
+            profs_n_lang_str = character['proficiency_n_language']
+            lore_json = json.loads(lore_str)
+            profs_n_lang_json = json.loads(profs_n_lang_str)
+            character['lore'] = lore_json
+            character['proficiency_n_language'] = profs_n_lang_json
+            classes = requests.get('http://localhost:5001/api/index_data').json()
+            races = requests.get('http://localhost:5001/api/races_data').json()
+            backgrounds = requests.get('http://localhost:5001/api/backgrounds_data').json()
+            skills = requests.get('http://localhost:5001/api/skills_data').json()
+            return render_template("edit-character.html", character=character, classes=classes, races=races, backgrounds=backgrounds, skills=skills)
+        else:
+            flash('Character not found.', 'danger')
+            return redirect(url_for('characters'))
+
+
 #Characters
 
 @app.route("/characters")
@@ -73,10 +115,11 @@ def characters():
             username = session['username']
             url = f'http://localhost:5001/api/characters?user={username}'
             characters = requests.get(url).json()         
-            return render_template("characters.html", data=characters)
+            skills = requests.get('http://localhost:5001/api/skills_data').json()
+            return render_template("characters.html", data=characters, skills = skills)
     return redirect(url_for('login'))
 
-@app.route("/create_character", methods=['GET'])
+@app.route("/character/create", methods=['GET'])
 def createCharacter():
     classes = requests.get('http://localhost:5001/api/index_data').json()
     race_details = requests.get('http://localhost:5001/api/races_data').json()
@@ -84,7 +127,7 @@ def createCharacter():
     skills_details = requests.get('http://localhost:5001/api/skills_data').json()
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
-@app.route('/delete_character', methods=['POST'])
+@app.route('/character/delete', methods=['POST'])
 def delete_character():
     username = session['username']
     character_id = request.form.get('character_id')
@@ -129,18 +172,13 @@ def profile():
 @app.route("/change_password", methods = ['POST'])
 def changePassword():
     currentPass = request.form['currentPassword']
+    newPass = request.form['newPassword']
     mainData = {"password": currentPass,
-                "user": session['username']}
-    response = requests.post("http://localhost:5001/api/profile/checkPassword", json=mainData)
+                "user": session['username'],
+                "newPassword": newPass}
+    response = requests.post("http://localhost:5001/api/profile/changePassword", json=mainData)
     if response.status_code == 200:
-        newPassword = request.form['newPassword']
-        newData = {"newPassword": newPassword,
-                   "username": session['username']}
-        newResponse = requests.patch("http://localhost:5001/api/profile/changePassword", json=newData)
-        if newResponse.status_code == 200:
-            flash(newResponse.json()['message'], 'success')
-            return redirect(url_for("profile"))
-        flash(newResponse.json()['message'], 'danger')
+        flash(response.json()['message'], 'success')
         return redirect(url_for('profile'))
     flash(response.json()['message'], 'danger')
     return redirect(url_for('profile'))
@@ -171,7 +209,7 @@ def login():
             session['username'] = username
             return redirect(url_for('characters'))
         else:
-            flash('Usuario o contraseña incorrecta', 'danger')
+            flash('Incorrect user or password', 'danger')
             return render_template('auth/login.html')
     else:
         return render_template('auth/login.html')
@@ -203,7 +241,7 @@ def register():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Sesión cerrada correctamente', 'success')
+    flash('Session successufully closed', 'success')
     return render_template("home.html")
 
 #delete account

@@ -14,7 +14,7 @@
 <body>
     <header>
         <nav>
-        <ul class='nav-bar'>
+            <ul class='nav-bar'>
                 <li class='logo'><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/DnD-Emblem.png') }}" alt="dnd_logo"></a></li>
                 <input type='checkbox' id='check' />
                 <span class="menu">
@@ -24,24 +24,27 @@
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
                 </span>
-                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>  
-        </ul>
-        </nav>  
+                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+            </ul>
+        </nav>
     </header>
+    
     {% block body %} {% endblock %}
     <footer class="footer">    
-        <div class="footer-content container">
-            <div  class="contenedor-de-redes">
+        <div class="footer-content">
+            <div class="contenedor-de-redes">
                 <div class="redes">
-                    <h3>Repositorio del proyecto</h3>
+                    <h3>Project Repository</h3>
                     <div id="contenedor-redes">
-                        <a class="enlace" href="{{ url_for('github_redirect', profile='ElMurlocElegante', repo='DnD-WBM') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                        <a class="enlace" href="{{ url_for('github_redirect', profile='ElMurlocElegante', repo='DnD-WBM') }}">
+                            <img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub">
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="creditos">
-                <h3>proyecto IDS creado 1C 2024 ©</h3>
-                <p>por William Ramirez, Luciano Celano, Matias Dejean, Martina Molina Moio, Julio Marquez y José Castellano</p>
+                <h3>IDS project, created 1C 2024 ©</h3>
+                <p>By William Ramirez, Luciano Celano, Matias Dejean, Martina Molina Moio, Julio Marquez, José Castellano</p>
             </div>
         </div>
     </footer>

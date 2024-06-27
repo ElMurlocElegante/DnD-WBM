@@ -1,98 +1,86 @@
 {% extends "base.html" %}
-{% block title %} DnD-WBM {% endblock %}
+{% block title %}DnD-WBM{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
 {% block body %}
 <main>
-    <section class="members">
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">William Ramirez</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia"> 
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a target="_blank" class="media-link" href="{{ url_for('github_redirect', profile='WARFiuba') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+    <section class="team">
+        <div class="center">
+            <h1>Our Team</h1>
+        </div>
+        <div class="team-content">
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="William Ramirez">
+                <h3>William Ramirez</h3>
+                <h5>Developer & Designer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a href="#"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('github_redirect', profile='WARFiuba') }}"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">Martina Molina Moio</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia">
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a target="_blank" class="media-link" href="{{url_for('instagram_redirect', profile='martumm_') }}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a target="_blank" class="media-link" href="{{ url_for('github_redirect', profile='martinamoio') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="Martina Molina Moio">
+                <h3>Martina Molina Moio</h3>
+                <h5>Designer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('instagram_redirect', profile='martumm_') }}"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('github_redirect', profile='martinamoio') }}"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">Luciano Celano</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia">
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a target="_blank" class="media-link" href="{{ url_for('instagram_redirect', profile='lukura.c')}}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a target="_blank" class="media-link" href="{{ url_for('github_redirect', profile='ElMurlocElegante') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="Luciano Celano">
+                <h3>Luciano Celano</h3>
+                <h5>Developer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('instagram_redirect', profile='lukura.c')}}"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('github_redirect', profile='ElMurlocElegante') }}"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">José Castellano</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia">
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="José Castellano">
+                <h3>José Castellano</h3>
+                <h5>Developer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a href="#"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a href="#"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
-        <articcle class="member">   
-            <div class="personalData">
-                <h3 class="name">Matias Dejean</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/foto-matias.webp') }}" alt="Matias Dejean">
-            </div>
-            <div class="aboutMedia">
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a target="_blank" class="media-link" href="{{url_for('instagram_redirect', profile='matias_dejean') }}"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a target="_blank" class="media-link" href="{{ url_for('github_redirect', profile='mdejeann') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="Matias Dejean">
+                <h3>Matias Dejean</h3>
+                <h5>Developer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('instagram_redirect', profile='matias_dejean') }}"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a target="_blank" href="{{ url_for('github_redirect', profile='mdejeann') }}"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
-        <articcle class="member">
-            <div class="personalData">
-                <h3 class="name">Julio Marquez</h3>
-                <img class="profileAbout" src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="nombre">
-            </div>
-            <div class="aboutMedia"> 
-                <h4>Redes</h4>
-                <div id="media-container">
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-facebook.webp') }}" alt="Facebook"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-instagram.webp') }}" alt="Instagram"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-twitter.webp') }}" alt="X"></a>
-                    <a class="media-link" href="#"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+            <div class="box">
+                <img src="{{ url_for('static', filename='images/us.png') }}" alt="Julio Marquez" #julio>
+                <h3>Julio Marquez</h3>
+                <h5>Designer</h5>
+                <div class="icons">
+                    <a href="#"><i class="ri-facebook-box-fill"></i></a>
+                    <a href="#"><i class="ri-instagram-fill"></i></a>
+                    <a href="#"><i class="ri-twitter-fill"></i></a>
+                    <a href="#"><i class="ri-github-fill"></i></a>
                 </div>
             </div>
-        </articcle>
+        </div>
     </section>
 </main>
 {% endblock %}

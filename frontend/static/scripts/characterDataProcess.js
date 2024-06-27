@@ -1,6 +1,42 @@
-function confirmDelete() {
-    return confirm('¿Estás seguro de que deseas eliminar este personaje?');
-}
+// async function updateCharacter(characterId, characterData) {
+//     try {
+//         const response = await fetch(`/api/characters/${characterId}`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(characterData)
+//         });
+
+//         const result = await response.json();
+//         if (response.ok) {
+//             console.log('Character updated successfully:', result);
+//         } else {
+//             console.error('Failed to update character:', result.message);
+//         }
+//     } catch (error) {
+//         console.error('Error updating character:', error);
+//     }
+// }
+document.addEventListener('DOMContentLoaded', function() {
+    const modalDelete = document.getElementById('modalDelete');
+    const closeBtnDelete = document.querySelectorAll('.closeBtnDelete');
+    const characterIdInput = document.getElementById('character_id');
+
+    
+    window.openModal = function(event, characterId) {
+        event.preventDefault();
+        characterIdInput.value = characterId;
+        modalDelete.showModal();
+    };
+
+    
+    closeBtnDelete.forEach(button => {
+        button.addEventListener('click', () => {
+            modalDelete.close();
+        });
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     function characterLevel(character) {
@@ -48,13 +84,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function alignmentFormat(character) {
         const alignment = character.querySelector('[name="alignment"]')
-        console.log(alignment.innerText)
         alignment.innerText = ` ${alignment.innerText.match(/[A-Z]/g).join('')}`
+    }
+
+    function calculateModifier(attributeValue) {
+        return Math.floor((attributeValue - 10) / 2);
+    }
+
+    function characterSkills(character) {
+        const skills = character.querySelectorAll('.character-skill');
+        const skillToAttribute = {
+            'acrobatics': 'dexterity',
+            'animal handling': 'wisdom',
+            'arcana': 'intelligence',
+            'athletics': 'strength',
+            'deception': 'charisma',
+            'history': 'intelligence',
+            'insight': 'wisdom',
+            'intimidation': 'charisma',
+            'investigation': 'intelligence',
+            'medicine': 'wisdom',
+            'nature': 'intelligence',
+            'perception': 'wisdom',
+            'performance': 'charisma',
+            'persuasion': 'charisma',
+            'religion': 'intelligence',
+            'sleight of hand': 'dexterity',
+            'stealth': 'dexterity',
+            'survival': 'wisdom'
+        };
+        const skillProficiencies = character.querySelector('.proficiencies').innerText.split(',')
+        console.log(skillProficiencies)
+        skills.forEach(function(skill){
+                var skillName = skill.getAttribute('name')
+                var skillAttribute = skillToAttribute[skill.getAttribute('name')]
+                var attribute = character.querySelector(`.character-attributes [name="${skillAttribute}"]`).innerText
+                var mod = calculateModifier(attribute)
+                if (skillProficiencies.includes(skillName)) {
+                    mod += parseInt(character.querySelector('[name="pb"]').innerText);
+                }
+                skill.querySelector('[name="value"]').innerText = mod
+        })
     }
     const characters = document.querySelectorAll('.pc');
     characters.forEach(function(character) {
         characterLevel(character);
-        alignmentFormat(character)
+        alignmentFormat(character);
+        characterSkills(character);
     });
 
 });

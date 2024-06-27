@@ -1,3 +1,7 @@
+* {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
 .main-content {
     width: 100%;
     height: 100%;
@@ -36,7 +40,7 @@
 
 .pc {
     width: 20%;
-    height: 31%;
+
     border: 1px solid #333;
     border-radius: 8px;
     margin: 5px;
@@ -62,7 +66,7 @@
     color: #ff4d4d;
 }
 
-.pc-header, .pc-xp-pb, pc-bg-al {
+.pc-header, .pc-xp-pb, .pc-hp-ac,pc-bg-al {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -100,29 +104,69 @@
     color: #ff6666;
 }
 
-#character-attributes {
+.character-attributes {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-top: 5px;
 }
 
-#character-attributes p {
+.character-attributes p {
     flex: 1 1 calc(30% - 10px);
     text-align: center;
     padding: 3px;
     border: 1px solid #444;
     border-radius: 4px;
     margin: 3px;
-    background-color: #2e2e2e;
+    background-color: rgba(46, 46, 46, 0.8);
     font-size: 0.8em;
     transition: background-color 0.3s ease;
 }
 
-#character-attributes p:hover {
+.character-attributes p:hover {
+    background-color: #3a3a3a;
+}
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: rgba(46, 46, 46,0.3);
+}
+
+.character-skills {
+    margin-top: 10px;
+}
+
+.skills-header {
+    text-align: center;
+    font-size: 0.7em;
+    margin-bottom: 1px;
+}
+.character-skill {
+    flex: 1 1 calc(33.33% - 10px);
+    text-align: center;
+    padding: 2px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    margin: 1px;
+    background-color: rgba(46, 46, 46, 0.8);
+    font-size: 0.7em;
+    transition: background-color 0.3s ease;
+}
+.character-skill.proficient {
+    border-color: #ff4d4d; /* Color de borde para las skills proficientes */
+}
+.character-skill:hover {
     background-color: #3a3a3a;
 }
 
+.character-skill p {
+    margin: 0;
+}
 /* estilo de los botones */
 button {
     padding: 10px 20px;

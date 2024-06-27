@@ -1,124 +1,76 @@
-/* Home Styling */
+* {
+    font-family: 'Space Grotesk', sans-serif;
+}
 
-.learnGame {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    height: 100vh; 
     background-image: url('/static/images/battle.webp');
-    background-position: center;
-    background-repeat: no-repeat;
+    position: relative;
+}
+
+.box {
     background-size: cover;
-}
-.homeNavigation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    height: 100vh;
-    background-image: url('/static/images/dragonvsdragon.webp');
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: 200%;
-} 
-
-.base {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    width: 100%;
-    height: 45%;
-    gap: 10px;
-}
-
-.createCharacter, .findRoom {
-    display: flex;
-    box-sizing: border-box;
-    width: 40%;
-    height: 100%;
-    justify-content: start;
-    align-items: end;
-}
-
-.createCharacter {
-    background-image: url('/static/images/create-character.webp');
-}
-
-.findRoom {
-    background-image: url('/static/images/find-room.webp');
-}
-
-.createRoom {
-    background-image: url('/static/images/create-room.webp');
-}
-
-.createCharacter, .findRoom, .createRoom {
     background-position: center;
-    background-repeat: no-repeat;
-}
-
-.findRoom, .createRoom {
-    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
-    background-size: 120%;
-}
-
-.createCharacter {
-    transition: background-size 0.5s ease-in-out, background-position 0.5s ease-in-out;
-    background-size: 150%;
-}
-
-.createCharacter .content {
-    margin-bottom: 40px;
-    margin-left: 10px;
-}
-
-.findRoom .content {
-    margin-bottom: 300px;
-    margin-left: 10px;
-}
-
-
-.content {
+    border-radius: 10px;
+    padding: 20px;
     text-align: center;
+    transition: transform 0.5s;
 }
 
-.createCharacter:hover {
-    background-size: 160%;
-    background-position: center;
+.box-create-character {
+    background-image: url('https://cdna.artstation.com/p/assets/images/images/036/874/176/4k/martin-sobr-matt-s-group.jpg?1618864342');
 }
 
-.findRoom:hover, .createRoom:hover {
-    background-size: 130%;
-    background-position: center;
+.box-create-room {
+    background-image: url('https://i.pinimg.com/originals/7c/de/2c/7cde2c9f57036cca1ed3c6243afc9380.jpg');
 }
 
-.createRoom {
-    box-sizing: border-box;
-    width: 40%;
-    height: 45%;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: end;
+.box-find-room {
+    background-image: url('https://cdna.artstation.com/p/assets/images/images/006/914/858/large/javier-charro-portada36-sn-cut.jpg?1502218705');
 }
 
-.createRoom .content {
+.box-new-to-dnd {
+    background-image: url('https://i.pinimg.com/originals/54/e8/c5/54e8c5090cfafa4ef9c0a589d8590888.jpg');
+}
+
+.box > h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.box > p {
+    font-size: 1.2rem;
     margin-bottom: 20px;
 }
 
-.createCharacter button, .findRoom button, .createRoom button {
-    margin: auto;
+.box > .button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.box > .button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.box:hover {
+    transform: scale(1.05);
 }
 
 .button {
     width: 150px;
     display: inline-block;
-    padding: 15px 30px;
+    padding: 10px 20px;
     background-image: linear-gradient(90deg, #9e0b0f, #ce1016);
     color: white;
     text-align: center;

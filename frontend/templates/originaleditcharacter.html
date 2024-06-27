@@ -1,3 +1,5 @@
+<!-- ORIGINAL HTML EDIT CHARACTERS -->
+
 {% extends "base.html" %}
 {% block title %} DnD-WBM {% endblock %}
 {% block style %}
@@ -5,12 +7,12 @@
 {% endblock %}
 {% block body %}
 <div class="contenedorGeneral">
-    <!--Main Container-->
     <div class="form-container">
-        <h2>Manage Characters</h2>       
-        <form action="{{ url_for('characters')}}" id="characterForm" name="add">
+        <h2>Edit Character</h2>
+        <form method="POST" action="{{ url_for('edit_character') }}">
+            <input type="hidden" name="character_id" value="{{ character.id }}">
+            
             <div class="full-info">
-                <input type="hidden" name="character_id" value="0">
                 <!--Box Info Principal-->
                 <div class="info-principal">
                     <!--Box info-->
@@ -51,8 +53,7 @@
                                     <button type="button" class="buttonRoll" id="hpMax">Maximum</button>
                                     <button type="button" class="buttonRoll" id="hpAvg">Average</button>
                                 </div>
-                                <label for="hp">HP:</label>
-                                <input type="number" name="hp" id="hp" min="0" value="0">
+                                <input type="number" name="hp" id="hp" min="0">
                                 <label for="ac">AC:</label>
                                 <input type="number" name="ac" id="ac" min="0" value="0">
                             </section>
@@ -286,9 +287,10 @@
                     </fieldset> <br>
                 </div>
             </div>
+            <br><br><br><br>
             <div class="buttonContainer">
-                <button class="formButton" type="submit">Create Character</button>
-            </div>
+                <button type="submit" class="formButton">Save Changes</button>
+            </div>           
         </form>
     </div>
 </div>
@@ -297,5 +299,4 @@
 <script src="{{ url_for('static', filename='scripts/hpLogic.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSkills.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/loadSubclass.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/sendNewCharacterData.js') }}"></script>
 {% endblock %}

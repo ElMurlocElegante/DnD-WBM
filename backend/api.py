@@ -12,7 +12,7 @@ from string import ascii_uppercase
 
 app = Flask(__name__)
 
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
 CORS(app, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 '''
@@ -105,15 +105,18 @@ def get_rooms():
 @app.route("/api/join", methods = ['GET'])
 def joinRoom():
     code = request.args.get('code')
-    query = "SELECT ingame,maxplayers FROM rooms WHERE code = :code"
+    query = "SELECT ingame,maxplayers,code FROM rooms WHERE code = :code"
     result = queryRead(query, {"code": code})
-    players = {}
     row = result.first()
-    players['ingame'] = row[0]
-    players['maxplayers'] = row[1]
-    if (players['maxplayers'] > players['ingame']):
-        return jsonify({"message": f'joining room with code: {code}'}), 200
-    return jsonify({"message": "room full"}), 400
+    print(row)
+    if row is not None and row[2] == code: 
+        players = {}
+        players['ingame'] = row[0]
+        players['maxplayers'] = row[1]
+        if (players['maxplayers'] > players['ingame']):
+            return jsonify({"message": f'joining room with code: {code}'}), 200
+        return jsonify({"message": "Room full"}), 401
+    return jsonify({"message": "wrong code"}), 400
 
     
 @app.route('/api/roomConnection', methods = ['GET'])
@@ -125,8 +128,8 @@ def roomConnection():
     for row in result:
         rooms.append(row.code)
     if room not in rooms:
-        return jsonify({"message": "error"}), 400
-    return jsonify({"message": "success", "code": room}), 200
+        return jsonify({"message": "Error"}), 400
+    return jsonify({"message": "Success", "code": room}), 200
 
 @app.route('/api/rooms/create', methods=['POST'])
 def roomCreation():
@@ -142,8 +145,8 @@ def roomCreation():
                     'code': code
                 })
     if result:
-        return jsonify({"message": "room created successfully", "code": code}), 200
-    return jsonify({"message": "error creating room"}), 400
+        return jsonify({"message": "Room created successfully", "code": code}), 200
+    return jsonify({"message": "Error creating room"}), 400
     
 
 #login
@@ -156,8 +159,8 @@ def login():
     query = "SELECT * FROM users WHERE username = :username AND password = :password;"
     result = queryRead(query,{"username": username, "password": password}).fetchone()
     if result:
-        return jsonify({"message": "login succesfull"}), 200
-    return jsonify({"message": "login failed"}), 401
+        return jsonify({"message": "Login succesfull"}), 200
+    return jsonify({"message": "Login failed"}), 401
 
 #register
 
@@ -172,12 +175,100 @@ def register():
     result_email = queryRead(query_email,{"email": email}).fetchone()
     result_username = queryRead(query_username, {"username": username}).fetchone()
     if result_email:
-        return jsonify({"message": "email in use"}), 409
+        return jsonify({"message": "Email in use"}), 409
     if result_username:
-        return jsonify({"message": "username already in use"}), 409
+        return jsonify({"message": "Username already in use"}), 409
     query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password);"
     queryCUD(query, {"username": username, "email": email, "password": password})
-    return jsonify({"message": "user registered"}), 200
+    return jsonify({"message": "User registered"}), 200
+
+#EDIT CHARACTERS
+# Get character details by ID
+@app.route('/api/character/<int:character_id>', methods=['GET'])
+def get_character(character_id):
+    query = "SELECT * FROM characters WHERE id = :character_id"
+    result = queryRead(query, {"character_id": character_id}).fetchone()
+    if result:
+        return jsonify(dict(result._mapping)), 200
+    return jsonify({"message": "Character not found"}), 404
+
+# Update character details
+@app.route('/api/character/edit', methods=['PATCH'])
+def update_character():
+    character_data = request.get_json()
+    character_id = character_data.get('character_id')
+    query_check = "SELECT * FROM characters WHERE id = :character_id"
+    result_check = queryRead(query_check, {"character_id": character_id}).fetchone()
+    if not result_check:
+        return jsonify({"message": "Character not found"}), 404
+    query_update = """
+        UPDATE characters 
+        SET 
+            character_name = :character_name,
+            class = :selectedClass,
+            subclass = :selectedSubclass,
+            background = :background,
+            race = :race,
+            alignment = :alignment,
+            xp = :xp,
+            hp = :hp,
+            ac = :ac,
+            strength = :strength,
+            dexterity = :dexterity,
+            constitution = :constitution,
+            intelligence = :intelligence,
+            wisdom = :wisdom,
+            charisma = :charisma,
+            proficiency_skills = :proficiency_skills,
+            proficiency_n_language = :proficiency_n_language,
+            equipment = :equipment,
+            lore = :lore
+        WHERE id = :character_id
+    """
+    params = {
+        "character_id": character_id,
+        "character_name": character_data.get("characterName"),
+        "selectedClass": character_data.get("selectedClass"),
+        "selectedSubclass": character_data.get("selectedSubclass"),
+        "background": character_data.get("background"),
+        "race": character_data.get("race"),
+        "alignment": character_data.get("alignment"),
+        "xp": character_data.get("xp"),
+        "hp": character_data.get("hp"),
+        "ac": character_data.get("ac"),
+        "strength": character_data.get("strength"),
+        "dexterity": character_data.get("dexterity"),
+        "constitution": character_data.get("constitution"),
+        "intelligence": character_data.get("intelligence"),
+        "wisdom": character_data.get("wisdom"),
+        "charisma": character_data.get("charisma"),
+        "proficiency_skills": ','.join(character_data.get("skillProficiencies")),
+        "proficiency_n_language": character_data.get("proficienciesLanguages"),
+        "equipment": character_data.get("equipment"),
+        "lore": character_data.get("lore")
+    }
+    try:
+        result_update = queryCUD(query_update, params)
+        if result_update:
+            print(f"Updating character with ID {character_id}")
+            print(f"Query: {query_update}")
+            print(f"Params: {params}")
+
+            # Debugging print for result_update
+            print(f"Result update: {result_update}")
+            return jsonify({"message": "Character updated successfully"}), 200
+        else:
+            return jsonify({"message": "Failed to update character"}), 400
+    except Exception as e:
+        return jsonify({"message": f"Failed to update character: {str(e)}"}), 500
+    
+# @app.route('/api/characters', methods = ['GET'])
+# def get_characters():
+#     username = request.args.get('user')
+#     query = "SELECT * FROM characters WHERE username = :username"
+#     result = queryRead(query, {"username": username})
+#     characters = [dict(row._mapping) for row in result.fetchall()]
+#     return jsonify(characters), 200
 
 # characters 
 @app.route('/api/characters', methods = ['GET'])
@@ -230,7 +321,7 @@ def deleteCharacter(username, character_id):
     query = "DELETE FROM characters WHERE username = :username AND id = :id"
     result = queryCUD(query, {"username": username, "id": character_id})
     if result:
-        return jsonify({"message": "character deleted successfully"}), 200
+        return jsonify({"message": "Character deleted successfully"}), 200
     return jsonify({"message": "character not found"}), 404
 
 @app.route("/api/data/<string:jsonFile>", methods = ['GET'])
@@ -254,22 +345,23 @@ def addCharacter():
     data = request.get_json()
     query = """
         INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
-                                xp, hp, strength, dexterity, constitution, intelligence, wisdom, charisma, 
+                                xp, hp, ac, strength, dexterity, constitution, intelligence, wisdom, charisma, 
                                 proficiency_skills, proficiency_n_language, equipment, lore)
         VALUES (:username, :character_name, :class, :subclass, :background, :race, :alignment, 
-                :xp, :hp, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
+                :xp, :hp, :ac, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
                 :proficiency_skills, :proficiency_n_language, :equipment, :lore)
         """
     params = {
             "username": data.get("username"),
             "character_name": data.get("characterName"),
-            "class": data.get("className"),
-            "subclass": data.get("subclassName"),
+            "class": data.get("selectedClass"),
+            "subclass": data.get("selectedSubclass"),
             "background": data.get("background"),
             "race": data.get("race"),
             "alignment": data.get("alignment"),
             "xp": data.get("xp"),
             "hp": data.get("hp"),
+            "ac": data.get("ac"),
             "strength": data.get("strength"),
             "dexterity": data.get("dexterity"),
             "constitution": data.get("constitution"),
@@ -283,8 +375,9 @@ def addCharacter():
         }
     result = queryCUD(query, params)
     if result:
-        return jsonify({"message": "character created correctly"}), 200
-    return jsonify({"message": "error creating character"}), 400
+        print(result)
+        return jsonify({"message": "Character created correctly"}), 200
+    return jsonify({"message": "Error creating character"}), 400
 
 
 #delete account
@@ -296,8 +389,8 @@ def deleteAccount(username):
     result_characters = queryCUD(query_delete_characters, {"username": username})
     result_user = queryCUD(query_delete_user, {"username": username})
     if result_characters and result_user:
-        return jsonify({"message": "user deletes successfully"}), 200
-    return jsonify({"message": "user not found"}), 404
+        return jsonify({"message": "User deletes successfully"}), 200
+    return jsonify({"message": "User not found"}), 404
 
 #profile
 
@@ -310,34 +403,26 @@ def getUserData():
         for row in result:
             email = row.email
         return jsonify({'email': email}), 200
-    return jsonify({"message": "user not found"}), 404
+    return jsonify({"message": "User not found"}), 404
 
-@app.route("/api/profile/checkPassword", methods = ['POST'])
+@app.route("/api/profile/changePassword", methods = ['POST'])
 def checkPassword():
     data = request.get_json()
     password = data['password']
     username = data['user']
+    newPassword = data['newPassword']
     query = "SELECT password FROM users WHERE username = :username"
     result = queryRead(query, {'username': username})
     if result:
         for row in result:
             originalPassword = row.password
         if originalPassword == password:
-            return jsonify({"message": "success"}), 200
-        return jsonify({"message": "passwords do not match"}), 401
-    return jsonify({"message": "denied"}), 400
-
-@app.route("/api/profile/changePassword", methods = ['PATCH'])
-def changePassword():
-    data = request.get_json()
-    username = data['username']
-    password = data['newPassword']
-    query = "UPDATE users SET password = :password WHERE username = :username"
-    result = queryCUD(query, {"password": password,
-                              "username": username})
-    if result:
-        return jsonify({"message": "password changed correctly"}), 200
-    return jsonify({"message": "denied"}), 400
+            query = "UPDATE users SET password = :password WHERE username = :username"
+            queryCUD(query, {"password": newPassword,
+                             "username": username})
+            return jsonify({"message": "password changed correctly"}), 200
+        return jsonify({"message": "Passwords do not match"}), 401
+    return jsonify({"message": "Denied"}), 400
 
 #socket io
 
@@ -363,7 +448,7 @@ def connect():
         leave_room(room)
         return
     join_room(room)
-    send({"name": name, "message": "has entered the room"}, to=room)
+    send({"name": name, "message": "Has entered the room"}, to=room)
 
     query = "UPDATE rooms SET ingame = ingame + 1 WHERE code = :code"
     result = queryCUD(query, {"code": room})
@@ -402,7 +487,7 @@ def disconnect():
             result = queryCUD(query, {"code": room})
 
     
-    send({"name": name, "message": "has left the room"}, to=room)
+    send({"name": name, "message": "Has left the room"}, to=room)
     print(f"{name} left room {room}")
 
 @socketio.on("message")
