@@ -181,7 +181,7 @@ def register():
 
 #EDIT CHARACTERS
 # Get character details by ID
-@app.route('/api/characters/<int:character_id>', methods=['GET'])
+@app.route('/api/character/<int:character_id>', methods=['GET'])
 def get_character(character_id):
     query = "SELECT * FROM characters WHERE id = :character_id"
     result = queryRead(query, {"character_id": character_id}).fetchone()
@@ -190,46 +190,74 @@ def get_character(character_id):
     return jsonify({"message": "Character not found"}), 404
 
 # Update character details
-@app.route('/api/characters/<int:character_id>', methods=['PUT'])
-def update_character(character_id):
+@app.route('/api/character/edit', methods=['PATCH'])
+def update_character():
     character_data = request.get_json()
+    character_id = character_data.get('character_id')
     query_check = "SELECT * FROM characters WHERE id = :character_id"
     result_check = queryRead(query_check, {"character_id": character_id}).fetchone()
     if not result_check:
         return jsonify({"message": "Character not found"}), 404
-    
     query_update = """
         UPDATE characters 
-        SET character_name = :character_name, class = :class, subclass = :subclass, background = :background, 
-            race = :race, alignment = :alignment, xp = :xp, strength = :strength, 
-            dexterity = :dexterity, constitution = :constitution, intelligence = :intelligence, 
-            wisdom = :wisdom, charisma = :charisma
+        SET 
+            character_name = :character_name,
+            class = :selectedClass,
+            subclass = :selectedSubclass,
+            background = :background,
+            race = :race,
+            alignment = :alignment,
+            xp = :xp,
+            hp = :hp,
+            ac = :ac,
+            strength = :strength,
+            dexterity = :dexterity,
+            constitution = :constitution,
+            intelligence = :intelligence,
+            wisdom = :wisdom,
+            charisma = :charisma,
+            proficiency_skills = :proficiency_skills,
+            proficiency_n_language = :proficiency_n_language,
+            equipment = :equipment,
+            lore = :lore
         WHERE id = :character_id
     """
     params = {
         "character_id": character_id,
-        "character_name": character_data.get("character_name"),
-        "class": character_data.get("class"),
-        "subclass": character_data.get("subclass"),
+        "character_name": character_data.get("characterName"),
+        "selectedClass": character_data.get("selectedClass"),
+        "selectedSubclass": character_data.get("selectedSubclass"),
         "background": character_data.get("background"),
         "race": character_data.get("race"),
         "alignment": character_data.get("alignment"),
         "xp": character_data.get("xp"),
+        "hp": character_data.get("hp"),
+        "ac": character_data.get("ac"),
         "strength": character_data.get("strength"),
         "dexterity": character_data.get("dexterity"),
         "constitution": character_data.get("constitution"),
         "intelligence": character_data.get("intelligence"),
         "wisdom": character_data.get("wisdom"),
-        "charisma": character_data.get("charisma")
+        "charisma": character_data.get("charisma"),
+        "proficiency_skills": ','.join(character_data.get("skillProficiencies")),
+        "proficiency_n_language": character_data.get("proficienciesLanguages"),
+        "equipment": character_data.get("equipment"),
+        "lore": character_data.get("lore")
     }
-    
     try:
         result_update = queryCUD(query_update, params)
-        if result_update.rowcount:
+        if result_update:
+            print(f"Updating character with ID {character_id}")
+            print(f"Query: {query_update}")
+            print(f"Params: {params}")
+
+            # Debugging print for result_update
+            print(f"Result update: {result_update}")
             return jsonify({"message": "Character updated successfully"}), 200
-        return jsonify({"message": "Failed to update character"}), 400
-    except SQLAlchemyError as e:
-        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+        else:
+            return jsonify({"message": "Failed to update character"}), 400
+    except Exception as e:
+        return jsonify({"message": f"Failed to update character: {str(e)}"}), 500
     
 # @app.route('/api/characters', methods = ['GET'])
 # def get_characters():
@@ -314,22 +342,23 @@ def addCharacter():
     data = request.get_json()
     query = """
         INSERT INTO characters (username, character_name, class, subclass, background, race, alignment, 
-                                xp, hp, strength, dexterity, constitution, intelligence, wisdom, charisma, 
+                                xp, hp, ac, strength, dexterity, constitution, intelligence, wisdom, charisma, 
                                 proficiency_skills, proficiency_n_language, equipment, lore)
         VALUES (:username, :character_name, :class, :subclass, :background, :race, :alignment, 
-                :xp, :hp, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
+                :xp, :hp, :ac, :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma, 
                 :proficiency_skills, :proficiency_n_language, :equipment, :lore)
         """
     params = {
             "username": data.get("username"),
             "character_name": data.get("characterName"),
-            "class": data.get("className"),
-            "subclass": data.get("subclassName"),
+            "class": data.get("selectedClass"),
+            "subclass": data.get("selectedSubclass"),
             "background": data.get("background"),
             "race": data.get("race"),
             "alignment": data.get("alignment"),
             "xp": data.get("xp"),
             "hp": data.get("hp"),
+            "ac": data.get("ac"),
             "strength": data.get("strength"),
             "dexterity": data.get("dexterity"),
             "constitution": data.get("constitution"),
@@ -343,6 +372,7 @@ def addCharacter():
         }
     result = queryCUD(query, params)
     if result:
+        print(result)
         return jsonify({"message": "Character created correctly"}), 200
     return jsonify({"message": "Error creating character"}), 400
 

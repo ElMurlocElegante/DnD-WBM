@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function alignmentFormat(character) {
         const alignment = character.querySelector('[name="alignment"]')
-        console.log(alignment.innerText)
         alignment.innerText = ` ${alignment.innerText.match(/[A-Z]/g).join('')}`
     }
     const characters = document.querySelectorAll('.pc');

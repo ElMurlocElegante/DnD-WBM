@@ -31,6 +31,7 @@ CREATE TABLE `characters` (
   `alignment` varchar(16) NOT NULL,
   `xp` mediumint(6) NOT NULL,
   `hp` smallint(3) NOT NULL,
+  `ac` smallint(3) NOT NULL,
   `strength` tinyint(2) NOT NULL,
   `dexterity` tinyint(2) NOT NULL,
   `constitution` tinyint(2) NOT NULL,

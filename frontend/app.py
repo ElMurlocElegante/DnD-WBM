@@ -66,42 +66,25 @@ def roomCreated():
     return redirect(url_for('home'))
 
 #EDIT CHRARACTERS
-@app.route('/edit_character', methods=['GET', 'POST'])
+@app.route('/character/edit', methods=['GET', 'PATCH'])
 def edit_character():
-    if request.method == 'POST':
+    if request.method == 'PATCH':
         # Handling the form submission to update the character
-        character_id = request.form.get('character_id')
-        character_data = {
-            "character_name": request.form.get('character_name'),
-            "race": request.form.get('race'),
-            "class": request.form.get('class'),
-            "subclass": request.form.get('subclass'),
-            "level": request.form.get('level'),
-            "alignment": request.form.get('alignment'),
-            "xp": request.form.get('xp'),
-            "pb": request.form.get('pb'),
-            "background": request.form.get('background'),
-            "strength": request.form.get('strength'),
-            "dexterity": request.form.get('dexterity'),
-            "constitution": request.form.get('constitution'),
-            "intelligence": request.form.get('intelligence'),
-            "wisdom": request.form.get('wisdom'),
-            "charisma": request.form.get('charisma'),
-        }
-        response = requests.put(f'http://localhost:5001/api/characters/{character_id}', json=character_data)
+        character_data = request.get_json()
+        response = requests.patch(f'http://localhost:5001/api/character/edit', json=character_data)
         if response.status_code == 200:
             flash('Character updated successfully!', 'success')
-            return redirect(url_for('characters'))
+            return jsonify({"message": "success"}), 200
         else:
             flash('Failed to update character.', 'danger')
-            return redirect(url_for('edit_character', character_id=character_id))
+            return jsonify({"message": "error updating character"}), 400
     else:
         # Handling the form display to edit the character
         character_id = request.args.get('character_id')
         if not character_id:
             flash('Character ID is required.', 'danger')
             return redirect(url_for('characters'))
-        response = requests.get(f'http://localhost:5001/api/characters/{character_id}')
+        response = requests.get(f'http://localhost:5001/api/character/{character_id}')
         if response.status_code == 200:
             character = response.json()
             classes = requests.get('http://localhost:5001/api/index_data').json()
@@ -125,7 +108,7 @@ def characters():
             return render_template("characters.html", data=characters)
     return redirect(url_for('login'))
 
-@app.route("/create_character", methods=['GET'])
+@app.route("/character/create", methods=['GET'])
 def createCharacter():
     classes = requests.get('http://localhost:5001/api/index_data').json()
     race_details = requests.get('http://localhost:5001/api/races_data').json()
@@ -133,7 +116,7 @@ def createCharacter():
     skills_details = requests.get('http://localhost:5001/api/skills_data').json()
     return render_template("create-character.html",classes=classes, races=race_details, backgrounds=background_details, skills=skills_details)
 
-@app.route('/delete_character', methods=['POST'])
+@app.route('/character/delete', methods=['POST'])
 def delete_character():
     username = session['username']
     character_id = request.form.get('character_id')

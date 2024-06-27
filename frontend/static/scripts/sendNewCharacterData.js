@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('characterForm');
-
+    const formType = form.name
+    switch (formType) {
+        case 'add':
+            var method = "POST";
+            break;
+        case 'edit':
+            var method = "PATCH";
+            break;
+    }
     // Enviar el formulario
     form.addEventListener('submit', function(event) {
         event.preventDefault(); // Evitar el envío del formulario de forma estándar
+        const character_id = document.querySelector('input[name="character_id"]').value || null;
         const characterName = document.getElementById('character_name').value;
-        const className = document.getElementById('class').value;
-        const subclassName = document.getElementById('subclass').value;
+        const selectedClass = document.getElementById('class').value;
+        const selectedSubclass = document.getElementById('subclass').value;
         const xp = document.getElementById('xp').value;
         const hp = document.getElementById('hp').value;
         const alignment = document.getElementById('alignment').value;
@@ -29,9 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         const jsonBody = {
+            character_id : character_id,
             characterName: characterName,
-            className: className,
-            subclassName: subclassName,
+            selectedClass: selectedClass,
+            selectedSubclass: selectedSubclass,
             xp: xp,
             hp: hp,
             alignment: alignment,
@@ -60,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         }
         // Enviar el formulario mediante fetch
-        fetch('/character/add', {
-            method: 'POST',
+        fetch(`/character/${formType}`, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -69,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Respuesta recibida desde Flask:', data);
+            console.log('Respuesta recibida desde Flask:', data, jsonBody);
             form.removeEventListener('submit', arguments.callee);
             form.submit();
         })

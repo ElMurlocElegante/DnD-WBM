@@ -7,7 +7,7 @@
 <div class="contenedorGeneral">
     <div class="form-container">
         <h2>Edit Character</h2>
-        <form method="POST" action="{{ url_for('edit_character') }}">
+        <form action="{{ url_for('characters') }}" id="characterForm" name="edit">
             <input type="hidden" name="character_id" value="{{ character.id }}">
             
             <!-- Box Info Principal -->
@@ -49,6 +49,7 @@
                                     <button type="button" class="buttonRoll" id="hpMax">Maximum</button>
                                     <button type="button" class="buttonRoll" id="hpAvg">Average</button>
                                 </div>
+                                <label for="hp">HP:</label>
                                 <input type="number" name="hp" id="hp" min="0" value="{{ character.hp }}">
                                 <label for="ac">AC:</label>
                                 <input type="number" name="ac" id="ac" min="0" value="{{ character.ac }}">
