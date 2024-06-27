@@ -12,7 +12,7 @@ from string import ascii_uppercase
 
 app = Flask(__name__)
 
-engine = create_engine("mysql+mysqlconnector://root@localhost:3307/DnD-WBM")
+engine = create_engine("mysql+mysqlconnector://root@localhost:3306/DnD-WBM")
 CORS(app, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 '''
@@ -105,15 +105,18 @@ def get_rooms():
 @app.route("/api/join", methods = ['GET'])
 def joinRoom():
     code = request.args.get('code')
-    query = "SELECT ingame,maxplayers FROM rooms WHERE code = :code"
+    query = "SELECT ingame,maxplayers,code FROM rooms WHERE code = :code"
     result = queryRead(query, {"code": code})
-    players = {}
     row = result.first()
-    players['ingame'] = row[0]
-    players['maxplayers'] = row[1]
-    if (players['maxplayers'] > players['ingame']):
-        return jsonify({"message": f'joining room with code: {code}'}), 200
-    return jsonify({"message": "Room full"}), 400
+    print(row)
+    if row is not None and row[2] == code: 
+        players = {}
+        players['ingame'] = row[0]
+        players['maxplayers'] = row[1]
+        if (players['maxplayers'] > players['ingame']):
+            return jsonify({"message": f'joining room with code: {code}'}), 200
+        return jsonify({"message": "Room full"}), 401
+    return jsonify({"message": "wrong code"}), 400
 
     
 @app.route('/api/roomConnection', methods = ['GET'])

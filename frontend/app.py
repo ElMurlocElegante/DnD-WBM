@@ -26,7 +26,8 @@ def joinRoom():
         response = requests.get(url)
         if response.status_code == 200:
             return redirect(url_for('room'))
-    return redirect(url_for('gameRooms', ))
+        flash(response.json()['message'], 'danger')
+        return redirect(url_for('gameRooms', ))
     
 @app.route("/room")
 def room():

@@ -4,9 +4,17 @@
 <main>
     <div class="roomsContainer">
         <section class="rooms">
-            {% if data %}
-            <p>{{data}}</p>
-            {% endif %}
+            <div class="flashRooms">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
             {%for room in rooms %}
             <article class="room-container">
                 <h4 class="room-item textShadow">{{room["room_creator"]}}</h4>
