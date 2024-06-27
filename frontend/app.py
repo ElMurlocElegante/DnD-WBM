@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
-import requests
+import requests, json
 
 app = Flask(__name__)
 
@@ -87,6 +87,15 @@ def edit_character():
         response = requests.get(f'http://localhost:5001/api/character/{character_id}')
         if response.status_code == 200:
             character = response.json()
+            equipment_str = character['equipment']
+            equipment_json = json.loads(equipment_str)
+            character['equipment'] = equipment_json
+            lore_str = character['lore']
+            profs_n_lang_str = character['proficiency_n_language']
+            lore_json = json.loads(lore_str)
+            profs_n_lang_json = json.loads(profs_n_lang_str)
+            character['lore'] = lore_json
+            character['proficiency_n_language'] = profs_n_lang_json
             classes = requests.get('http://localhost:5001/api/index_data').json()
             races = requests.get('http://localhost:5001/api/races_data').json()
             backgrounds = requests.get('http://localhost:5001/api/backgrounds_data').json()
