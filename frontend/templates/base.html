@@ -32,11 +32,13 @@
     {% block body %} {% endblock %}
     <footer class="footer">    
         <div class="footer-content">
-            <div  class="contenedor-de-redes">
+            <div class="contenedor-de-redes">
                 <div class="redes">
                     <h3>Project Repository</h3>
                     <div id="contenedor-redes">
-                        <a class="enlace" href="{{ url_for('github_redirect', profile='ElMurlocElegante', repo='DnD-WBM') }}"><img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub"></a>
+                        <a class="enlace" href="{{ url_for('github_redirect', profile='ElMurlocElegante', repo='DnD-WBM') }}">
+                            <img src="{{ url_for('static', filename='images/logo-github.webp') }}" alt="GitHub">
+                        </a>
                     </div>
                 </div>
             </div>

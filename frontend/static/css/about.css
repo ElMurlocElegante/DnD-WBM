@@ -1,63 +1,100 @@
-/* About page Styling */
-.members {
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+    text-decoration: none;
+}
+
+.team {
+    position: relative;
+    width: 100%;
+    height: auto;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    flex-wrap: wrap;
-    height: 100vh;
+    padding: 70px 2%;
     background-image: url('/static/images/about.webp');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.member{
-    height: calc(100% /2);
-}
-
-.personalData {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-    margin-left: 10px;
-}
-
-.name {
-    height: 5%;
+.team-content {
     width: 100%;
-    text-align: left;
+    max-width: 1350px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+    margin-top: 4rem;
 }
 
-.profileAbout {
-    height: 75%;
-    width: 65%;
-    border-radius: 10px;
+.team-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 15px;
 }
 
-.aboutMedia{
-   display: flex;
-   flex-direction: row;
-   height: 10%;
-   gap: 5px;
-   margin-left: 10px;
+.center h1 {
+    color: #fff;
+    font-size: 4rem;
+    text-align: center;
 }
-  
-#media-container{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+
+.box {
+    padding: 16px;
+    background: #1b1229;
+    border-radius: 15px;
+    transition: all .38s ease;
 }
-  
-.media-link{
-    display: flex;
-    background-color: white;
-    border-radius: 10px;
+
+.box h3 {
+    font-size: 23px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
 }
-  
-.aboutMedia a img{
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    margin: 2px;
+
+.box h5 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #b7b4bb;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
 }
+
+.icons i {
+    display: inline-block;
+    color: #fff;
+    font-size: 20px;
+    margin: 0 8px;
+    transition: all .38s ease;
+}
+
+.icons i:hover {
+    transform: scale(1.2);
+}
+
+.box:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
+}
+
+@media(max-width: 1240px) {
+    .team {
+        width: 100%;
+        height: auto;
+    }
+    .center h1 {
+        font-size: 3.2rem;
+    }
+    .team-content {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+

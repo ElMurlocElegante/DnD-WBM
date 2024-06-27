@@ -489,75 +489,96 @@ h2 {
     clip-path: polygon(100% 0, 100% 69%, 94% 100%, 0 100%, 0 0);
 }
 
-/* Footer Styling */
-
-.footer{
+/* Footer */
+.footer {
     padding: 45px 0;
     background-color: #000000;
     display: block;
-  }
-  
-  .footer-content{
+    width: 100%;
+    color: #F9FAFC;
+    box-sizing: border-box;
+}
+
+.footer-content {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-direction: column;
-    box-sizing: border-box;
-  }
-  
-  .contenedor-de-redes{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .contenedor-de-redes a h3{
-    color: white;
-  }
-  
-  .creditos h3{
-    font-size: 18px;
-    color: #F9FAFC;
-    margin-bottom: 5px;
-  }
-  
-  .creditos p{
-    color: #F9FAFC;
-    margin-bottom: 5px;
-  }
-  
-  .redes{
-    width: 50px;
-    color: white;
-    display: block;
-    box-sizing: border-box;
-    width: 20%;
     text-align: center;
-  }
-  
-  #contenedor-redes{
+}
+
+.contenedor-de-redes {
     display: flex;
-    padding: 10px;
     justify-content: center;
-  }
-  
-  .enlace{
+    margin-bottom: 20px;
+}
+
+.redes {
+    display: block;
+    width: 100%;
+}
+
+#contenedor-redes {
     display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.enlace {
     background-color: white;
     border-radius: 10px;
-  }
-  
-  .redes a img{
+}
+
+.redes a img {
     width: 45px;
     height: 45px;
     object-fit: contain;
     margin: 2px;
-  }
-  
-  .creditos{
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+}
 
+.creditos h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.creditos p {
+    margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 700px) {
+    .contenedor-de-redes,
+    .creditos {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .redes {
+        width: 100%;
+    }
+
+    .creditos h3, .creditos p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 520px) {
+    .creditos h3, .creditos p {
+        font-size: 14px;
+    }
+
+    .redes a img {
+        width: 35px;
+        height: 35px;
+    }
+}
 /* extras */
 
 .textShadow {
